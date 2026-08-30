@@ -7,8 +7,8 @@ virtual desktop (Space) they live on. `humane-space-tab` restricts switching to 
 applications of the **current Space** — and, further, aims to extend the same
 Space-aware behaviour to the other grouping, hiding and revealing gestures of macOS.
 
-> **Status: early design.** No usable build yet. The project is being specified in
-> small, reviewable mini-specs before code is written.
+> **Status: pre-release.** The switcher works. The roadmap still changes behaviour you
+> can see, so releases stay below `1.0`.
 
 [Русская версия](README.ru.md)
 
@@ -48,6 +48,31 @@ System Settings → Privacy & Security.
 
 The full threat model is [S00](docs/specs/S00-threat-model.md).
 
+## Install
+
+Download the latest zip from [Releases](../../releases), unpack it and move
+**HumaneSpaceTab.app** to `/Applications`.
+
+The first launch is refused: macOS quarantines a downloaded build that carries no
+Developer ID. Open **System Settings → Privacy & Security**, scroll to the bottom and
+press **Open Anyway**, then launch the app again. Do not strip the quarantine attribute
+by hand — that habit disarms the check that protects you from everything else you
+download.
+
+The menu bar icon shows a warning until Accessibility is granted. Choose
+**Grant Accessibility…** from its menu; the switcher starts working within a couple of
+seconds, without a relaunch. macOS ties that grant to the code signature, so it has to be
+given again after every update.
+
+### Verify what you downloaded
+
+```sh
+shasum -a 256 HumaneSpaceTab-<version>.zip          # compare with the release notes
+gh attestation verify HumaneSpaceTab-<version>.zip --repo n0sfer/humane-space-tab
+```
+
+The attestation ties the artefact to the workflow run and the commit that built it.
+
 ## Requirements
 
 - macOS 15 Sequoia or later
@@ -74,6 +99,20 @@ xcodebuild -project HumaneSpaceTab.xcodeproj -scheme HumaneSpaceTab \
 ```
 
 The Xcode project is generated from `project.yml` and is never committed.
+
+Packaging is one script — the release workflow only calls it, so it can be run and broken
+on a laptop instead of at production:
+
+```sh
+scripts/package.sh 0.1.0        # dist/HumaneSpaceTab-0.1.0.zip and its SHA-256
+```
+
+It refuses to produce anything that is missing an architecture, carries entitlements,
+lacks the hardened runtime, links a non-system library or fails signature verification —
+and it checks each slice of the universal binary separately, because `codesign` and
+`otool` report only the host slice by default. A `v*` tag runs the same
+script in CI and publishes a pre-release; the details are in
+[S11](docs/specs/S11-packaging-release.md).
 
 ## Licence
 
