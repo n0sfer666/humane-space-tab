@@ -9,6 +9,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let log: any LogSink
     private let report: InventoryReport
     private var menuBar: MenuBarController?
+    private var hotkeys: (any HotkeyEngine)?
+    private var hotkeyStatus: HotkeyEngineStatus = .unavailable
 
     init(log: any LogSink) {
         self.log = log
@@ -28,6 +30,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         log.record(.applicationDidLaunch)
+        let hotkeys = CGEventTapHotkeySource(
+            mode: .observe,
+            log: log,
+            sessionOpen: { false },
+            emit: { _ in }
+        )
+        self.hotkeys = hotkeys
+        hotkeyStatus = hotkeys.start()
         menuBar = MenuBarController(
             log: log,
             copyInventory: { [report] in report.copyToDestination() },
@@ -36,6 +46,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ notification: Notification) {
+        hotkeys?.stop()
         log.record(.applicationWillTerminate)
     }
 }
