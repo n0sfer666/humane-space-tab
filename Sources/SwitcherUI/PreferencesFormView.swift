@@ -1,5 +1,6 @@
 import AppKit
 import SwitcherCore
+import SystemPorts
 
 @MainActor
 final class PreferencesFormView: NSView {
@@ -12,15 +13,30 @@ final class PreferencesFormView: NSView {
     private let onChange: @MainActor (Preferences) -> Void
     private var launchNoteRow: NSGridRow?
     private let loginItem: LoginItem
+    private var recorder: ShortcutRecorderView?
+    private var shortcut: Shortcut
 
     init(
         preferences: Preferences,
         loginItem: LoginItem,
+        formatter: ShortcutFormatter,
+        recording: any ShortcutRecorderSource,
+        requestGrant: @escaping @MainActor () -> Void,
         onChange: @escaping @MainActor (Preferences) -> Void
     ) {
         self.onChange = onChange
         self.loginItem = loginItem
+        shortcut = preferences.shortcut
         super.init(frame: .zero)
+        recorder = ShortcutRecorderView(
+            shortcut: preferences.shortcut,
+            formatter: formatter,
+            source: recording,
+            requestGrant: requestGrant
+        ) { [weak self] in
+            self?.shortcut = $0
+            self?.edited()
+        }
         buildScreens()
         buildDelay()
         buildLaunch()
@@ -90,6 +106,7 @@ final class PreferencesFormView: NSView {
         caption.textColor = .secondaryLabelColor
         caption.preferredMaxLayoutWidth = 320
         let grid = NSGridView(views: [
+            [Self.label("Shortcut"), recorder ?? NSGridCell.emptyContentView],
             [Self.label("Show the ribbon on"), screens],
             [Self.label("Reveal delay"), delayRow],
             [NSGridCell.emptyContentView, launch],
@@ -97,7 +114,7 @@ final class PreferencesFormView: NSView {
             [NSGridCell.emptyContentView, privateLayer],
             [NSGridCell.emptyContentView, caption],
         ])
-        launchNoteRow = grid.row(at: 3)
+        launchNoteRow = grid.cell(for: launchNote)?.row
         grid.column(at: 0).xPlacement = .trailing
         grid.rowSpacing = 12
         grid.columnSpacing = 12
@@ -122,7 +139,8 @@ final class PreferencesFormView: NSView {
             Preferences(
                 revealDelay: delay.doubleValue,
                 overlayScreen: OverlayScreenChoice.allCases[screens.indexOfSelectedItem],
-                usesPrivateSpaceLayer: privateLayer.state == .on
+                usesPrivateSpaceLayer: privateLayer.state == .on,
+                shortcut: shortcut
             )
         )
     }

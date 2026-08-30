@@ -1,5 +1,6 @@
 import AppKit
 import SwitcherCore
+import SystemPorts
 
 @MainActor
 public final class PreferencesWindowController {
@@ -7,8 +8,20 @@ public final class PreferencesWindowController {
 
     /// The form is the only writer of these preferences, so it does not observe the
     /// centre: a value echoed back mid-drag would fight the slider.
-    public init(center: PreferencesCenter, loginItem: LoginItem) {
-        let form = PreferencesFormView(preferences: center.current, loginItem: loginItem) { [center] in
+    public init(
+        center: PreferencesCenter,
+        loginItem: LoginItem,
+        naming: any KeyNaming,
+        recording: any ShortcutRecorderSource,
+        requestGrant: @escaping @MainActor () -> Void
+    ) {
+        let form = PreferencesFormView(
+            preferences: center.current,
+            loginItem: loginItem,
+            formatter: ShortcutFormatter(naming: naming),
+            recording: recording,
+            requestGrant: requestGrant
+        ) { [center] in
             center.update($0)
         }
         window = NSWindow(

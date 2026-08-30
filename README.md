@@ -32,7 +32,8 @@ project's standing commitments:
 - no AppleEvents / scripting bridge into other applications;
 - no plugin system and no user-supplied code or scripts;
 - keystrokes are inspected only to match the configured shortcut, never stored,
-  logged or forwarded;
+  logged or forwarded — the sole exception is the combination you deliberately
+  record as your own shortcut;
 - hardened runtime, no entitlements beyond what is strictly required;
 - everything auditable — the full source is here, under GPL-3.0.
 

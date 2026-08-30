@@ -4,4 +4,6 @@ public enum PreferencesKey {
     /// The name the space attribution has written since S03; renaming it would silently
     /// reset a choice the user already made.
     public static let privateSpaceLayer = "PrivateSpaceLayerEnabled"
+    public static let shortcutKeyCode = "ShortcutKeyCode"
+    public static let shortcutModifiers = "ShortcutModifiers"
 }

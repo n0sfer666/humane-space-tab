@@ -9,6 +9,7 @@ public final class PermissionCenter {
     private let poll: @MainActor (@escaping @MainActor () -> Void) -> Void
     private var observers: [@MainActor (PermissionState) -> Void] = []
     private var asked = false
+    private var isSuspended = false
 
     public private(set) var state: PermissionState = .blocked(canAsk: true)
 
@@ -39,6 +40,7 @@ public final class PermissionCenter {
     /// A tap kept alive without the permission behind it is the one thing worse than no tap,
     /// so it is dropped and rebuilt when the permission comes back.
     public func refresh() {
+        guard !isSuspended else { return }
         if authority.isTrusted {
             if engine.tap != .intercept {
                 engine.stop()
@@ -47,6 +49,15 @@ public final class PermissionCenter {
         } else if engine.tap != nil {
             engine.stop()
         }
+        publish()
+    }
+
+    /// The shortcut is baked into the tap when it is built, so a new one means a new tap.
+    /// A suspended tap needs none: the one that resumes is built from the current shortcut.
+    public func rebuildTap() {
+        guard !isSuspended else { return }
+        engine.stop()
+        _ = engine.start()
         publish()
     }
 
@@ -75,5 +86,24 @@ public final class PermissionCenter {
     private func armPollIfBlocked() {
         guard !authority.isTrusted else { return }
         poll { [weak self] in self?.refresh() }
+    }
+}
+
+/// While the tap is suspended nothing else may put it back — not the activation refresh,
+/// not the timer that polls for a granted permission, not a changed shortcut. The published
+/// state is left as it was, because a tap the user deliberately stood down is not a
+/// permission problem to report.
+extension PermissionCenter: TapSuspending {
+    public func suspend() {
+        guard !isSuspended else { return }
+        isSuspended = true
+        engine.stop()
+    }
+
+    public func resume() {
+        guard isSuspended else { return }
+        isSuspended = false
+        _ = engine.start()
+        publish()
     }
 }

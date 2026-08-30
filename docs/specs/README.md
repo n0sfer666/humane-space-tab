@@ -25,7 +25,7 @@ New specs start from [`TEMPLATE.md`](TEMPLATE.md).
 | S10 | [Permission UX](S10-permission-ux.md) | Requesting Accessibility, explaining it, recovering after revocation | agreed |
 | S11 | [Packaging & release](S11-packaging-release.md) | Packaging script, release workflow, provenance, what ad-hoc signing costs | agreed |
 | S12+ | Beyond `Cmd+Tab` | Mission Control, App Exposé, hide/minimise — one spec per gesture | planned |
-| S13 | Shortcut editor | Recording and validating a replacement for `Cmd+Tab` | planned |
+| S13 | [Shortcut editor](S13-shortcut-editor.md) | Recording and validating a replacement for `Cmd+Tab` | agreed |
 | S14 | Overlay mouse interaction | Hover and click selection, and the panel changes it needs | planned |
 
 S00–S06 are close to pure logic and are covered by automated tests. S07 onwards

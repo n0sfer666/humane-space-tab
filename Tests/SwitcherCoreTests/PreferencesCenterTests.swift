@@ -17,6 +17,19 @@ struct PreferencesCenterTests {
         #expect(seen.map(\.revealDelay) == [0.12, 0.3])
     }
 
+    @Test("a changed shortcut is published once and persisted")
+    func publishesShortcut() {
+        var saved: [Preferences] = []
+        var seen: [Preferences] = []
+        let center = PreferencesCenter(initial: .standard) { saved.append($0) }
+        center.observe { seen.append($0) }
+        let shortcut = Shortcut(key: .space, modifiers: [.control, .option])
+        center.update(Preferences(shortcut: shortcut))
+        #expect(center.current.shortcut == shortcut)
+        #expect(saved.map(\.shortcut) == [shortcut])
+        #expect(seen.map(\.shortcut) == [.commandTab, shortcut])
+    }
+
     @Test("setting the same value again changes nothing")
     func ignoresRepeats() {
         var saved: [Preferences] = []
