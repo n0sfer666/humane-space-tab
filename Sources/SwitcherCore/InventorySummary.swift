@@ -1,5 +1,9 @@
 public enum InventorySummary {
-    public static func text(for applications: [SwitchableApplication]) -> String {
+    public static func text(for applications: [SwitchableApplication], layer: SpaceMembershipLayer) -> String {
+        "Space layer: \(layer.label)\n\(body(for: applications))"
+    }
+
+    private static func body(for applications: [SwitchableApplication]) -> String {
         guard !applications.isEmpty else { return "No switchable applications." }
         return applications.map(line).joined(separator: "\n")
     }

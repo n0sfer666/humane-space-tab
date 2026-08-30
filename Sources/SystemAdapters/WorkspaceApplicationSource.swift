@@ -12,6 +12,7 @@ public struct WorkspaceApplicationSource: ApplicationSource {
                 pid: ProcessIdentifier(rawValue: application.processIdentifier),
                 bundleIdentifier: application.bundleIdentifier,
                 name: application.localizedName ?? application.bundleIdentifier ?? "",
+                bundlePath: application.bundleURL?.path,
                 policy: Self.policy(of: application.activationPolicy),
                 isHidden: application.isHidden,
                 isActive: application.isActive
