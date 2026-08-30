@@ -15,6 +15,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let surface: OverlayWindowSurface
     private let overlay: OverlayController
     private let preferences: PreferencesCenter
+    private let loginItem: LoginItem
     private var settings: PreferencesWindowController?
     private var menuBar: MenuBarController?
     private var hotkeys: (any HotkeyEngine)?
@@ -27,6 +28,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             store.save(preferences)
             log.record(.preferencesChanged)
         }
+        loginItem = LoginItem(service: SMAppServiceLoginItem(), log: log)
         let inventory = CurrentSpaceInventorySource(
             applications: WorkspaceApplicationSource(),
             windows: CoreGraphicsWindowSource(),
@@ -95,7 +97,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func openSettings() {
-        let settings = settings ?? PreferencesWindowController(center: preferences)
+        let settings = settings ?? PreferencesWindowController(center: preferences, loginItem: loginItem)
         self.settings = settings
         settings.show()
     }

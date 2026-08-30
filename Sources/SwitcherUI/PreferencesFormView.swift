@@ -7,17 +7,28 @@ final class PreferencesFormView: NSView {
     private let delay = NSSlider()
     private let delayValue = NSTextField(labelWithString: "")
     private let privateLayer = NSButton(checkboxWithTitle: "Use the private Space layer", target: nil, action: nil)
+    private let launch = NSButton(checkboxWithTitle: "Open at login", target: nil, action: nil)
+    private let launchNote = NSTextField(wrappingLabelWithString: "")
     private let onChange: @MainActor (Preferences) -> Void
+    private var launchNoteRow: NSGridRow?
+    private let loginItem: LoginItem
 
-    init(preferences: Preferences, onChange: @escaping @MainActor (Preferences) -> Void) {
+    init(
+        preferences: Preferences,
+        loginItem: LoginItem,
+        onChange: @escaping @MainActor (Preferences) -> Void
+    ) {
         self.onChange = onChange
+        self.loginItem = loginItem
         super.init(frame: .zero)
         buildScreens()
         buildDelay()
+        buildLaunch()
         privateLayer.target = self
         privateLayer.action = #selector(edited)
         install(grid())
         show(preferences)
+        showLoginItem()
     }
 
     @available(*, unavailable)
@@ -46,6 +57,31 @@ final class PreferencesFormView: NSView {
         delayValue.widthAnchor.constraint(equalToConstant: 60).isActive = true
     }
 
+    private func buildLaunch() {
+        launch.target = self
+        launch.action = #selector(launchToggled)
+        launchNote.font = .preferredFont(forTextStyle: .caption1)
+        launchNote.textColor = .secondaryLabelColor
+        launchNote.preferredMaxLayoutWidth = 320
+    }
+
+    /// The system, not our preferences file, decides what this checkbox shows: the user can
+    /// revoke a login item in System Settings without ever opening this window.
+    @objc
+    private func launchToggled() {
+        loginItem.set(launch.state == .on)
+        showLoginItem()
+    }
+
+    private func showLoginItem() {
+        let status = loginItem.status
+        launch.state = status.isOn ? .on : .off
+        launch.isEnabled = status.isEditable
+        launchNote.stringValue = status.message ?? ""
+        launchNoteRow?.isHidden = status.message == nil
+        window?.setContentSize(fittingSize)
+    }
+
     private func grid() -> NSGridView {
         let delayRow = NSStackView(views: [delay, delayValue])
         delayRow.spacing = 8
@@ -56,9 +92,12 @@ final class PreferencesFormView: NSView {
         let grid = NSGridView(views: [
             [Self.label("Show the ribbon on"), screens],
             [Self.label("Reveal delay"), delayRow],
+            [NSGridCell.emptyContentView, launch],
+            [NSGridCell.emptyContentView, launchNote],
             [NSGridCell.emptyContentView, privateLayer],
             [NSGridCell.emptyContentView, caption],
         ])
+        launchNoteRow = grid.row(at: 3)
         grid.column(at: 0).xPlacement = .trailing
         grid.rowSpacing = 12
         grid.columnSpacing = 12
