@@ -41,4 +41,34 @@ struct CGEventTapHotkeySourceTests {
         #expect(log.events.filter { $0 == .hotkeyTapStarted }.count == 2)
         source.stop()
     }
+
+    @Test("a re-armed tap cancels the session it may have lost the release of")
+    func reenableCancelsOpenSession() {
+        let log = RecordingLogSink()
+        var commands: [HotkeyCommand] = []
+        let source = CGEventTapHotkeySource(
+            mode: .observe,
+            log: log,
+            sessionOpen: { true },
+            emit: { commands.append($0) }
+        )
+        #expect(source.swallows(TapEvent.disabled) == false)
+        #expect(commands == [.cancel])
+        #expect(log.events.contains(.hotkeyTapReenabled))
+    }
+
+    @Test("a re-armed tap cancels nothing when no session is open")
+    func reenableKeepsQuietWithoutSession() {
+        let log = RecordingLogSink()
+        var commands: [HotkeyCommand] = []
+        let source = CGEventTapHotkeySource(
+            mode: .observe,
+            log: log,
+            sessionOpen: { false },
+            emit: { commands.append($0) }
+        )
+        #expect(source.swallows(TapEvent.disabled) == false)
+        #expect(commands.isEmpty)
+        #expect(log.events.contains(.hotkeyTapReenabled))
+    }
 }

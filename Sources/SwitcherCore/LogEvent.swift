@@ -15,6 +15,21 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
     case hotkeyStepBackward
     case hotkeyCancelled
     case hotkeyCommitted
+    case switcherSessionOpened
+    case switcherSelectionMoved
+    case switcherSessionCancelled
+    case switcherSessionCommitted
+    case switcherCommandIgnored
+
+    public init(effect: SwitcherEffect) {
+        switch effect {
+        case .ignored: self = .switcherCommandIgnored
+        case .opened: self = .switcherSessionOpened
+        case .moved: self = .switcherSelectionMoved
+        case .cancelled: self = .switcherSessionCancelled
+        case .committed: self = .switcherSessionCommitted
+        }
+    }
 
     public init(command: HotkeyCommand) {
         switch command {
@@ -37,6 +52,9 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
             .hotkeyActivateForward, .hotkeyActivateBackward, .hotkeyStepForward, .hotkeyStepBackward,
             .hotkeyCancelled, .hotkeyCommitted:
             .hotkey
+        case .switcherSessionOpened, .switcherSelectionMoved, .switcherSessionCancelled,
+            .switcherSessionCommitted, .switcherCommandIgnored:
+            .switcher
         }
     }
 
@@ -58,6 +76,11 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
         case .hotkeyStepBackward: "hotkey stepped backward"
         case .hotkeyCancelled: "hotkey cancelled the session"
         case .hotkeyCommitted: "hotkey committed the session"
+        case .switcherSessionOpened: "switcher session opened"
+        case .switcherSelectionMoved: "switcher selection moved"
+        case .switcherSessionCancelled: "switcher session cancelled"
+        case .switcherSessionCommitted: "switcher session committed"
+        case .switcherCommandIgnored: "switcher ignored a command that does not apply"
         }
     }
 }
