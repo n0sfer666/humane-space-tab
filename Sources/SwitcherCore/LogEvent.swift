@@ -3,6 +3,8 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
     case applicationWillTerminate
     case menuBarItemInstalled
     case quitRequestedFromMenu
+    case settingsOpenedFromMenu
+    case preferencesChanged
     case inventoryCopiedToPasteboard
     case privateSpaceLayerUnavailable
     case hotkeyTapStarted
@@ -49,7 +51,8 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
         switch self {
         case .applicationDidLaunch, .applicationWillTerminate, .privateSpaceLayerUnavailable:
             .lifecycle
-        case .menuBarItemInstalled, .quitRequestedFromMenu, .inventoryCopiedToPasteboard:
+        case .menuBarItemInstalled, .quitRequestedFromMenu, .inventoryCopiedToPasteboard,
+            .settingsOpenedFromMenu, .preferencesChanged:
             .ui
         case .hotkeyTapStarted, .hotkeyTapStopped, .hotkeyTapUnavailable, .hotkeyTapReenabled,
             .hotkeyInterceptUnavailable,
@@ -68,6 +71,8 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
         case .applicationWillTerminate: "application will terminate"
         case .menuBarItemInstalled: "menu bar item installed"
         case .quitRequestedFromMenu: "quit requested from menu"
+        case .settingsOpenedFromMenu: "settings opened from menu"
+        case .preferencesChanged: "preferences changed"
         case .inventoryCopiedToPasteboard: "inventory summary copied to the pasteboard"
         case .privateSpaceLayerUnavailable: "private space layer unavailable, falling back to the public one"
         case .hotkeyTapStarted: "hotkey tap started"

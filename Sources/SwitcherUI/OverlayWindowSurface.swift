@@ -1,8 +1,13 @@
 import AppKit
+import SwitcherCore
 import SystemPorts
 
 @MainActor
 public final class OverlayWindowSurface: OverlaySurface {
+    /// Preferences (S08) change this between sessions; the screen is resolved when the
+    /// ribbon is placed, not tracked while it is up.
+    public var screen: OverlayScreenChoice = .focused
+
     private let metrics: OverlayMetrics
     private let panel: NSPanel
     private let content: OverlayContentView
@@ -44,8 +49,7 @@ public final class OverlayWindowSurface: OverlaySurface {
     }
 
     private func place(_ model: OverlayModel) -> Bool {
-        guard let screen = NSScreen.main else { return false }
-        let area = screen.visibleFrame
+        guard let area = area() else { return false }
         let layout = layout(for: model.applications.count, in: area)
         let frame = CGRect(
             x: area.midX - layout.size.width / 2,
@@ -57,6 +61,18 @@ public final class OverlayWindowSurface: OverlaySurface {
         content.frame = CGRect(origin: .zero, size: layout.size)
         content.render(model, layout: layout)
         return true
+    }
+
+    private func area() -> CGRect? {
+        let screens = NSScreen.screens
+        let index = OverlayScreenPicker.index(
+            for: screen,
+            pointer: NSEvent.mouseLocation,
+            frames: screens.map(\.frame),
+            focused: NSScreen.main.flatMap { screens.firstIndex(of: $0) }
+        )
+        guard let index, screens.indices.contains(index) else { return nil }
+        return screens[index].visibleFrame
     }
 
     /// Only the selection changes between the steps of a session, so the geometry is

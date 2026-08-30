@@ -33,6 +33,14 @@ struct OverlayControllerTests {
         )
     }
 
+    @Test("a delay changed between sessions is the one the next session waits")
+    func delayIsLive() {
+        let fixture = make()
+        fixture.controller.delay = 0.4
+        fixture.controller.render(model(1))
+        #expect(fixture.scheduler.delays == [0.4])
+    }
+
     @Test("an opened session schedules the ribbon instead of showing it")
     func openSchedules() {
         let fixture = make()

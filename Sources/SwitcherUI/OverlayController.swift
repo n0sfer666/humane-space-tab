@@ -7,10 +7,13 @@ public final class OverlayController {
     /// a tap killed mid-gesture leaves no way to dismiss a panel that ignores the mouse.
     public static let idleLimit: TimeInterval = 10
 
+    /// Preferences (S08) change this between sessions; a session already waiting keeps
+    /// the delay it was scheduled with.
+    public var delay: TimeInterval
+
     private let surface: any OverlaySurface
     private let scheduler: any OverlayScheduler
     private let watchdog: any OverlayScheduler
-    private let delay: TimeInterval
     private let limit: TimeInterval
     private var pending: OverlayModel?
     private var visible = false
