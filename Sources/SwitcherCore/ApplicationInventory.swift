@@ -5,7 +5,7 @@ public enum ApplicationInventory {
         excluding own: ProcessIdentifier
     ) -> [SwitchableApplication] {
         let switchable = applications.filter { $0.policy == .regular && $0.pid != own }
-        let byOwner = grouped(windows.filter(isRealWindow))
+        let byOwner = grouped(windows.filter(\.isReal))
         return
             switchable
             .map { application in
@@ -22,8 +22,12 @@ public enum ApplicationInventory {
             .sorted(by: precedes)
     }
 
-    private static func isRealWindow(_ window: WindowInfo) -> Bool {
-        window.layer == 0 && window.alpha > 0
+    public static func regularBundlePaths(in applications: [RunningApplication]) -> [ProcessIdentifier: String?] {
+        var paths: [ProcessIdentifier: String?] = [:]
+        for application in applications where application.policy == .regular {
+            paths[application.pid] = application.bundlePath
+        }
+        return paths
     }
 
     private static func grouped(_ windows: [WindowInfo]) -> [ProcessIdentifier: [WindowInfo]] {

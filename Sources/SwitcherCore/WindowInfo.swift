@@ -12,4 +12,12 @@ public struct WindowInfo: Sendable, Equatable {
         self.alpha = alpha
         self.isOnScreen = isOnScreen
     }
+
+    public var isReal: Bool {
+        layer == 0 && alpha > 0
+    }
+
+    public func owned(by owner: ProcessIdentifier) -> WindowInfo {
+        WindowInfo(id: id, owner: owner, layer: layer, alpha: alpha, isOnScreen: isOnScreen)
+    }
 }

@@ -15,6 +15,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         report = InventoryReport(
             applications: WorkspaceApplicationSource(),
             windows: CoreGraphicsWindowSource(),
+            hierarchy: LibprocProcessHierarchy(),
+            spaces: PreferredSpaceMembership(
+                preference: UserDefaultsSpaceLayerPreference(),
+                privateLayer: SkyLightSpaceMembershipSource(),
+                publicLayer: OnScreenSpaceMembershipSource(),
+                log: log
+            ),
             destination: PasteboardTextSink()
         )
     }

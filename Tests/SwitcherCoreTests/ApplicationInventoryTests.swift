@@ -17,6 +17,7 @@ struct ApplicationInventoryTests {
             pid: ProcessIdentifier(rawValue: pid),
             bundleIdentifier: "test.\(pid)",
             name: name,
+            bundlePath: "/Applications/\(name).app",
             policy: policy,
             isHidden: isHidden,
             isActive: isActive
@@ -41,6 +42,37 @@ struct ApplicationInventoryTests {
 
     private func build(_ applications: [RunningApplication], _ windows: [WindowInfo]) -> [SwitchableApplication] {
         ApplicationInventory.build(applications: applications, windows: windows, excluding: own)
+    }
+
+    @Test("regular bundle paths cover every regular application and nothing else")
+    func regularBundlePaths() {
+        let result = ApplicationInventory.regularBundlePaths(in: [
+            application(2, name: "Notes"),
+            application(3, name: "Agent", policy: .accessory),
+            application(4, name: "Mail"),
+        ])
+        #expect(Set(result.keys) == [ProcessIdentifier(rawValue: 2), ProcessIdentifier(rawValue: 4)])
+        #expect(result[ProcessIdentifier(rawValue: 2)] == "/Applications/Notes.app")
+    }
+
+    @Test("a regular application without a bundle is listed with no path")
+    func regularApplicationWithoutBundle() {
+        let application = RunningApplication(
+            pid: ProcessIdentifier(rawValue: 2),
+            bundleIdentifier: nil,
+            name: "Tool",
+            bundlePath: nil,
+            policy: .regular,
+            isHidden: false,
+            isActive: false
+        )
+        let result = ApplicationInventory.regularBundlePaths(in: [application])
+        #expect(result[ProcessIdentifier(rawValue: 2)] == .some(nil))
+    }
+
+    @Test("regular bundle paths of an empty list are empty")
+    func regularBundlePathsOfEmptyList() {
+        #expect(ApplicationInventory.regularBundlePaths(in: []).isEmpty)
     }
 
     @Test("an accessory application is excluded even when it has windows")

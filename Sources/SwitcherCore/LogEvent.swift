@@ -4,10 +4,11 @@ public enum LogEvent: CaseIterable, Sendable {
     case menuBarItemInstalled
     case quitRequestedFromMenu
     case inventoryCopiedToPasteboard
+    case privateSpaceLayerUnavailable
 
     public var category: LogCategory {
         switch self {
-        case .applicationDidLaunch, .applicationWillTerminate:
+        case .applicationDidLaunch, .applicationWillTerminate, .privateSpaceLayerUnavailable:
             .lifecycle
         case .menuBarItemInstalled, .quitRequestedFromMenu, .inventoryCopiedToPasteboard:
             .ui
@@ -21,6 +22,7 @@ public enum LogEvent: CaseIterable, Sendable {
         case .menuBarItemInstalled: "menu bar item installed"
         case .quitRequestedFromMenu: "quit requested from menu"
         case .inventoryCopiedToPasteboard: "inventory summary copied to the pasteboard"
+        case .privateSpaceLayerUnavailable: "private space layer unavailable, falling back to the public one"
         }
     }
 }
