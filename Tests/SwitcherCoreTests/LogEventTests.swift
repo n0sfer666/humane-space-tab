@@ -30,6 +30,16 @@ struct LogEventTests {
         #expect(LogEvent.applicationWillTerminate.category == .lifecycle)
     }
 
+    @Test("every hotkey command maps to its own event in the hotkey category")
+    func hotkeyCommandsMapToDistinctEvents() {
+        let commands: [HotkeyCommand] = [
+            .activate(.forward), .activate(.backward), .step(.forward), .step(.backward), .cancel, .commit,
+        ]
+        let events = commands.map(LogEvent.init(command:))
+        #expect(Set(events).count == commands.count)
+        for event in events { #expect(event.category == .hotkey) }
+    }
+
     @Test("every category is a stable identifier usable as an os.log category")
     func categoryIdentifiers() {
         for category in LogCategory.allCases {
