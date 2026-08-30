@@ -15,8 +15,26 @@ struct SwitcherCoordinatorTests {
         )
     }
 
-    private func coordinator(_ pids: [Int32], order: MRUOrder = MRUOrder()) -> SwitcherCoordinator {
-        SwitcherCoordinator(order: order, snapshot: { pids.map(self.application) })
+    private final class ActivationSpy {
+        var raised: [ProcessIdentifier] = []
+        var succeeds = true
+
+        func activate(_ process: ProcessIdentifier) -> Bool {
+            raised.append(process)
+            return succeeds
+        }
+    }
+
+    private func coordinator(
+        _ pids: [Int32],
+        order: MRUOrder = MRUOrder(),
+        activator: ActivationSpy = ActivationSpy()
+    ) -> SwitcherCoordinator {
+        SwitcherCoordinator(
+            order: order,
+            snapshot: { pids.map(self.application) },
+            activate: { activator.activate($0) }
+        )
     }
 
     @Test("a session opens over the snapshot ordered by recent use")
@@ -55,5 +73,36 @@ struct SwitcherCoordinatorTests {
         _ = coordinator.handle(.activate(.forward))
         #expect(coordinator.handle(.cancel) == .cancelled)
         #expect(coordinator.isSessionOpen == false)
+    }
+
+    @Test("committing raises the selected application once")
+    func commitRaisesSelection() {
+        let activator = ActivationSpy()
+        let coordinator = coordinator([1, 2, 3], activator: activator)
+        _ = coordinator.handle(.activate(.forward))
+        _ = coordinator.handle(.step(.forward))
+        #expect(coordinator.handle(.commit) == .committed(ProcessIdentifier(rawValue: 3)))
+        #expect(activator.raised == [ProcessIdentifier(rawValue: 3)])
+    }
+
+    @Test("a commit the system refuses reports a failed activation")
+    func failedActivationIsReported() {
+        let activator = ActivationSpy()
+        activator.succeeds = false
+        let coordinator = coordinator([1, 2], activator: activator)
+        _ = coordinator.handle(.activate(.forward))
+        #expect(coordinator.handle(.commit) == .activationFailed(ProcessIdentifier(rawValue: 2)))
+        #expect(coordinator.isSessionOpen == false)
+    }
+
+    @Test("nothing but a commit raises an application")
+    func onlyCommitRaises() {
+        let activator = ActivationSpy()
+        let coordinator = coordinator([1, 2], activator: activator)
+        #expect(coordinator.handle(.commit) == .ignored)
+        _ = coordinator.handle(.activate(.forward))
+        _ = coordinator.handle(.step(.forward))
+        _ = coordinator.handle(.cancel)
+        #expect(activator.raised.isEmpty)
     }
 }

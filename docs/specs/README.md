@@ -18,7 +18,7 @@ New specs start from [`TEMPLATE.md`](TEMPLATE.md).
 | S03 | [Space attribution](S03-space-attribution.md) | Current Space and window membership; public base, private layer, degradation | agreed |
 | S04 | [Hotkey engine](S04-hotkey-engine.md) | `CGEventTap`, `Cmd+Tab` interception, arm/re-arm, modes, configurability | agreed |
 | S05 | [Switcher state machine](S05-switcher-state-machine.md) | Cmd-hold cycle, Tab/Shift-Tab, MRU order, cancellation | agreed |
-| S06 | Activation | Raising the selected application or window, focus correctness | planned |
+| S06 | [Activation](S06-activation.md) | Raising the selected application or window, focus correctness | agreed |
 | S07 | Overlay UI | `NSPanel`, rendering, icons, animation, multi-display | planned |
 | S08 | Preferences & persistence | Settings, storage, shortcut editor | planned |
 | S09 | Launch at login | `SMAppService` | planned |

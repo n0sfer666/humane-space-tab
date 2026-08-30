@@ -4,4 +4,5 @@ public enum SwitcherEffect: Hashable, Sendable {
     case moved
     case cancelled
     case committed(ProcessIdentifier)
+    case activationFailed(ProcessIdentifier)
 }
