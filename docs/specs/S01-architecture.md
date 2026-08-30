@@ -98,7 +98,7 @@ built bundle — it carries no entitlements, Hardened Runtime is on, and nothing
 - [x] The release bundle carries **no** entitlements at all and is signed with
       Hardened Runtime; `Info.plist` declares no URL types and no permission usage
       descriptions.
-- [ ] CI is green on `dev` and required for merging into `main`.
+- [x] CI is green on `dev` and required for merging into `main`.
 
 ## Test cases
 
