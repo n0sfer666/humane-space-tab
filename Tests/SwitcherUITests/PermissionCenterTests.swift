@@ -81,6 +81,45 @@ struct PermissionCenterTests {
         #expect(fixture.authority.settingsOpened == 1)
     }
 
+    @Test("a suspended tap is not put back by a refresh that fires meanwhile")
+    func refreshRespectsSuspension() {
+        let fixture = Fixture()
+        fixture.authority.isTrusted = true
+        fixture.engine.tapWhenTrusted = .intercept
+        fixture.center.start()
+        fixture.center.suspend()
+        #expect(fixture.engine.stops == 1)
+        fixture.center.refresh()
+        fixture.center.rebuildTap()
+        #expect(fixture.engine.starts == 1)
+        #expect(fixture.center.state == .intercepting)
+    }
+
+    @Test("resuming builds the tap again and publishes what came back")
+    func resumeRebuildsTheTap() {
+        let fixture = Fixture()
+        fixture.authority.isTrusted = true
+        fixture.engine.tapWhenTrusted = .intercept
+        fixture.center.start()
+        fixture.center.suspend()
+        fixture.engine.tapWhenTrusted = .observe
+        fixture.center.resume()
+        #expect(fixture.engine.starts == 2)
+        #expect(fixture.center.state == .observing)
+    }
+
+    @Test("a changed shortcut rebuilds the tap it is baked into")
+    func rebuildAfterShortcutChange() {
+        let fixture = Fixture()
+        fixture.authority.isTrusted = true
+        fixture.engine.tapWhenTrusted = .intercept
+        fixture.center.start()
+        fixture.center.rebuildTap()
+        #expect(fixture.engine.stops == 1)
+        #expect(fixture.engine.starts == 2)
+        #expect(fixture.center.state == .intercepting)
+    }
+
     @Test("a permission revoked while the app ran is noticed on the next refresh")
     func refreshAfterRevocation() {
         let fixture = Fixture()

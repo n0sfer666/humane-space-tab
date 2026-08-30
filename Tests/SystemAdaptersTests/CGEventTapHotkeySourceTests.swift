@@ -7,7 +7,13 @@ import Testing
 @Suite("Event tap hotkey source")
 struct CGEventTapHotkeySourceTests {
     private func makeSource(_ log: RecordingLogSink) -> CGEventTapHotkeySource {
-        CGEventTapHotkeySource(mode: .observe, log: log, sessionOpen: { false }, emit: { _ in })
+        CGEventTapHotkeySource(
+            shortcut: .commandTab,
+            mode: .observe,
+            log: log,
+            sessionOpen: { false },
+            emit: { _ in }
+        )
     }
 
     @Test("stopping without starting changes nothing")
@@ -47,6 +53,7 @@ struct CGEventTapHotkeySourceTests {
         let log = RecordingLogSink()
         var commands: [HotkeyCommand] = []
         let source = CGEventTapHotkeySource(
+            shortcut: .commandTab,
             mode: .observe,
             log: log,
             sessionOpen: { true },
@@ -62,6 +69,7 @@ struct CGEventTapHotkeySourceTests {
         let log = RecordingLogSink()
         var commands: [HotkeyCommand] = []
         let source = CGEventTapHotkeySource(
+            shortcut: .commandTab,
             mode: .observe,
             log: log,
             sessionOpen: { false },

@@ -21,6 +21,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var menuBar: MenuBarController?
     private var hotkeys: (any HotkeyEngine)?
     private var permissions: PermissionCenter?
+    private var appliedShortcut = Shortcut.commandTab
 
     init(log: any LogSink) {
         self.log = log
@@ -71,23 +72,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             surface.screen = preferences.overlayScreen
         }
         activations.observe { [switcher] process in switcher.recordActivation(of: process) }
-        let hotkeys = InterceptingHotkeyEngine(log: log) { [log, switcher, overlay, icons] mode in
-            CGEventTapHotkeySource(
-                mode: mode,
-                log: log,
-                sessionOpen: { switcher.isSessionOpen },
-                emit: { command in
-                    let effect = switcher.handle(command)
-                    log.record(LogEvent(effect: effect))
-                    let session = switcher.session
-                    if effect == .opened, let session {
-                        Self.prewarm(session.applications, with: icons)
-                    }
-                    overlay.render(session.map(OverlayModel.init(session:)))
-                }
-            )
-        }
+        let hotkeys = makeHotkeys()
         self.hotkeys = hotkeys
+        appliedShortcut = preferences.current.shortcut
+        preferences.observe { [weak self] preferences in self?.apply(preferences.shortcut) }
         let permissions = PermissionCenter(authority: AXAccessibilityAuthority(), engine: hotkeys, log: log) { work in
             DispatchQueue.main.asyncAfter(deadline: .now() + Self.trustPollInterval) {
                 MainActor.assumeIsolated(work)
@@ -111,10 +99,55 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private static let trustPollInterval: TimeInterval = 2
 
+    private func makeHotkeys() -> InterceptingHotkeyEngine {
+        InterceptingHotkeyEngine(log: log) { [log, switcher, overlay, icons, preferences] mode in
+            CGEventTapHotkeySource(
+                shortcut: preferences.current.shortcut,
+                mode: mode,
+                log: log,
+                sessionOpen: { switcher.isSessionOpen },
+                emit: { command in
+                    let effect = switcher.handle(command)
+                    log.record(LogEvent(effect: effect))
+                    let session = switcher.session
+                    if effect == .opened, let session {
+                        Self.prewarm(session.applications, with: icons)
+                    }
+                    overlay.render(session.map(OverlayModel.init(session:)))
+                }
+            )
+        }
+    }
+
+    /// Rebuilding goes through the permission centre because it owns the tap's lifecycle:
+    /// while a shortcut is being recorded the tap is stood down, and the one that comes back
+    /// afterwards is already built from the shortcut stored here.
+    private func apply(_ shortcut: Shortcut) {
+        guard shortcut != appliedShortcut else { return }
+        appliedShortcut = shortcut
+        permissions?.rebuildTap()
+    }
+
     private func openSettings() {
-        let settings = settings ?? PreferencesWindowController(center: preferences, loginItem: loginItem)
+        let settings = settings ?? makeSettings()
         self.settings = settings
         settings.show()
+    }
+
+    private func makeSettings() -> PreferencesWindowController {
+        PreferencesWindowController(
+            center: preferences,
+            loginItem: loginItem,
+            naming: KeyboardLayoutNaming(),
+            recording: recording(),
+            requestGrant: { [permissions] in permissions?.requestGrant() }
+        )
+    }
+
+    private func recording() -> any ShortcutRecorderSource {
+        let recorder = CGEventTapShortcutRecorder()
+        guard let permissions else { return recorder }
+        return SuspendingShortcutRecorder(recorder: recorder, suspension: permissions)
     }
 
     /// An application launched after this one pays its first icon load here, in the gap

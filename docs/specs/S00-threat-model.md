@@ -89,8 +89,14 @@ narrowed. It is contained instead:
 - it converts them to a small internal command enum (`activate`, `next`, `previous`,
   `cancel`, `commit`) and nothing else crosses the module boundary;
 - key codes, modifier state and event contents are never stored, never written to
-  disk, and never logged — including in DEBUG builds;
-- events that do not match the configured shortcut are passed through untouched.
+  disk, and never logged — including in DEBUG builds. The one exception is the
+  combination the user deliberately records as their shortcut (S13), which is a
+  setting they chose rather than input that was observed;
+- events that do not match the configured shortcut are passed through untouched;
+- the shortcut recorder installs a second tap that sees one keystroke of the user's
+  choosing, and only while the settings window is recording. It is created when the
+  recorder is clicked and torn down as soon as a shortcut is captured, Escape is
+  pressed, or the window stops being key.
 
 ### Logging
 

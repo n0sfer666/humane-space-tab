@@ -20,7 +20,7 @@ public final class CGEventTapHotkeySource: HotkeyEngine {
     public var tap: HotkeyTapMode? { port == nil ? nil : mode }
 
     public init(
-        shortcut: Shortcut = .commandTab,
+        shortcut: Shortcut,
         mode: HotkeyTapMode,
         log: any LogSink,
         sessionOpen: @escaping @MainActor () -> Bool,
