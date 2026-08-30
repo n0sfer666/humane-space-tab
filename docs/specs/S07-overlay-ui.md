@@ -37,7 +37,7 @@ about it needs a declarative framework.
 | `collectionBehavior` | `.canJoinAllSpaces, .stationary, .fullScreenAuxiliary, .ignoresCycle` | appears on whatever Space the user is on, including over a full-screen application, and never becomes a switch target itself |
 | `ignoresMouseEvents` | `true` | S07 has no mouse interaction; clicks must reach the application underneath |
 | `hidesOnDeactivate` | `false` | we are never active to begin with |
-| `backgroundColor` | `.clear`, with a `.hudWindow` visual-effect view and a 20 pt corner radius | native HUD look, no custom chrome |
+| `backgroundColor` | `.clear`, with a `.hudWindow` visual-effect view and a 26 pt corner radius | native HUD look, no custom chrome |
 
 The panel is created once at launch and reused: a session updates its contents and
 orders it front. Icons come from `NSRunningApplication.icon` — no permission, and no
@@ -67,67 +67,70 @@ has stopped receiving events.
 
 ### Layout
 
-The ribbon is dynamic in both directions and is meant to read as the system switcher
-does, only with the applications of the current Space.
+The ribbon is measured against the system switcher rather than invented. Three
+screenshots of the real thing on a 1728 pt display — at five, thirteen and twenty-five
+applications — give the shape it has to match:
 
-Every tile is an icon with the application's **name underneath it** — all of them, not
-only the selected one, which is the one deliberate departure from the original. The
-selected tile carries a rounded highlight, its icon is drawn 12 % larger, and its name is
-semibold and brighter; the others stay regular and dimmed. Tile slots are uniform and
-already sized for the enlarged icon, so moving the selection never shifts the row.
+| applications | system icon | system gap | system panel |
+|---|---|---|---|
+| 5 | ~102 | ~31 | 41 % |
+| 13 | ~97 | ~28 | 94 % |
+| 25 | ~48 | ~17 | 96 % |
 
-Sizing is a pure function of the application count and the screen size:
+Three facts come out of that. The row **never wraps**: a crowded Space shrinks its icons
+instead of growing a second line. The panel is **not a fixed share** of the screen — it
+hugs its content and grows toward a ~96 % ceiling. And everything around the icon —
+gap, padding, the room under it — stays **proportional to the icon**, which is why the
+ribbon reads the same at five applications and at twenty-five.
 
-1. The icon side starts at **128 pt** — the size the system uses — and shrinks toward a
-   **48 pt** floor while the row still has to fit 90 % of the screen width.
-2. If the row does not fit even at the floor, it wraps into balanced rows
-   (`ceil(count / rows)` tiles per row, each row centred) and the panel grows in height.
-3. The gaps then **grow** — up to 15 pt — so the ribbon reaches a target of 80 % of the
-   screen width instead of leaving a wide, half-empty panel. The cap keeps tiles close
-   together the way the original does; without it a handful of applications drift apart
-   across a stretched panel.
-4. When even the largest icons and the widest gaps cannot reach the target, the panel
-   hugs its content rather than stretching around it. Three applications produce a
-   compact ribbon, not a wide slab with three icons floating in the middle — the same
-   thing the system switcher does.
+So the layout keeps exactly one free variable, the icon side, and derives the rest:
 
-Measured on a 1728 pt-wide display:
+1. Gap is **30 %** of the icon, panel padding another 30 %, the selected tile's inset 8 %.
+2. The icon starts at **100 pt** and is the largest value whose row — gaps and paddings
+   included — still fits 96 % of the screen width.
+3. Past **25 applications** the icon stops shrinking: the panel freezes at its 25-slot
+   width and the ribbon **scrolls** instead. Beyond that, shrinking further would trade a
+   readable ribbon for a row of unrecognisable dots.
+4. Scrolling moves by the smallest amount that keeps the selection visible: the ribbon
+   stays put while the selection is inside the window and slides one slot when it steps
+   past an edge, so cycling through a crowded Space does not slide the icons under the
+   eye. It starts each session at the beginning.
 
-| applications | icon | gap | rows | panel width |
+Measured on a 1728 pt-wide display, against the numbers above:
+
+| applications | icon | gap | panel width | visible |
 |---|---|---|---|---|
-| 3 | 128 | 15 | 1 | 30 % |
-| 6 | 128 | 15 | 1 | 61 % |
-| 10 | 119 | 4 | 1 | 89 % |
-| 16 | 68 | 4 | 1 | 90 % |
-| 24 | 48 | 15 | 2 | 59 % |
-| 40 | 48 | 4 | 2 | 87 % |
+| 3 | 100 | 30 | 24 % | 3 |
+| 5 | 100 | 30 | 39 % | 5 |
+| 8 | 100 | 30 | 61 % | 8 |
+| 13 | 96 | 29 | 95 % | 13 |
+| 20 | 62 | 19 | 94 % | 20 |
+| 25 | 50 | 15 | 94 % | 25 |
+| 34 | 50 | 15 | 94 % | 25, scrolled |
 
-Height has a budget too: the ribbon may take **80 %** of the screen height, and when the
-wrapped rows overflow it the icon shrinks past the 48 pt floor — in 4 pt steps down to a
-**16 pt** minimum — until they fit. On a 1280 × 800 display that means 60 applications at
-48 pt over 4 rows (384 pt), 121 at 36 pt over 7 rows (565 pt) and 154 at 32 pt over 8
-rows (612 pt) against a 640 pt budget. Only past roughly 380 applications does the 16 pt
-minimum stop the budget from binding and the ribbon exceed it — a capacity limit worth
-naming rather than hiding, and one no single Space reaches.
+That arithmetic lives in `OverlayLayout` and `RibbonScroll`, takes only numbers, imports
+no AppKit, and is unit-tested against every branch: fits, shrinks, freezes, scrolls.
 
-That arithmetic lives in `OverlayLayout`, takes only numbers, imports no AppKit, and is
-unit-tested against every branch: fits, shrinks, wraps, fills, hugs, and both budgets.
+Only the **selected** application is named, under its icon, in semibold — the way the
+system does it. Names under every icon were tried first and dropped: at twenty-five
+applications they turn the ribbon into a wall of truncated text, and the one name the
+user is reading is the one they are switching to. Because only one name is drawn, it is
+free to be wider than its icon; it stays centred on that icon and inside the panel.
+The name scales with the icon — 13 pt at full size down to an 11 pt floor.
 
-Spacing is deliberately tight, the way the original is: 8 pt around the icon inside its
-tile, 10 pt from the ribbon to the panel edge, 2 pt between an icon and its name. The
-name scales with the icon — 13 pt at full size down to a 9 pt floor at the smallest —
-so a crowded ribbon shrinks as a whole instead of growing a band of oversized text.
-
-The look copies the original: a dark `.hudWindow` blur under a 28 % black tint, a 24 pt
-corner radius, a hairline white border, and a 22 % white rounded highlight behind the
-selected tile.
+The selected icon is not enlarged, which is also what the system does: it carries a 22 %
+white rounded highlight drawn around it, and the row stays perfectly still as the
+selection moves. The panel itself is a `.hudWindow` blur with no tint of our own over it
+— the tint we used to paint made our ribbon visibly darker than the original — a 26 pt
+corner radius and a hairline white border.
 
 Only the selection changes between the steps of a session, so a step is not a repaint of
 the ribbon. The geometry is computed once per session and reused; the view invalidates
-the tile that lost the selection and the tile that gained it, and draws only the slots
-that intersect the dirty rectangle. The content view is layer-backed so that AppKit
-clears the dirty rectangle before `draw(_:)`, which is what keeps the translucent tint
-from stacking on the two repainted tiles.
+the tile that lost the selection and the tile that gained it — grown by the room the
+highlight and the name take outside their slot — and draws only the slots that intersect
+the dirty rectangle. The content view is layer-backed and masks its bounds, which both
+clears the dirty rectangle before `draw(_:)` and clips the slots that have scrolled past
+the panel's edge.
 
 ### Interception
 
@@ -153,11 +156,12 @@ saw the two `flagsChanged` events and no `Tab` at all.
 - [ ] An overlay appears on the current Space while a session is open, and disappears on commit and on cancel.
 - [ ] Showing it does not change which application is frontmost, and the panel is never key or main.
 - [ ] A press-and-release `Cmd+Tab` faster than the delay shows nothing at all.
-- [ ] The overlay lists exactly the applications of the S05 snapshot, in the same order, each named under its icon, the selected one enlarged and bold.
-- [ ] The panel is never wider than 90 % of the screen and never taller than 80 % of it until the icon floor is reached; its height follows the number of rows.
+- [ ] The overlay lists exactly the applications of the S05 snapshot, in the same order, with the selected one highlighted and named under its icon.
+- [ ] The panel is never wider than 96 % of the screen, never wraps, and its geometry matches the measured system switcher within a couple of points.
+- [ ] Past 25 applications the icon stops shrinking and the ribbon scrolls, always keeping the selection visible.
 - [ ] A session that stops receiving events hides itself instead of stranding the panel.
 - [ ] Interception never swallows a modifier change, and never swallows a key-up whose key-down went through.
-- [ ] Layout arithmetic is pure and unit-tested: fits, shrinks, wraps, fills, hugs.
+- [ ] Layout and scroll arithmetic is pure and unit-tested: fits, shrinks, freezes, scrolls.
 - [ ] With Accessibility granted the tap intercepts: the system switcher does not appear.
 - [ ] Without it the engine falls back to `.observe` and logs the fallback instead of dying.
 - [ ] The whole suite is green; `swift-format --strict` and `swiftlint --strict` are clean.
@@ -169,17 +173,22 @@ saw the two `flagsChanged` events and no `Tab` at all.
 |---|------|----------|
 | 1 | layout, three icons on a wide screen | one row, full icon size |
 | 2 | layout, a row wider than the budget | icon side shrinks, still one row |
-| 3 | layout, more icons than fit even at the floor size | wraps into balanced rows, floor size kept |
-| 4 | layout, a single icon | one row, no negative gaps |
-| 5 | layout, zero icons | zero size, no rows |
-| 5a | layout, any non-empty count | panel width never exceeds 90 % of the screen |
-| 5b | layout, a handful of applications | gaps grow so the ribbon fills the target width |
-| 5c | layout, a row that only just fits | gaps stay at the minimum |
-| 5e | layout, any count | no gap exceeds the 15 pt cap |
+| 3 | layout, more applications than the visible limit | icon frozen, panel frozen, ribbon scrolls |
+| 4 | layout, a single icon | one slot, no negative gaps |
+| 5 | layout, zero icons | zero size, no slots |
+| 5a | layout, any non-empty count | panel width never exceeds 96 % of the screen |
+| 5b | layout, any count | gap and padding stay the configured shares of the icon |
+| 5c | layout, any count | the row never wraps |
+| 5d | layout, slots | a slot holds the icon and the room its name needs |
+| 5e | layout, the measured counts | icon and gap match the system switcher table |
 | 5f | layout, label size | full size when roomy, smaller when crowded, never below the floor |
-| 5d | layout, slots | slot width already fits the enlarged selected icon |
-| 5g | layout, a count whose rows overflow the height | icon shrinks past the floor until both budgets hold |
-| 5h | layout, any count on four display widths | slots never overlap, both budgets hold |
+| 5g | layout, past the limit | hidden slots sit outside the panel |
+| 5h | layout, any count on four display widths | slots never overlap, the width budget holds |
+| 5i | scroll, everything visible | never scrolls |
+| 5j | scroll, selection inside the window | offset unchanged |
+| 5k | scroll, selection steps past an edge | offset moves by one, either way |
+| 5l | scroll, wrap to the first application | offset returns home |
+| 5m | scroll, a shorter ribbon | a stale offset is clamped back into range |
 | 6 | controller, session opens | show is scheduled, nothing visible yet |
 | 7 | controller, commit before the delay | nothing was ever shown |
 | 8 | controller, delay elapses with the session open | the panel is shown once |
@@ -216,9 +225,10 @@ saw the two `flagsChanged` events and no `Tab` at all.
   documented choice, not an accident.
 - **The 120 ms delay is a guess.** It matches the feel of the system switcher on this
   machine; if it turns out to be visibly wrong it becomes a preference in S08.
-- **Names under every icon** are a departure from the original, asked for deliberately.
-  With many applications they truncate to the tile width; if that reads badly at the 48 pt
-  floor, dropping them for the smallest sizes is the fallback.
+- **The 25-application limit is a judgement call.** It is where the system switcher's own
+  icons land at about 48 pt on a 1728 pt display; on a much wider display the ribbon could
+  afford more before scrolling. If that reads badly it becomes a share of the screen width
+  rather than a count.
 - **Interception makes bugs expensive.** A wedged session now means a swallowed
   `Cmd+Tab`. The tap's re-arm already cancels an open session (S05); with an overlay on
   screen a wedge is at least visible.

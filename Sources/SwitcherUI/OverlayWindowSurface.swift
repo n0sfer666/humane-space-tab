@@ -12,6 +12,7 @@ public final class OverlayWindowSurface: OverlaySurface {
     private let panel: NSPanel
     private let content: OverlayContentView
     private var placement: Placement?
+    private var scroll = RibbonScroll()
 
     public init(icons: any ApplicationIconSource, metrics: OverlayMetrics = OverlayMetrics()) {
         self.metrics = metrics
@@ -35,6 +36,7 @@ public final class OverlayWindowSurface: OverlaySurface {
     }
 
     public func show(_ model: OverlayModel) {
+        scroll.reset()
         guard place(model) else { return }
         panel.orderFrontRegardless()
     }
@@ -59,7 +61,12 @@ public final class OverlayWindowSurface: OverlaySurface {
         )
         if panel.frame != frame { panel.setFrame(frame, display: false) }
         content.frame = CGRect(origin: .zero, size: layout.size)
-        content.render(model, layout: layout)
+        let offset = scroll.settle(
+            selection: model.selection,
+            count: model.applications.count,
+            visible: layout.visible
+        )
+        content.render(model, layout: layout, offset: offset)
         return true
     }
 
