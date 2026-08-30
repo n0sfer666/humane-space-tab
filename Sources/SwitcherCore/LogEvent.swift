@@ -20,6 +20,7 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
     case switcherSessionCancelled
     case switcherSessionCommitted
     case switcherCommandIgnored
+    case switcherActivationFailed
 
     public init(effect: SwitcherEffect) {
         switch effect {
@@ -28,6 +29,7 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
         case .moved: self = .switcherSelectionMoved
         case .cancelled: self = .switcherSessionCancelled
         case .committed: self = .switcherSessionCommitted
+        case .activationFailed: self = .switcherActivationFailed
         }
     }
 
@@ -53,7 +55,7 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
             .hotkeyCancelled, .hotkeyCommitted:
             .hotkey
         case .switcherSessionOpened, .switcherSelectionMoved, .switcherSessionCancelled,
-            .switcherSessionCommitted, .switcherCommandIgnored:
+            .switcherSessionCommitted, .switcherCommandIgnored, .switcherActivationFailed:
             .switcher
         }
     }
@@ -81,6 +83,7 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
         case .switcherSessionCancelled: "switcher session cancelled"
         case .switcherSessionCommitted: "switcher session committed"
         case .switcherCommandIgnored: "switcher ignored a command that does not apply"
+        case .switcherActivationFailed: "switcher could not raise the committed application"
         }
     }
 }

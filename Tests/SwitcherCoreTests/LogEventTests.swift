@@ -44,6 +44,7 @@ struct LogEventTests {
     func switcherEffectsMapToDistinctEvents() {
         let effects: [SwitcherEffect] = [
             .ignored, .opened, .moved, .cancelled, .committed(ProcessIdentifier(rawValue: 1)),
+            .activationFailed(ProcessIdentifier(rawValue: 1)),
         ]
         let events = effects.map(LogEvent.init(effect:))
         #expect(Set(events).count == effects.count)

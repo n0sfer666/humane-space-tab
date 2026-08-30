@@ -9,6 +9,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let log: any LogSink
     private let report: InventoryReport
     private let activations: any ApplicationActivationObserver
+    private let activator: any ApplicationActivator
     private let switcher: SwitcherCoordinator
     private var menuBar: MenuBarController?
     private var hotkeys: (any HotkeyEngine)?
@@ -29,9 +30,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         )
         report = InventoryReport(inventory: inventory, destination: PasteboardTextSink())
         activations = WorkspaceActivationObserver()
+        let activator = WorkspaceApplicationActivator()
+        self.activator = activator
         switcher = SwitcherCoordinator(
             order: MRUOrder(seed: inventory.frontToBackApplications()),
-            snapshot: { inventory.inventory().applications }
+            snapshot: { inventory.inventory().applications },
+            activate: { [activator] process in activator.activate(process) }
         )
         super.init()
     }
