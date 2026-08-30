@@ -62,6 +62,19 @@ The full threat model is [S00](docs/specs/S00-threat-model.md).
 - **Specs:** every feature is designed as a mini-spec in `docs/specs/` before it is built;
   foundational decisions are recorded as ADRs in `docs/adr/`
 
+Requires Xcode 26 and `brew install xcodegen swiftlint`.
+
+```sh
+swift test
+swiftlint lint --strict
+swift format lint --recursive --strict Sources Tests Package.swift
+xcodegen generate
+xcodebuild -project HumaneSpaceTab.xcodeproj -scheme HumaneSpaceTab \
+  -configuration Release -derivedDataPath .build/xcode build
+```
+
+The Xcode project is generated from `project.yml` and is never committed.
+
 ## Licence
 
 [GPL-3.0](LICENSE)
