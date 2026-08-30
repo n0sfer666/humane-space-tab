@@ -13,6 +13,7 @@ DerivedData/
 
 # Build output
 build/
+dist/
 *.app
 *.dmg
 

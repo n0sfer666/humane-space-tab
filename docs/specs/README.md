@@ -23,7 +23,7 @@ New specs start from [`TEMPLATE.md`](TEMPLATE.md).
 | S08 | [Preferences & persistence](S08-preferences.md) | Settings window, storage, live application | agreed |
 | S09 | [Launch at login](S09-launch-at-login.md) | `SMAppService`, login-item state in the settings window | agreed |
 | S10 | [Permission UX](S10-permission-ux.md) | Requesting Accessibility, explaining it, recovering after revocation | agreed |
-| S11 | Packaging & release | Bundle, signing, notarisation, DMG/Homebrew, release flow | planned |
+| S11 | [Packaging & release](S11-packaging-release.md) | Packaging script, release workflow, provenance, what ad-hoc signing costs | agreed |
 | S12+ | Beyond `Cmd+Tab` | Mission Control, App Exposé, hide/minimise — one spec per gesture | planned |
 | S13 | Shortcut editor | Recording and validating a replacement for `Cmd+Tab` | planned |
 | S14 | Overlay mouse interaction | Hover and click selection, and the panel changes it needs | planned |

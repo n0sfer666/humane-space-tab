@@ -28,6 +28,8 @@ targets:
       path: Sources/App/Info.plist
       properties:
         CFBundleName: Humane Space Tab
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         CFBundleDisplayName: Humane Space Tab
         LSUIElement: true
         LSMinimumSystemVersion: "15.0"
@@ -51,3 +53,5 @@ targets:
       configs:
         Release:
           CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
+          ARCHS: "x86_64 arm64"
+          ONLY_ACTIVE_ARCH: NO
