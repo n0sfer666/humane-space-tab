@@ -1,4 +1,5 @@
 import AppKit
+import Foundation
 import SwitcherCore
 import SwitcherUI
 import SystemAdapters
@@ -19,7 +20,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var settings: PreferencesWindowController?
     private var menuBar: MenuBarController?
     private var hotkeys: (any HotkeyEngine)?
-    private var hotkeyStatus: HotkeyEngineStatus = .unavailable
+    private var permissions: PermissionCenter?
 
     init(log: any LogSink) {
         self.log = log
@@ -87,14 +88,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             )
         }
         self.hotkeys = hotkeys
-        hotkeyStatus = hotkeys.start()
+        let permissions = PermissionCenter(authority: AXAccessibilityAuthority(), engine: hotkeys, log: log) { work in
+            DispatchQueue.main.asyncAfter(deadline: .now() + Self.trustPollInterval) {
+                MainActor.assumeIsolated(work)
+            }
+        }
+        self.permissions = permissions
         menuBar = MenuBarController(
             log: log,
             openSettings: { [weak self] in self?.openSettings() },
+            grantAccessibility: { [permissions] in permissions.requestGrant() },
             copyInventory: { [report] in report.copyToDestination() },
             quit: { NSApplication.shared.terminate(nil) }
         )
+        permissions.observe { [weak self] state in self?.menuBar?.show(state) }
+        permissions.start()
     }
+
+    func applicationDidBecomeActive(_ notification: Notification) {
+        permissions?.refresh()
+    }
+
+    private static let trustPollInterval: TimeInterval = 2
 
     private func openSettings() {
         let settings = settings ?? PreferencesWindowController(center: preferences, loginItem: loginItem)

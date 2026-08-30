@@ -7,27 +7,58 @@ public final class MenuBarController {
     private let statusItem: NSStatusItem
     private let log: any LogSink
     private let openSettings: @MainActor () -> Void
+    private let grantAccessibility: @MainActor () -> Void
     private let copyInventory: @MainActor () -> Void
     private let quit: @MainActor () -> Void
 
     public init(
         log: any LogSink,
         openSettings: @escaping @MainActor () -> Void,
+        grantAccessibility: @escaping @MainActor () -> Void,
         copyInventory: @escaping @MainActor () -> Void,
         quit: @escaping @MainActor () -> Void
     ) {
         self.log = log
         self.openSettings = openSettings
+        self.grantAccessibility = grantAccessibility
         self.copyInventory = copyInventory
         self.quit = quit
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
-        statusItem.button?.image = NSImage(
-            systemSymbolName: "square.on.square",
-            accessibilityDescription: "Humane Space Tab"
-        )
         statusItem.menu = Self.makeMenu(target: self)
+        show(.intercepting)
         log.record(.menuBarItemInstalled)
     }
+
+    /// The icon carries the state, because a menu bar app that quietly does nothing looks
+    /// exactly like one that works.
+    public func show(_ state: PermissionState) {
+        statusItem.button?.image = NSImage(
+            systemSymbolName: state.needsAttention ? "exclamationmark.triangle" : "square.on.square",
+            accessibilityDescription: "Humane Space Tab"
+        )
+        statusItem.menu.map { menu in Self.showPermission(state, in: menu, target: self) }
+    }
+
+    private static func showPermission(_ state: PermissionState, in menu: NSMenu, target: MenuBarController) {
+        for item in menu.items where item.tag == permissionTag { menu.removeItem(item) }
+        guard let detail = state.detail else { return }
+        let explanation = NSMenuItem(title: detail, action: nil, keyEquivalent: "")
+        explanation.isEnabled = false
+        explanation.tag = permissionTag
+        menu.insertItem(explanation, at: 0)
+        var next = 1
+        if state.offersGrant {
+            let grant = item(title: "Grant Accessibility…", action: #selector(grantSelected), key: "", target: target)
+            grant.tag = permissionTag
+            menu.insertItem(grant, at: next)
+            next += 1
+        }
+        let separator = NSMenuItem.separator()
+        separator.tag = permissionTag
+        menu.insertItem(separator, at: next)
+    }
+
+    private static let permissionTag = 909
 
     private static func makeMenu(target: MenuBarController) -> NSMenu {
         let menu = NSMenu()
@@ -47,6 +78,11 @@ public final class MenuBarController {
         let item = NSMenuItem(title: title, action: action, keyEquivalent: key)
         item.target = target
         return item
+    }
+
+    @objc
+    private func grantSelected() {
+        grantAccessibility()
     }
 
     @objc

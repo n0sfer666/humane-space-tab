@@ -14,8 +14,10 @@ public final class CGEventTapHotkeySource: HotkeyEngine {
     private let log: any LogSink
     private let sessionOpen: @MainActor () -> Bool
     private let emit: @MainActor (HotkeyCommand) -> Void
-    private var tap: HotkeyEventTap?
+    private var port: HotkeyEventTap?
     private var swallowing: SwallowPolicy
+
+    public var tap: HotkeyTapMode? { port == nil ? nil : mode }
 
     public init(
         shortcut: Shortcut = .commandTab,
@@ -33,8 +35,8 @@ public final class CGEventTapHotkeySource: HotkeyEngine {
     }
 
     public func start() -> HotkeyEngineStatus {
-        if let tap {
-            tap.setEnabled(true)
+        if let port {
+            port.setEnabled(true)
             return .running
         }
         let port = CGEvent.tapCreate(
@@ -45,18 +47,18 @@ public final class CGEventTapHotkeySource: HotkeyEngine {
             callback: hotkeyTapCallback,
             userInfo: Unmanaged.passUnretained(self).toOpaque()
         )
-        guard let tap = HotkeyEventTap(port: port) else {
+        guard let created = HotkeyEventTap(port: port) else {
             log.record(.hotkeyTapUnavailable)
             return .unavailable
         }
-        self.tap = tap
+        self.port = created
         log.record(.hotkeyTapStarted)
         return .running
     }
 
     public func stop() {
-        guard tap != nil else { return }
-        tap = nil
+        guard port != nil else { return }
+        port = nil
         log.record(.hotkeyTapStopped)
     }
 
@@ -67,7 +69,7 @@ public final class CGEventTapHotkeySource: HotkeyEngine {
     func swallows(_ event: TapEvent) -> Bool {
         switch event {
         case .disabled:
-            tap?.setEnabled(true)
+            port?.setEnabled(true)
             swallowing = SwallowPolicy(mode: mode)
             log.record(.hotkeyTapReenabled)
             recoverSession()

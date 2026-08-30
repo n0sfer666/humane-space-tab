@@ -6,6 +6,10 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
     case settingsOpenedFromMenu
     case preferencesChanged
     case loginItemChangeFailed
+    case accessibilityRequested
+    case accessibilityBlocked
+    case accessibilityObservingOnly
+    case accessibilityIntercepting
     case inventoryCopiedToPasteboard
     case privateSpaceLayerUnavailable
     case hotkeyTapStarted
@@ -37,6 +41,14 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
         }
     }
 
+    public init(permission: PermissionState) {
+        switch permission {
+        case .blocked: self = .accessibilityBlocked
+        case .observing: self = .accessibilityObservingOnly
+        case .intercepting: self = .accessibilityIntercepting
+        }
+    }
+
     public init(command: HotkeyCommand) {
         switch command {
         case .activate(.forward): self = .hotkeyActivateForward
@@ -53,7 +65,9 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
         case .applicationDidLaunch, .applicationWillTerminate, .privateSpaceLayerUnavailable:
             .lifecycle
         case .menuBarItemInstalled, .quitRequestedFromMenu, .inventoryCopiedToPasteboard,
-            .settingsOpenedFromMenu, .preferencesChanged, .loginItemChangeFailed:
+            .settingsOpenedFromMenu, .preferencesChanged, .loginItemChangeFailed,
+            .accessibilityRequested, .accessibilityBlocked, .accessibilityObservingOnly,
+            .accessibilityIntercepting:
             .ui
         case .hotkeyTapStarted, .hotkeyTapStopped, .hotkeyTapUnavailable, .hotkeyTapReenabled,
             .hotkeyInterceptUnavailable,
@@ -75,6 +89,10 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
         case .settingsOpenedFromMenu: "settings opened from menu"
         case .preferencesChanged: "preferences changed"
         case .loginItemChangeFailed: "the system refused to change the login item"
+        case .accessibilityRequested: "accessibility requested from the menu"
+        case .accessibilityBlocked: "accessibility is missing, the switcher is idle"
+        case .accessibilityObservingOnly: "the tap can observe but not intercept"
+        case .accessibilityIntercepting: "the switcher is intercepting the shortcut"
         case .inventoryCopiedToPasteboard: "inventory summary copied to the pasteboard"
         case .privateSpaceLayerUnavailable: "private space layer unavailable, falling back to the public one"
         case .hotkeyTapStarted: "hotkey tap started"
