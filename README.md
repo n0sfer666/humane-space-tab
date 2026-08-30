@@ -36,8 +36,17 @@ project's standing commitments:
 - hardened runtime, no entitlements beyond what is strictly required;
 - everything auditable — the full source is here, under GPL-3.0.
 
-This is a design commitment, not yet an implemented and audited state. The
-detailed threat model will land as its own mini-spec under `docs/specs/`.
+The app asks for **Accessibility and nothing else**. It never requests Screen
+Recording, which means it deliberately does not show window previews — that
+feature is the reason comparable switchers hold a permission that can read the
+contents of every window on your screen.
+
+Builds are **ad-hoc signed** — there is no Apple Developer ID. Two consequences you
+should know about before installing: macOS will ask you to grant Accessibility
+again after every update, and a downloaded build must be allowed once through
+System Settings → Privacy & Security.
+
+The full threat model is [S00](docs/specs/S00-threat-model.md).
 
 ## Requirements
 
