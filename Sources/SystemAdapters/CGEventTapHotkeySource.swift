@@ -59,16 +59,27 @@ public final class CGEventTapHotkeySource: HotkeyEngine {
     }
 
     fileprivate func swallows(_ event: CGEvent, of type: CGEventType) -> Bool {
-        switch TapEvent(event: event, type: type) {
+        swallows(TapEvent(event: event, type: type))
+    }
+
+    func swallows(_ event: TapEvent) -> Bool {
+        switch event {
         case .disabled:
             tap?.setEnabled(true)
             log.record(.hotkeyTapReenabled)
+            recoverSession()
             return false
         case .ignored:
             return false
         case .stroke(let stroke):
             return swallows(stroke)
         }
+    }
+
+    private func recoverSession() {
+        guard sessionOpen() else { return }
+        log.record(LogEvent(command: .cancel))
+        emit(.cancel)
     }
 
     private func swallows(_ stroke: KeyStroke) -> Bool {

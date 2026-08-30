@@ -8,13 +8,15 @@ import SystemPorts
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private let log: any LogSink
     private let report: InventoryReport
+    private let activations: any ApplicationActivationObserver
+    private let switcher: SwitcherCoordinator
     private var menuBar: MenuBarController?
     private var hotkeys: (any HotkeyEngine)?
     private var hotkeyStatus: HotkeyEngineStatus = .unavailable
 
     init(log: any LogSink) {
         self.log = log
-        report = InventoryReport(
+        let inventory = CurrentSpaceInventorySource(
             applications: WorkspaceApplicationSource(),
             windows: CoreGraphicsWindowSource(),
             hierarchy: LibprocProcessHierarchy(),
@@ -23,18 +25,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 privateLayer: SkyLightSpaceMembershipSource(),
                 publicLayer: OnScreenSpaceMembershipSource(),
                 log: log
-            ),
-            destination: PasteboardTextSink()
+            )
         )
+        report = InventoryReport(inventory: inventory, destination: PasteboardTextSink())
+        activations = WorkspaceActivationObserver()
+        switcher = SwitcherCoordinator(
+            order: MRUOrder(seed: inventory.frontToBackApplications()),
+            snapshot: { inventory.inventory().applications }
+        )
+        super.init()
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         log.record(.applicationDidLaunch)
+        activations.observe { [switcher] process in switcher.recordActivation(of: process) }
         let hotkeys = CGEventTapHotkeySource(
             mode: .observe,
             log: log,
-            sessionOpen: { false },
-            emit: { _ in }
+            sessionOpen: { [switcher] in switcher.isSessionOpen },
+            emit: { [log, switcher] command in log.record(LogEvent(effect: switcher.handle(command))) }
         )
         self.hotkeys = hotkeys
         hotkeyStatus = hotkeys.start()
@@ -47,6 +56,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationWillTerminate(_ notification: Notification) {
         hotkeys?.stop()
+        activations.stop()
         log.record(.applicationWillTerminate)
     }
 }

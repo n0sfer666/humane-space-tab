@@ -40,6 +40,24 @@ struct LogEventTests {
         for event in events { #expect(event.category == .hotkey) }
     }
 
+    @Test("every switcher effect maps to its own event in the switcher category")
+    func switcherEffectsMapToDistinctEvents() {
+        let effects: [SwitcherEffect] = [
+            .ignored, .opened, .moved, .cancelled, .committed(ProcessIdentifier(rawValue: 1)),
+        ]
+        let events = effects.map(LogEvent.init(effect:))
+        #expect(Set(events).count == effects.count)
+        for event in events { #expect(event.category == .switcher) }
+    }
+
+    @Test("a committed effect logs the same event whichever application it names")
+    func commitEventCarriesNoTarget() {
+        #expect(
+            LogEvent(effect: .committed(ProcessIdentifier(rawValue: 1)))
+                == LogEvent(effect: .committed(ProcessIdentifier(rawValue: 2)))
+        )
+    }
+
     @Test("every category is a stable identifier usable as an os.log category")
     func categoryIdentifiers() {
         for category in LogCategory.allCases {

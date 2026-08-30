@@ -41,13 +41,19 @@ package; the `.xcodeproj` is generated and never committed.
 
 ### Concurrency
 
-- The event tap runs on a **dedicated thread with its own run loop**. Its callback is
-  synchronous, allocation-free where practical, and does nothing but classify the
-  event and hand a command across the boundary. It never awaits, never touches UI,
-  never calls the Accessibility API. This is what keeps the system from disabling the
-  tap with `kCGEventTapDisabledByTimeout`.
-- Everything else — inventory, switcher state, overlay — is `@MainActor`.
-- The boundary between them carries only `Sendable` command values, never `CGEvent`.
+- The event tap is attached to the **main run loop** (S04), so its callback runs on the
+  main thread and is entered with `MainActor.assumeIsolated`. The earlier plan of a
+  dedicated tap thread was dropped: everything the callback hands work to is
+  `@MainActor`, and a second thread would only buy a hop plus a queue.
+- The callback is synchronous and never awaits, never touches UI, never calls the
+  Accessibility API. It may do bounded main-actor work — classify the event, take the
+  Space snapshot, advance the switcher state (S05) — as long as that work stays far
+  under the ~1 s the system allows before `kCGEventTapDisabledByTimeout`. Measured
+  budget lives in the spec of whatever the callback calls; S05 measures the snapshot.
+- Because the tap can still be disabled (timeout, or user input during a modifier
+  hold), re-arming it is a **recovery point**: the adapter cancels an open switcher
+  session there, so a lost `flagsChanged` release cannot wedge the session open.
+- The boundary carries only `Sendable` command values, never `CGEvent`.
 - No custom actors. An actor cannot be awaited from inside the tap callback, so it
   would add ceremony without buying isolation where isolation is actually needed.
 

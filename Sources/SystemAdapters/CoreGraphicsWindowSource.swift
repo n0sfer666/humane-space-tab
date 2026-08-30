@@ -7,7 +7,14 @@ public struct CoreGraphicsWindowSource: WindowSource {
     public init() {}
 
     public func windows() -> [WindowInfo] {
-        let options: CGWindowListOption = [.optionAll, .excludeDesktopElements]
+        list([.optionAll, .excludeDesktopElements])
+    }
+
+    public func onScreenWindows() -> [WindowInfo] {
+        list([.optionOnScreenOnly, .excludeDesktopElements])
+    }
+
+    private func list(_ options: CGWindowListOption) -> [WindowInfo] {
         guard let entries = CGWindowListCopyWindowInfo(options, kCGNullWindowID) as? [[String: Any]] else {
             return []
         }
