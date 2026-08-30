@@ -12,13 +12,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let activator: any ApplicationActivator
     private let switcher: SwitcherCoordinator
     private let icons: any ApplicationIconSource
+    private let surface: OverlayWindowSurface
     private let overlay: OverlayController
+    private let preferences: PreferencesCenter
+    private var settings: PreferencesWindowController?
     private var menuBar: MenuBarController?
     private var hotkeys: (any HotkeyEngine)?
     private var hotkeyStatus: HotkeyEngineStatus = .unavailable
 
     init(log: any LogSink) {
         self.log = log
+        let store = UserDefaultsPreferencesStore()
+        preferences = PreferencesCenter(initial: store.load()) { preferences in
+            store.save(preferences)
+            log.record(.preferencesChanged)
+        }
         let inventory = CurrentSpaceInventorySource(
             applications: WorkspaceApplicationSource(),
             windows: CoreGraphicsWindowSource(),
@@ -43,8 +51,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let icons = WorkspaceApplicationIconSource()
         self.icons = icons
         icons.prewarm(seed)
+        let surface = OverlayWindowSurface(icons: icons)
+        self.surface = surface
         overlay = OverlayController(
-            surface: OverlayWindowSurface(icons: icons),
+            surface: surface,
             scheduler: MainQueueOverlayScheduler(),
             watchdog: MainQueueOverlayScheduler()
         )
@@ -53,6 +63,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         log.record(.applicationDidLaunch)
+        preferences.observe { [overlay, surface] preferences in
+            overlay.delay = preferences.revealDelay
+            surface.screen = preferences.overlayScreen
+        }
         activations.observe { [switcher] process in switcher.recordActivation(of: process) }
         let hotkeys = InterceptingHotkeyEngine(log: log) { [log, switcher, overlay, icons] mode in
             CGEventTapHotkeySource(
@@ -74,9 +88,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         hotkeyStatus = hotkeys.start()
         menuBar = MenuBarController(
             log: log,
+            openSettings: { [weak self] in self?.openSettings() },
             copyInventory: { [report] in report.copyToDestination() },
             quit: { NSApplication.shared.terminate(nil) }
         )
+    }
+
+    private func openSettings() {
+        let settings = settings ?? PreferencesWindowController(center: preferences)
+        self.settings = settings
+        settings.show()
     }
 
     /// An application launched after this one pays its first icon load here, in the gap

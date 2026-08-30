@@ -20,11 +20,13 @@ New specs start from [`TEMPLATE.md`](TEMPLATE.md).
 | S05 | [Switcher state machine](S05-switcher-state-machine.md) | Cmd-hold cycle, Tab/Shift-Tab, MRU order, cancellation | agreed |
 | S06 | [Activation](S06-activation.md) | Raising the selected application or window, focus correctness | agreed |
 | S07 | [Overlay UI](S07-overlay-ui.md) | `NSPanel`, rendering, icons, animation, multi-display | agreed |
-| S08 | Preferences & persistence | Settings, storage, shortcut editor | planned |
+| S08 | [Preferences & persistence](S08-preferences.md) | Settings window, storage, live application | agreed |
 | S09 | Launch at login | `SMAppService` | planned |
 | S10 | Permission UX | Requesting Accessibility, explaining it, recovering after revocation | planned |
 | S11 | Packaging & release | Bundle, signing, notarisation, DMG/Homebrew, release flow | planned |
 | S12+ | Beyond `Cmd+Tab` | Mission Control, App Exposé, hide/minimise — one spec per gesture | planned |
+| S13 | Shortcut editor | Recording and validating a replacement for `Cmd+Tab` | planned |
+| S14 | Overlay mouse interaction | Hover and click selection, and the panel changes it needs | planned |
 
 S00–S06 are close to pure logic and are covered by automated tests. S07 onwards
 needs verification on a real machine; each such spec carries a manual runbook.

@@ -2,11 +2,13 @@ import Foundation
 import SystemPorts
 
 public struct UserDefaultsSpaceLayerPreference: SpaceLayerPreference {
-    private static let key = "PrivateSpaceLayerEnabled"
+    nonisolated(unsafe) private let defaults: UserDefaults
 
-    public init() {}
+    public init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
+    }
 
     public var prefersPrivateLayer: Bool {
-        UserDefaults.standard.bool(forKey: Self.key)
+        defaults.bool(forKey: PreferencesKey.privateSpaceLayer)
     }
 }
