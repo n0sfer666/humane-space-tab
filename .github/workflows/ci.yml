@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Tests
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain
+        run: swift --version
+      - name: Run tests
+        run: swift test
+
+  lint:
+    name: Lint and format
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install tools
+        run: brew install swiftlint swift-format
+      - name: SwiftLint
+        run: swiftlint lint --quiet --strict
+      - name: Format check
+        run: swift-format lint --recursive --strict Sources Tests Package.swift
+
+  bundle:
+    name: App bundle
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate project
+        run: xcodegen generate
+      - name: Build release bundle
+        run: |
+          xcodebuild -project HumaneSpaceTab.xcodeproj \
+            -scheme HumaneSpaceTab \
+            -configuration Release \
+            -derivedDataPath .build/xcode \
+            build
+      - name: Assert the release bundle carries no entitlements
+        run: |
+          app=.build/xcode/Build/Products/Release/HumaneSpaceTab.app
+          if codesign -d --entitlements - "$app" 2>/dev/null | grep -q '\[Key\]'; then
+            echo "::error::release bundle carries entitlements"
+            codesign -d --entitlements - "$app"
+            exit 1
+          fi
+      - name: Assert hardened runtime is on
+        run: |
+          app=.build/xcode/Build/Products/Release/HumaneSpaceTab.app
+          codesign -dv "$app" 2>&1 | grep -q 'runtime' || {
+            echo "::error::hardened runtime is not enabled"; exit 1; }
+      - name: Assert only system frameworks are linked
+        run: |
+          app=.build/xcode/Build/Products/Release/HumaneSpaceTab.app
+          if otool -L "$app/Contents/MacOS/HumaneSpaceTab" | tail -n +2 \
+            | grep -vE '^[[:space:]]+(/System/Library/Frameworks/|/usr/lib/)'; then
+            echo "::error::a non-system library is linked"
+            exit 1
+          fi

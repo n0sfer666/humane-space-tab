@@ -1,0 +1,53 @@
+name: HumaneSpaceTab
+options:
+  bundleIdPrefix: io.github.n0sfer666
+  deploymentTarget:
+    macOS: "15.0"
+  createIntermediateGroups: true
+  minimumXcodeGenVersion: "2.42"
+packages:
+  HumaneSpaceTab:
+    path: .
+targets:
+  HumaneSpaceTab:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources/App
+        excludes: ["Info.plist"]
+    dependencies:
+      - package: HumaneSpaceTab
+        product: SwitcherCore
+      - package: HumaneSpaceTab
+        product: SystemPorts
+      - package: HumaneSpaceTab
+        product: SystemAdapters
+      - package: HumaneSpaceTab
+        product: SwitcherUI
+    info:
+      path: Sources/App/Info.plist
+      properties:
+        CFBundleName: Humane Space Tab
+        CFBundleDisplayName: Humane Space Tab
+        LSUIElement: true
+        LSMinimumSystemVersion: "15.0"
+        NSHumanReadableCopyright: "Licensed under GPL-3.0-or-later"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.n0sfer666.humane-space-tab
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        SWIFT_VERSION: "6.0"
+        SWIFT_STRICT_CONCURRENCY: complete
+        CODE_SIGN_STYLE: Manual
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGNING_REQUIRED: YES
+        CODE_SIGNING_ALLOWED: YES
+        DEVELOPMENT_TEAM: ""
+        ENABLE_HARDENED_RUNTIME: YES
+        ENABLE_APP_SANDBOX: NO
+        ENABLE_USER_SCRIPT_SANDBOXING: YES
+        DEAD_CODE_STRIPPING: YES
+      configs:
+        Release:
+          CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO

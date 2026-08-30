@@ -62,6 +62,19 @@ System Settings → Privacy & Security.
 - **Спеки:** каждая функция проектируется мини-спекой в `docs/specs/` до реализации;
   фундаментальные решения фиксируются как ADR в `docs/adr/`
 
+Нужны Xcode 26 и `brew install xcodegen swiftlint`.
+
+```sh
+swift test
+swiftlint lint --strict
+swift format lint --recursive --strict Sources Tests Package.swift
+xcodegen generate
+xcodebuild -project HumaneSpaceTab.xcodeproj -scheme HumaneSpaceTab \
+  -configuration Release -derivedDataPath .build/xcode build
+```
+
+Проект Xcode генерируется из `project.yml` и никогда не коммитится.
+
 ## Лицензия
 
 [GPL-3.0](LICENSE)

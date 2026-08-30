@@ -1,0 +1,40 @@
+import Testing
+
+@testable import SwitcherCore
+
+@Suite("Log event")
+struct LogEventTests {
+    @Test("no case carries an associated value")
+    func noAssociatedValues() {
+        for event in LogEvent.allCases {
+            #expect(Mirror(reflecting: event).children.isEmpty, "\(event)")
+        }
+    }
+
+    @Test("every case has a non-empty static message")
+    func everyCaseHasMessage() {
+        for event in LogEvent.allCases {
+            #expect(!event.message.isEmpty, "\(event)")
+        }
+    }
+
+    @Test("messages are unique so a log line identifies its case")
+    func messagesAreUnique() {
+        let messages = LogEvent.allCases.map(\.message)
+        #expect(Set(messages).count == messages.count)
+    }
+
+    @Test("lifecycle events are filed under the lifecycle category")
+    func lifecycleCategory() {
+        #expect(LogEvent.applicationDidLaunch.category == .lifecycle)
+        #expect(LogEvent.applicationWillTerminate.category == .lifecycle)
+    }
+
+    @Test("every category is a stable identifier usable as an os.log category")
+    func categoryIdentifiers() {
+        for category in LogCategory.allCases {
+            #expect(!category.rawValue.isEmpty)
+            #expect(category.rawValue.allSatisfy { $0.isLowercase || $0.isNumber })
+        }
+    }
+}
