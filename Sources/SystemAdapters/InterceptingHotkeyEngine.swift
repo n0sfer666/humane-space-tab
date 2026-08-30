@@ -7,6 +7,8 @@ public final class InterceptingHotkeyEngine: HotkeyEngine {
     private let make: @MainActor (HotkeyTapMode) -> any HotkeyEngine
     private var engine: (any HotkeyEngine)?
 
+    public var tap: HotkeyTapMode? { engine?.tap }
+
     public init(log: any LogSink, make: @escaping @MainActor (HotkeyTapMode) -> any HotkeyEngine) {
         self.log = log
         self.make = make
