@@ -9,6 +9,7 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
     case hotkeyTapStopped
     case hotkeyTapUnavailable
     case hotkeyTapReenabled
+    case hotkeyInterceptUnavailable
     case hotkeyActivateForward
     case hotkeyActivateBackward
     case hotkeyStepForward
@@ -51,6 +52,7 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
         case .menuBarItemInstalled, .quitRequestedFromMenu, .inventoryCopiedToPasteboard:
             .ui
         case .hotkeyTapStarted, .hotkeyTapStopped, .hotkeyTapUnavailable, .hotkeyTapReenabled,
+            .hotkeyInterceptUnavailable,
             .hotkeyActivateForward, .hotkeyActivateBackward, .hotkeyStepForward, .hotkeyStepBackward,
             .hotkeyCancelled, .hotkeyCommitted:
             .hotkey
@@ -72,6 +74,7 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
         case .hotkeyTapStopped: "hotkey tap stopped"
         case .hotkeyTapUnavailable: "hotkey tap unavailable, accessibility is not granted"
         case .hotkeyTapReenabled: "hotkey tap re-enabled after the system disabled it"
+        case .hotkeyInterceptUnavailable: "interception unavailable, falling back to observation"
         case .hotkeyActivateForward: "hotkey activated the switcher moving forward"
         case .hotkeyActivateBackward: "hotkey activated the switcher moving backward"
         case .hotkeyStepForward: "hotkey stepped forward"

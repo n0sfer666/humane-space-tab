@@ -15,6 +15,7 @@ public final class CGEventTapHotkeySource: HotkeyEngine {
     private let sessionOpen: @MainActor () -> Bool
     private let emit: @MainActor (HotkeyCommand) -> Void
     private var tap: HotkeyEventTap?
+    private var swallowing: SwallowPolicy
 
     public init(
         shortcut: Shortcut = .commandTab,
@@ -28,6 +29,7 @@ public final class CGEventTapHotkeySource: HotkeyEngine {
         self.log = log
         self.sessionOpen = sessionOpen
         self.emit = emit
+        swallowing = SwallowPolicy(mode: mode)
     }
 
     public func start() -> HotkeyEngineStatus {
@@ -66,6 +68,7 @@ public final class CGEventTapHotkeySource: HotkeyEngine {
         switch event {
         case .disabled:
             tap?.setEnabled(true)
+            swallowing = SwallowPolicy(mode: mode)
             log.record(.hotkeyTapReenabled)
             recoverSession()
             return false
@@ -88,7 +91,7 @@ public final class CGEventTapHotkeySource: HotkeyEngine {
             log.record(LogEvent(command: command))
             emit(command)
         }
-        return mode.swallows(decision)
+        return swallowing.swallows(decision, of: stroke)
     }
 }
 

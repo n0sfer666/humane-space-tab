@@ -21,6 +21,7 @@ let package = Package(
             name: "SystemAdaptersTests",
             dependencies: ["SystemAdapters", "SystemPorts", "SwitcherCore"]
         ),
+        .testTarget(name: "SwitcherUITests", dependencies: ["SwitcherUI", "SwitcherCore"]),
         .testTarget(name: "SourceGuardTests"),
     ]
 )
