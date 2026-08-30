@@ -3,12 +3,13 @@ public enum LogEvent: CaseIterable, Sendable {
     case applicationWillTerminate
     case menuBarItemInstalled
     case quitRequestedFromMenu
+    case inventoryCopiedToPasteboard
 
     public var category: LogCategory {
         switch self {
         case .applicationDidLaunch, .applicationWillTerminate:
             .lifecycle
-        case .menuBarItemInstalled, .quitRequestedFromMenu:
+        case .menuBarItemInstalled, .quitRequestedFromMenu, .inventoryCopiedToPasteboard:
             .ui
         }
     }
@@ -19,6 +20,7 @@ public enum LogEvent: CaseIterable, Sendable {
         case .applicationWillTerminate: "application will terminate"
         case .menuBarItemInstalled: "menu bar item installed"
         case .quitRequestedFromMenu: "quit requested from menu"
+        case .inventoryCopiedToPasteboard: "inventory summary copied to the pasteboard"
         }
     }
 }

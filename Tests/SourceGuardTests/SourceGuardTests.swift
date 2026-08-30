@@ -35,6 +35,17 @@ struct SourceGuardTests {
         #expect(Set(violations.map(\.symbol)) == ["Process", "NSXPCConnection", "DistributedNotificationCenter"])
     }
 
+    @Test("reading a window title is rejected")
+    func rejectsWindowTitles() {
+        let violations = guardian.scan(file: "Windows.swift", contents: "entry[kCGWindowName as String]")
+        #expect(violations.map(\.symbol) == ["kCGWindowName"])
+    }
+
+    @Test("a neighbouring window key is not mistaken for the title key")
+    func windowNumberIsNotWindowName() {
+        #expect(guardian.scan(file: "Windows.swift", contents: "entry[kCGWindowNumber as String]").isEmpty)
+    }
+
     @Test("dlopen is allowed only in the SkyLight shim")
     func dlopenAllowlist() {
         let contents = "let handle = dlopen(path, RTLD_LAZY)"
