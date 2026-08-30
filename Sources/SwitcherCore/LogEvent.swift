@@ -5,6 +5,7 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
     case quitRequestedFromMenu
     case settingsOpenedFromMenu
     case preferencesChanged
+    case loginItemChangeFailed
     case inventoryCopiedToPasteboard
     case privateSpaceLayerUnavailable
     case hotkeyTapStarted
@@ -52,7 +53,7 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
         case .applicationDidLaunch, .applicationWillTerminate, .privateSpaceLayerUnavailable:
             .lifecycle
         case .menuBarItemInstalled, .quitRequestedFromMenu, .inventoryCopiedToPasteboard,
-            .settingsOpenedFromMenu, .preferencesChanged:
+            .settingsOpenedFromMenu, .preferencesChanged, .loginItemChangeFailed:
             .ui
         case .hotkeyTapStarted, .hotkeyTapStopped, .hotkeyTapUnavailable, .hotkeyTapReenabled,
             .hotkeyInterceptUnavailable,
@@ -73,6 +74,7 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
         case .quitRequestedFromMenu: "quit requested from menu"
         case .settingsOpenedFromMenu: "settings opened from menu"
         case .preferencesChanged: "preferences changed"
+        case .loginItemChangeFailed: "the system refused to change the login item"
         case .inventoryCopiedToPasteboard: "inventory summary copied to the pasteboard"
         case .privateSpaceLayerUnavailable: "private space layer unavailable, falling back to the public one"
         case .hotkeyTapStarted: "hotkey tap started"

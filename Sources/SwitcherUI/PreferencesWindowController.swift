@@ -7,8 +7,10 @@ public final class PreferencesWindowController {
 
     /// The form is the only writer of these preferences, so it does not observe the
     /// centre: a value echoed back mid-drag would fight the slider.
-    public init(center: PreferencesCenter) {
-        let form = PreferencesFormView(preferences: center.current) { [center] in center.update($0) }
+    public init(center: PreferencesCenter, loginItem: LoginItem) {
+        let form = PreferencesFormView(preferences: center.current, loginItem: loginItem) { [center] in
+            center.update($0)
+        }
         window = NSWindow(
             contentRect: CGRect(x: 0, y: 0, width: 420, height: 240),
             styleMask: [.titled, .closable],
