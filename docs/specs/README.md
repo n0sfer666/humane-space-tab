@@ -14,7 +14,7 @@ New specs start from [`TEMPLATE.md`](TEMPLATE.md).
 |---|------|-------|--------|
 | S00 | [Threat model](S00-threat-model.md) | What the app can and cannot do with Accessibility; boundaries, entitlements | agreed |
 | S01 | [Architecture & modules](S01-architecture.md) | SPM module boundaries, system APIs isolated behind protocols for testability | agreed |
-| S02 | App & window inventory | Domain model of applications and windows, data source, public API | planned |
+| S02 | [App & window inventory](S02-inventory.md) | Domain model of applications and windows, data source, public API | agreed |
 | S03 | Space attribution | Current Space and window membership; public base, private layer, degradation | planned |
 | S04 | Hotkey engine | `CGEventTap`, `Cmd+Tab` interception, arm/re-arm, modes, configurability | planned |
 | S05 | Switcher state machine | Cmd-hold cycle, Tab/Shift-Tab, MRU order, cancellation | planned |

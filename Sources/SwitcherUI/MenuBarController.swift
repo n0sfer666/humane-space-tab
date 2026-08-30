@@ -6,10 +6,16 @@ import SystemPorts
 public final class MenuBarController {
     private let statusItem: NSStatusItem
     private let log: any LogSink
+    private let copyInventory: @MainActor () -> Void
     private let quit: @MainActor () -> Void
 
-    public init(log: any LogSink, quit: @escaping @MainActor () -> Void) {
+    public init(
+        log: any LogSink,
+        copyInventory: @escaping @MainActor () -> Void,
+        quit: @escaping @MainActor () -> Void
+    ) {
         self.log = log
+        self.copyInventory = copyInventory
         self.quit = quit
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         statusItem.button?.image = NSImage(
@@ -22,10 +28,27 @@ public final class MenuBarController {
 
     private static func makeMenu(target: MenuBarController) -> NSMenu {
         let menu = NSMenu()
-        let item = NSMenuItem(title: "Quit Humane Space Tab", action: #selector(quitSelected), keyEquivalent: "q")
-        item.target = target
-        menu.addItem(item)
+        menu.addItem(item(title: "Copy Inventory", action: #selector(copyInventorySelected), key: "c", target: target))
+        menu.addItem(.separator())
+        menu.addItem(item(title: "Quit Humane Space Tab", action: #selector(quitSelected), key: "q", target: target))
         return menu
+    }
+
+    private static func item(
+        title: String,
+        action: Selector,
+        key: String,
+        target: MenuBarController
+    ) -> NSMenuItem {
+        let item = NSMenuItem(title: title, action: action, keyEquivalent: key)
+        item.target = target
+        return item
+    }
+
+    @objc
+    private func copyInventorySelected() {
+        copyInventory()
+        log.record(.inventoryCopiedToPasteboard)
     }
 
     @objc

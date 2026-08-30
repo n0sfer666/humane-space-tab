@@ -1,5 +1,6 @@
 enum ForbiddenAPIRules {
-    static let all: [ForbiddenSymbol] = networking + screenCapture + automation + interProcess + dynamicLoading
+    static let all: [ForbiddenSymbol] =
+        networking + screenCapture + automation + interProcess + dynamicLoading + windowContent
 
     private static let networking: [ForbiddenSymbol] = [
         "URLSession", "URLRequest", "NSURLConnection", "Network", "NWConnection", "NWListener",
@@ -10,6 +11,10 @@ enum ForbiddenAPIRules {
         "ScreenCaptureKit", "SCStream", "SCShareableContent", "CGWindowListCreateImage",
         "CGDisplayCreateImage", "CGDisplayStream",
     ].map { ForbiddenSymbol($0, reason: "the app never captures screen content") }
+
+    private static let windowContent: [ForbiddenSymbol] = [
+        "kCGWindowName", "AXTitle",
+    ].map { ForbiddenSymbol($0, reason: "window titles are not read; they would require Screen Recording") }
 
     private static let automation: [ForbiddenSymbol] = [
         "NSAppleScript", "NSAppleEventDescriptor", "OSAScript", "AEDesc",
