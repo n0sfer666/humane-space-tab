@@ -8,43 +8,19 @@ struct OverlayLayoutTests {
     private let screen = CGSize(width: 1440, height: 900)
     private let metrics = OverlayMetrics()
 
-    @Test("a few applications keep the largest icon in one row")
+    @Test("a few applications keep the largest icon")
     func fewApplicationsStayLarge() {
         let layout = OverlayLayout.compute(count: 3, screen: screen, metrics: metrics)
         #expect(layout.iconSide == metrics.largestIcon)
-        #expect(layout.columns == 3)
-        #expect(Set(layout.slots.map(\.origin.y)).count == 1)
+        #expect(layout.slots.count == 3)
     }
 
-    @Test("a crowded row shrinks the icon instead of wrapping")
-    func crowdedRowShrinks() {
-        let layout = OverlayLayout.compute(count: 12, screen: screen, metrics: metrics)
-        #expect(layout.columns == 12)
-        #expect(layout.iconSide < metrics.largestIcon)
-        #expect(layout.iconSide >= metrics.smallestIcon)
-    }
-
-    @Test("more applications than fit at the smallest icon wrap into balanced rows")
-    func tooManyWrap() {
-        let layout = OverlayLayout.compute(count: 40, screen: screen, metrics: metrics)
-        #expect(layout.iconSide == metrics.smallestIcon)
-        #expect(layout.columns < 40)
-        let rows = Set(layout.slots.map(\.origin.y))
-        #expect(rows.count > 1)
-        #expect(layout.columns * rows.count >= 40)
-        #expect((layout.columns - 1) * rows.count < 40)
-    }
-
-    @Test("every row is centred in the panel")
-    func rowsAreCentred() {
-        let layout = OverlayLayout.compute(count: 40, screen: screen, metrics: metrics)
-        let rows = Set(layout.slots.map(\.origin.y)).sorted()
-        for row in rows {
-            let inRow = layout.slots.filter { $0.origin.y == row }
-            guard let leading = inRow.first, let trailing = inRow.last else { continue }
-            let left: CGFloat = leading.minX
-            let right: CGFloat = layout.size.width - trailing.maxX
-            #expect(abs(left - right) <= 1)
+    @Test("a crowded ribbon shrinks the icon and never wraps")
+    func crowdedShrinks() {
+        for count in [12, 16, 25] {
+            let layout = OverlayLayout.compute(count: count, screen: screen, metrics: metrics)
+            #expect(layout.iconSide < metrics.largestIcon)
+            #expect(Set(layout.slots.map(\.origin.y)).count == 1)
         }
     }
 
@@ -56,56 +32,73 @@ struct OverlayLayoutTests {
         }
     }
 
-    @Test("gaps grow toward the cap when the ribbon has room")
-    func gapsGrowToTheCap() {
-        let layout = OverlayLayout.compute(count: 6, screen: screen, metrics: metrics)
-        let gap = layout.slots[1].minX - layout.slots[0].maxX
-        #expect(gap == metrics.largestGap)
-    }
-
-    @Test("no gap ever exceeds the cap")
-    func gapsNeverExceedTheCap() {
-        for count in 2...64 {
+    @Test("gaps and paddings stay shares of the icon")
+    func spacingFollowsTheIcon() {
+        for count in 2...25 {
             let layout = OverlayLayout.compute(count: count, screen: screen, metrics: metrics)
-            #expect(layout.slots[1].minX - layout.slots[0].maxX <= metrics.largestGap)
+            let icon = layout.iconSide
+            #expect(layout.slots[1].minX - layout.slots[0].maxX == metrics.gap(icon: icon))
+            #expect(layout.slots[0].minX == metrics.padding(icon: icon))
+            #expect(layout.slots[0].minY == metrics.padding(icon: icon))
         }
     }
 
-    @Test("a ribbon that only just fits keeps the smallest gap")
-    func crowdedKeepsSmallestGap() {
-        let layout = OverlayLayout.compute(count: 12, screen: screen, metrics: metrics)
-        let gap = layout.slots[1].minX - layout.slots[0].maxX
-        #expect(gap == metrics.smallestGap)
+    @Test("past the visible limit the icon stops shrinking and the ribbon scrolls")
+    func beyondTheLimitTheRibbonScrolls() {
+        let full = OverlayLayout.compute(count: metrics.visibleLimit, screen: screen, metrics: metrics)
+        for count in [metrics.visibleLimit + 1, 40, 120] {
+            let layout = OverlayLayout.compute(count: count, screen: screen, metrics: metrics)
+            #expect(layout.iconSide == full.iconSide)
+            #expect(layout.size == full.size)
+            #expect(layout.visible == metrics.visibleLimit)
+            #expect(layout.slots.count == count)
+        }
     }
 
-    @Test("the height follows the number of rows")
-    func heightFollowsRows() {
-        let one = OverlayLayout.compute(count: 3, screen: screen, metrics: metrics)
-        let many = OverlayLayout.compute(count: 40, screen: screen, metrics: metrics)
-        #expect(many.size.height > one.size.height)
+    @Test("the slots past the visible window sit outside the panel")
+    func hiddenSlotsAreOutside() {
+        let layout = OverlayLayout.compute(count: 40, screen: screen, metrics: metrics)
+        #expect(layout.slots[layout.visible - 1].maxX <= layout.size.width)
+        #expect(layout.slots[layout.visible].minX >= layout.size.width)
     }
 
-    @Test("a slot already fits the enlarged selected icon")
-    func slotFitsSelection() {
+    @Test("the step is one icon plus one gap")
+    func stepMatchesTheSpacing() {
+        let layout = OverlayLayout.compute(count: 10, screen: screen, metrics: metrics)
+        #expect(layout.step == layout.iconSide + metrics.gap(icon: layout.iconSide))
+    }
+
+    @Test("a slot holds the icon and the room the name needs")
+    func slotHoldsIconAndName() {
         let layout = OverlayLayout.compute(count: 5, screen: screen, metrics: metrics)
         for slot in layout.slots {
-            #expect(slot.width >= layout.iconSide * metrics.selectedScale)
-            #expect(slot.height >= layout.iconSide * metrics.selectedScale + metrics.labelHeight(icon: layout.iconSide))
+            #expect(slot.width == layout.iconSide)
+            #expect(
+                slot.height == layout.iconSide + metrics.labelGap + metrics.labelHeight(icon: layout.iconSide)
+            )
         }
     }
 
-    @Test("a single application produces one slot and no negative gaps")
+    @Test("the panel is the row plus its padding")
+    func panelWrapsTheRow() {
+        let layout = OverlayLayout.compute(count: 7, screen: screen, metrics: metrics)
+        let padding = metrics.padding(icon: layout.iconSide)
+        #expect(layout.size.height == layout.slots[0].height + padding * 2)
+        #expect(layout.size.width == layout.slots[layout.visible - 1].maxX + padding)
+    }
+
+    @Test("a single application produces one slot")
     func singleApplication() {
         let layout = OverlayLayout.compute(count: 1, screen: screen, metrics: metrics)
         #expect(layout.slots.count == 1)
-        #expect(layout.columns == 1)
-        #expect(layout.slots[0].minX == metrics.padding)
+        #expect(layout.visible == 1)
+        #expect(layout.slots[0].minX == metrics.padding(icon: layout.iconSide))
     }
 
     @Test("the name shrinks with the icon and never below the floor")
     func labelFollowsIcon() {
         let roomy = OverlayLayout.compute(count: 4, screen: screen, metrics: metrics)
-        let crowded = OverlayLayout.compute(count: 16, screen: screen, metrics: metrics)
+        let crowded = OverlayLayout.compute(count: 25, screen: screen, metrics: metrics)
         #expect(metrics.labelSize(icon: roomy.iconSide) == metrics.largestLabel)
         #expect(metrics.labelSize(icon: crowded.iconSide) < metrics.largestLabel)
         #expect(metrics.labelSize(icon: crowded.iconSide) >= metrics.smallestLabel)
@@ -116,36 +109,11 @@ struct OverlayLayoutTests {
         #expect(OverlayLayout.compute(count: 0, screen: screen, metrics: metrics) == .empty)
     }
 
-    @Test("the ribbon fits both budgets on every screen", arguments: [1280.0, 1440.0, 1728.0, 2560.0])
-    func fitsBothBudgets(width: CGFloat) {
-        let screen = CGSize(width: width, height: (width * 0.625).rounded())
-        for count in 1...64 {
-            let layout = OverlayLayout.compute(count: count, screen: screen, metrics: metrics)
-            #expect(layout.size.width <= (screen.width * metrics.widestShare).rounded() + 1)
-            #expect(layout.size.height <= (screen.height * metrics.tallestShare).rounded() + 1)
-        }
-    }
-
-    @Test("slots never overlap on any screen", arguments: [1280.0, 1440.0, 1728.0, 2560.0])
-    func slotsNeverOverlap(width: CGFloat) {
-        let screen = CGSize(width: width, height: (width * 0.625).rounded())
-        for count in 2...64 {
-            let slots = OverlayLayout.compute(count: count, screen: screen, metrics: metrics).slots
-            for (index, slot) in slots.enumerated().dropFirst()
-            where slot.origin.y == slots[index - 1].origin.y {
-                #expect(slot.minX >= slots[index - 1].maxX)
-            }
-        }
-    }
-
     @Test(
-        "the measured ribbon matches the table in the spec",
-        arguments: [
-            [3, 128, 15, 1], [6, 128, 15, 1], [10, 119, 4, 1],
-            [16, 68, 4, 1], [24, 48, 15, 2], [40, 48, 4, 2],
-        ]
+        "the ribbon matches the measured system switcher",
+        arguments: [[5, 100, 30], [13, 96, 29], [25, 50, 15]]
     )
-    func matchesTheSpec(row: [Int]) {
+    func matchesTheSystemSwitcher(row: [Int]) {
         let layout = OverlayLayout.compute(
             count: row[0],
             screen: CGSize(width: 1728, height: 1117),
@@ -153,15 +121,26 @@ struct OverlayLayoutTests {
         )
         #expect(layout.iconSide == CGFloat(row[1]))
         #expect(layout.slots[1].minX - layout.slots[0].maxX == CGFloat(row[2]))
-        #expect(Set(layout.slots.map(\.origin.y)).count == row[3])
     }
 
-    @Test("a count that cannot fit the height shrinks past the smallest icon")
-    func heightBudgetShrinksTheIcon() {
-        let short = CGSize(width: 1280, height: 800)
-        let layout = OverlayLayout.compute(count: 154, screen: short, metrics: metrics)
-        #expect(layout.iconSide < metrics.smallestIcon)
-        #expect(layout.iconSide >= metrics.tiniestIcon)
-        #expect(layout.size.height <= short.height * metrics.tallestShare)
+    @Test("slots never overlap on any screen", arguments: [1280.0, 1440.0, 1728.0, 2560.0])
+    func slotsNeverOverlap(width: CGFloat) {
+        let screen = CGSize(width: width, height: (width * 0.625).rounded())
+        for count in 2...64 {
+            let slots = OverlayLayout.compute(count: count, screen: screen, metrics: metrics).slots
+            for (index, slot) in slots.enumerated().dropFirst() {
+                #expect(slot.minX >= slots[index - 1].maxX)
+            }
+        }
+    }
+
+    @Test("the ribbon fits the width budget on any screen", arguments: [1280.0, 1440.0, 1728.0, 2560.0])
+    func fitsTheBudget(width: CGFloat) {
+        let screen = CGSize(width: width, height: (width * 0.625).rounded())
+        for count in 1...64 {
+            let layout = OverlayLayout.compute(count: count, screen: screen, metrics: metrics)
+            #expect(layout.size.width <= (screen.width * metrics.widestShare).rounded() + 1)
+            #expect(layout.iconSide >= metrics.tiniestIcon)
+        }
     }
 }

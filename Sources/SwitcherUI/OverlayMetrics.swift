@@ -1,80 +1,78 @@
 import CoreGraphics
 
+/// Everything except the icon is a share of the icon, the way the system switcher scales:
+/// one row that keeps its proportions from three applications to forty.
 public struct OverlayMetrics: Sendable, Equatable {
     public let largestIcon: CGFloat
-    public let smallestIcon: CGFloat
     public let tiniestIcon: CGFloat
-    public let selectedScale: CGFloat
-    public let tilePadding: CGFloat
-    public let smallestGap: CGFloat
-    public let largestGap: CGFloat
-    public let rowGap: CGFloat
-    public let padding: CGFloat
+    public let gapShare: CGFloat
+    public let paddingShare: CGFloat
+    public let tileShare: CGFloat
+    public let tileRadiusShare: CGFloat
     public let labelGap: CGFloat
     public let largestLabel: CGFloat
     public let smallestLabel: CGFloat
-    public let targetShare: CGFloat
     public let widestShare: CGFloat
-    public let tallestShare: CGFloat
     public let cornerRadius: CGFloat
-    public let tileRadius: CGFloat
+    /// Past this many applications the icon stops shrinking and the ribbon scrolls instead.
+    public let visibleLimit: Int
 
     public init(
-        largestIcon: CGFloat = 128,
-        smallestIcon: CGFloat = 48,
+        largestIcon: CGFloat = 100,
         tiniestIcon: CGFloat = 16,
-        selectedScale: CGFloat = 1.12,
-        tilePadding: CGFloat = 8,
-        smallestGap: CGFloat = 4,
-        largestGap: CGFloat = 15,
-        rowGap: CGFloat = 8,
-        padding: CGFloat = 10,
+        gapShare: CGFloat = 0.30,
+        paddingShare: CGFloat = 0.30,
+        tileShare: CGFloat = 0.08,
+        tileRadiusShare: CGFloat = 0.20,
         labelGap: CGFloat = 2,
         largestLabel: CGFloat = 13,
-        smallestLabel: CGFloat = 9,
-        targetShare: CGFloat = 0.80,
-        widestShare: CGFloat = 0.90,
-        tallestShare: CGFloat = 0.80,
-        cornerRadius: CGFloat = 24,
-        tileRadius: CGFloat = 16
+        smallestLabel: CGFloat = 11,
+        widestShare: CGFloat = 0.96,
+        cornerRadius: CGFloat = 26,
+        visibleLimit: Int = 25
     ) {
         self.largestIcon = largestIcon
-        self.smallestIcon = smallestIcon
         self.tiniestIcon = tiniestIcon
-        self.selectedScale = selectedScale
-        self.tilePadding = tilePadding
-        self.smallestGap = smallestGap
-        self.largestGap = largestGap
-        self.rowGap = rowGap
-        self.padding = padding
+        self.gapShare = gapShare
+        self.paddingShare = paddingShare
+        self.tileShare = tileShare
+        self.tileRadiusShare = tileRadiusShare
         self.labelGap = labelGap
         self.largestLabel = largestLabel
         self.smallestLabel = smallestLabel
-        self.targetShare = targetShare
         self.widestShare = widestShare
-        self.tallestShare = tallestShare
         self.cornerRadius = cornerRadius
-        self.tileRadius = tileRadius
+        self.visibleLimit = visibleLimit
     }
 
-    func slotWidth(icon: CGFloat) -> CGFloat { (icon * selectedScale + tilePadding * 2).rounded() }
+    public func visible(count: Int) -> Int { min(count, visibleLimit) }
 
-    func rowHeight(icon: CGFloat) -> CGFloat {
-        (icon * selectedScale + tilePadding * 2 + labelGap + labelHeight(icon: icon)).rounded()
-    }
+    public func gap(icon: CGFloat) -> CGFloat { (icon * gapShare).rounded() }
+
+    public func padding(icon: CGFloat) -> CGFloat { (icon * paddingShare).rounded() }
+
+    public func tilePadding(icon: CGFloat) -> CGFloat { (icon * tileShare).rounded() }
+
+    public func tileRadius(icon: CGFloat) -> CGFloat { (icon * tileRadiusShare).rounded() }
 
     /// The name shrinks with the icon so a crowded ribbon stays legible without towering labels.
     public func labelSize(icon: CGFloat) -> CGFloat {
-        guard largestIcon > smallestIcon else { return largestLabel }
-        let share = (icon - smallestIcon) / (largestIcon - smallestIcon)
+        guard largestIcon > tiniestIcon else { return largestLabel }
+        let share = (icon - tiniestIcon) / (largestIcon - tiniestIcon)
         let size = smallestLabel + min(max(share, 0), 1) * (largestLabel - smallestLabel)
         return size.rounded()
     }
 
     public func labelHeight(icon: CGFloat) -> CGFloat { (labelSize(icon: icon) * 1.35).rounded(.up) }
 
-    func rowWidth(columns: Int, icon: CGFloat, gap: CGFloat) -> CGFloat {
-        guard columns > 0 else { return 0 }
-        return CGFloat(columns) * slotWidth(icon: icon) + CGFloat(columns - 1) * gap
+    public func slotHeight(icon: CGFloat) -> CGFloat { icon + labelGap + labelHeight(icon: icon) }
+
+    func rowWidth(count: Int, icon: CGFloat) -> CGFloat {
+        guard count > 0 else { return 0 }
+        return CGFloat(count) * icon + CGFloat(count - 1) * gap(icon: icon)
+    }
+
+    func ribbonWidth(count: Int, icon: CGFloat) -> CGFloat {
+        rowWidth(count: count, icon: icon) + padding(icon: icon) * 2
     }
 }
