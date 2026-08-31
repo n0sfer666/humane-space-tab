@@ -10,11 +10,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let log: any LogSink
     private let report: InventoryReport
     private let activations: any ApplicationActivationObserver
-    private let activator: any ApplicationActivator
     private let switcher: SwitcherCoordinator
-    private let icons: any ApplicationIconSource
     private let surface: OverlayWindowSurface
-    private let overlay: OverlayController
+    private let presenter: SessionPresenter
     private let preferences: PreferencesCenter
     private let loginItem: LoginItem
     private let inputMonitoring: any InputMonitoringSettings
@@ -36,31 +34,38 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let inventory = InventoryAssembly.make(log: log)
         report = InventoryReport(inventory: inventory, destination: PasteboardTextSink())
         activations = WorkspaceActivationObserver()
-        let activator = WorkspaceApplicationActivator()
-        self.activator = activator
+        let activation = TargetActivation(
+            activator: WorkspaceApplicationActivator(),
+            raiser: AXWindowRaiser()
+        )
+        let expansion = EntryExpansion(inventory: inventory, preference: UserDefaultsWindowSwitching())
         let seed = inventory.frontToBackApplications()
         switcher = SwitcherCoordinator(
             order: MRUOrder(seed: seed),
-            snapshot: { inventory.inventory().applications },
-            activate: { [activator] target in activator.activate(target.pid) }
+            snapshot: { inventory.inventory() },
+            expand: { expansion.entries($0, onCurrentSpace: $1) },
+            activate: { activation.activate($0) }
         )
         let icons = WorkspaceApplicationIconSource()
-        self.icons = icons
         icons.prewarm(seed)
         let surface = OverlayWindowSurface(icons: icons)
         self.surface = surface
-        overlay = OverlayController(
-            surface: surface,
-            scheduler: MainQueueOverlayScheduler(),
-            watchdog: MainQueueOverlayScheduler()
+        presenter = SessionPresenter(
+            overlay: OverlayController(
+                surface: surface,
+                scheduler: MainQueueOverlayScheduler(),
+                watchdog: MainQueueOverlayScheduler()
+            ),
+            icons: icons,
+            titles: SessionTitles(source: AXWindowTitles())
         )
         super.init()
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         log.record(.applicationDidLaunch)
-        preferences.observe { [overlay, surface] preferences in
-            overlay.delay = preferences.revealDelay
+        preferences.observe { [presenter, surface] preferences in
+            presenter.delay = preferences.revealDelay
             surface.screen = preferences.overlayScreen
         }
         activations.observe { [switcher] process in switcher.recordActivation(of: process) }
@@ -98,7 +103,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private static let trustPollInterval: TimeInterval = 2
 
     private func makeHotkeys() -> InterceptingHotkeyEngine {
-        InterceptingHotkeyEngine(log: log) { [log, switcher, overlay, icons, preferences] mode in
+        InterceptingHotkeyEngine(log: log) { [log, switcher, presenter, preferences] mode in
             CGEventTapHotkeySource(
                 shortcut: preferences.current.shortcut,
                 mode: mode,
@@ -107,11 +112,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 emit: { command in
                     let effect = switcher.handle(command)
                     log.record(LogEvent(effect: effect))
-                    let session = switcher.session
-                    if effect == .opened, let session {
-                        Self.prewarm(session.entries, with: icons)
-                    }
-                    overlay.render(session.map(OverlayModel.init(session:)))
+                    presenter.show(switcher.session, opened: effect == .opened)
                 }
             )
         }
@@ -148,20 +149,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         return SuspendingShortcutRecorder(recorder: recorder, suspension: permissions)
     }
 
-    /// An application launched after this one pays its first icon load here, in the gap
-    /// between the gesture opening and the ribbon appearing, never inside the tap callback.
-    private static func prewarm(
-        _ entries: [SwitcherEntry],
-        with icons: any ApplicationIconSource
-    ) {
-        let processes = entries.map(\.application.pid)
-        Task { @MainActor in icons.prewarm(processes) }
-    }
-
     func applicationWillTerminate(_ notification: Notification) {
         hotkeys?.stop()
         activations.stop()
-        overlay.render(nil)
+        presenter.show(nil, opened: false)
         log.record(.applicationWillTerminate)
     }
 }

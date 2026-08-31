@@ -13,3 +13,14 @@ public struct SwitcherEntry: Sendable, Equatable {
         SwitcherTarget(pid: application.pid, window: window?.id)
     }
 }
+
+extension SwitcherEntry {
+    /// The ribbon before S16's preference expands it: one entry per application, and the
+    /// Space's window set left unread.
+    public static func applications(
+        _ applications: [SwitchableApplication],
+        _: Set<WindowIdentifier>
+    ) -> [SwitcherEntry] {
+        applications.map { SwitcherEntry(application: $0) }
+    }
+}

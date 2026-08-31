@@ -7,4 +7,7 @@ public protocol SpaceInventorySource: Sendable {
 
     /// The applications that own a window visible right now, front to back.
     func frontToBackApplications() -> [ProcessIdentifier]
+
+    /// The windows visible right now, front to back: the stacking order S16 lists windows in.
+    func frontToBackWindows() -> [WindowIdentifier]
 }

@@ -65,9 +65,12 @@ are appended after it in inventory order, exactly as S05 appends applications th
 cannot see.
 
 This is the second window-server call inside the tap callback, next to the `.optionAll`
-snapshot. S05 budgets one frame for the whole session build, measured at 2.7 ms median;
-the added call must be measured against that budget, and the measurement belongs in this
-spec's DoD, not in a hope.
+snapshot. S05 budgets one frame for the whole session build, measured at 2.7 ms median.
+The added call was measured the same way — twenty warm calls in one process, 41 on-screen
+windows of 185 — at **1.4 ms median, 1.5 ms worst**, against 5.1 ms median for the
+`.optionAll` call beside it in the same harness. The session build stays around 4 ms, a
+quarter of the 16 ms frame, and the on-screen list is the cheaper of the two because it is
+the shorter one.
 
 ### Titles arrive late, on purpose
 
@@ -132,23 +135,24 @@ for nothing else:
 
 ## Definition of Done
 
-- [ ] With `WindowSwitchingEnabled` off, no AX window call is made and the ribbon is
+- [x] With `WindowSwitchingEnabled` off, no AX window call is made and the ribbon is
       byte-identical to today's.
-- [ ] With it on, every window of every switchable application on the current Space is its
+- [x] With it on, every window of every switchable application on the current Space is its
       own entry, ordered front to back, minimised and hidden ones appended.
-- [ ] An application with no window on the current Space stays in the list as an
+- [x] An application with no window on the current Space stays in the list as an
       application.
-- [ ] The selected entry is labelled with its window title; an application that does not
+- [x] The selected entry is labelled with its window title; an application that does not
       answer is labelled with its application name instead.
-- [ ] No title is read inside the tap callback, and the session build stays inside the S05
-      frame budget — measured, with the number written into this spec.
+- [x] No title is read inside the tap callback, and the session build stays inside the S05
+      frame budget — 1.4 ms median for the added call, ~4 ms for the build, against 16 ms.
 - [ ] Committing a window entry raises that window, un-minimising it first, and activates
-      its application.
-- [ ] `AXTitle` stays in the forbidden-API guard, allowlisted in exactly one file.
-- [ ] No title reaches the log at any level; the log line for a window commit names no
+      its application. — the composition is tested; the accessibility raise itself is the
+      manual runbook's second and third steps.
+- [x] `AXTitle` stays in the forbidden-API guard, allowlisted in exactly one file.
+- [x] No title reaches the log at any level; the log line for a window commit names no
       window.
-- [ ] The whole suite is green; `swift-format --strict` and `swiftlint --strict` are clean.
-- [ ] The Release bundle still declares zero entitlements and links no non-system library.
+- [x] The whole suite is green; `swift-format --strict` and `swiftlint --strict` are clean.
+- [x] The Release bundle still declares zero entitlements and links no non-system library.
 
 ## Test cases
 

@@ -63,9 +63,9 @@ system lists one icon has stopped being the thing its user reached for.
 
 The key is defined here; the behaviour behind it is not. Listing windows changes what the
 inventory returns, what the MRU orders, what activation raises and what the panel draws —
-four specs' worth of consequences, which is what S16 is for. Until S16 ships, nothing
-reads this key and no control appears for it: a toggle that toggles nothing is a settings
-window that lies, and this spec already refuses to build one of those.
+four specs' worth of consequences, which is what S16 is for. S16 has since shipped, so the
+key now has both a reader and a checkbox; until it did, neither existed, because a toggle
+that toggles nothing is a settings window that lies.
 
 ### Storage
 
@@ -74,7 +74,7 @@ window that lies, and this spec already refuses to build one of those.
 | `RevealDelay` | seconds, `Double` | 0.12 |
 | `OverlayScreen` | `String` — `focused` / `pointer` | `focused` |
 | `PrivateSpaceLayerEnabled` | `Bool` | `false` |
-| `WindowSwitchingEnabled` | `Bool` | `false` — read by S16, not by this spec |
+| `WindowSwitchingEnabled` | `Bool` | `false` — the behaviour behind it is S16's |
 
 The third key is the one S03 already writes, kept verbatim: a user who turned the private
 layer on before this spec must not silently lose that choice. A missing key means the
@@ -87,8 +87,8 @@ there is one spelling of it in the code.
 
 ### The window
 
-An ordinary titled `NSWindow` opened from the menu bar's **Settings…** item, with three
-controls and a line of explanation under the private-layer checkbox — the one setting with
+An ordinary titled `NSWindow` opened from the menu bar's **Settings…** item, with one
+control per preference and a line of explanation under the private-layer checkbox — the one setting with
 a real trade-off (S03: the private layer is accurate but undocumented, the public one is
 documented but blind to minimised windows). The app is an accessory (`LSUIElement`), so
 opening the window activates it explicitly; closing it releases nothing, the controller is
@@ -100,7 +100,7 @@ window.
 
 ## Definition of Done
 
-- [ ] The three preferences round-trip through `UserDefaults`, and a missing key reads as the documented default.
+- [ ] The four preferences round-trip through `UserDefaults`, and a missing key reads as the documented default.
 - [ ] A hand-edited nonsense value (negative, huge, non-finite, unknown string) yields the default, never a broken overlay.
 - [ ] The delay the window shows is the delay the overlay uses, to the millisecond.
 - [ ] Changing the delay changes when the ribbon appears, without a relaunch.

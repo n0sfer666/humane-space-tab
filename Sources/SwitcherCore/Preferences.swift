@@ -6,6 +6,7 @@ public struct Preferences: Equatable, Sendable {
     public let revealDelay: Double
     public let overlayScreen: OverlayScreenChoice
     public let usesPrivateSpaceLayer: Bool
+    public let switchesWindows: Bool
     public let shortcut: Shortcut
 
     /// The delay is normalised rather than validated: the store is a file the user can
@@ -17,11 +18,13 @@ public struct Preferences: Equatable, Sendable {
         revealDelay: Double = 0.12,
         overlayScreen: OverlayScreenChoice = .focused,
         usesPrivateSpaceLayer: Bool = false,
+        switchesWindows: Bool = false,
         shortcut: Shortcut = .commandTab
     ) {
         self.revealDelay = Self.normalised(revealDelay)
         self.overlayScreen = overlayScreen
         self.usesPrivateSpaceLayer = usesPrivateSpaceLayer
+        self.switchesWindows = switchesWindows
         self.shortcut = ShortcutRule.normalised(shortcut)
     }
 

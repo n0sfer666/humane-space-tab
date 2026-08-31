@@ -51,6 +51,18 @@ struct LogEventTests {
         for event in events { #expect(event.category == .switcher) }
     }
 
+    @Test("a window commit logs the same event as an application commit, naming no window")
+    func commitEventCarriesNoWindow() {
+        let window = SwitcherTarget(
+            pid: ProcessIdentifier(rawValue: 1),
+            window: WindowIdentifier(rawValue: 10)
+        )
+        #expect(
+            LogEvent(effect: .committed(window))
+                == LogEvent(effect: .committed(SwitcherTarget(pid: ProcessIdentifier(rawValue: 1))))
+        )
+    }
+
     @Test("a committed effect logs the same event whichever application it names")
     func commitEventCarriesNoTarget() {
         #expect(

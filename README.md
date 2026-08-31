@@ -34,6 +34,9 @@ project's standing commitments:
 - keystrokes are inspected only to match the configured shortcut, never stored,
   logged or forwarded — the sole exception is the combination you deliberately
   record as your own shortcut;
+- window titles are read only while the optional window switching is turned on, and
+  only to be drawn on the ribbon: never logged, never written to disk, never sent
+  anywhere;
 - hardened runtime, no entitlements beyond what is strictly required;
 - everything auditable — the full source is here, under GPL-3.0.
 

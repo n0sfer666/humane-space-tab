@@ -32,6 +32,7 @@ public struct CurrentSpaceInventorySource: SpaceInventorySource {
         let membership = spaces.membership(among: owned)
         return SpaceInventory(
             applications: CurrentSpaceFilter.apply(to: inventory, windowsOnCurrentSpace: membership.windows),
+            windowsOnCurrentSpace: membership.windows,
             layer: membership.layer
         )
     }
@@ -40,6 +41,10 @@ public struct CurrentSpaceInventorySource: SpaceInventorySource {
         let owned = own(windows.onScreenWindows(), by: applications.runningApplications())
         var seen: Set<ProcessIdentifier> = []
         return owned.map(\.owner).filter { seen.insert($0).inserted }
+    }
+
+    public func frontToBackWindows() -> [WindowIdentifier] {
+        windows.onScreenWindows().filter(\.isReal).map(\.id)
     }
 
     private func own(_ windows: [WindowInfo], by running: [RunningApplication]) -> [WindowInfo] {
