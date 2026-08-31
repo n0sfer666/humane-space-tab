@@ -11,10 +11,22 @@ enum OverlayBackdrop {
         if #available(macOS 26.0, *) {
             let glass = NSGlassEffectView()
             glass.cornerRadius = cornerRadius
-            glass.contentView = content
+            glass.style = .clear
+            glass.contentView = scrimmed(content, cornerRadius: cornerRadius)
             return glass
         }
         return hud(cornerRadius: cornerRadius, content: content)
+    }
+
+    /// Clear glass takes the brightness of whatever is behind it, and the ribbon's labels are
+    /// light: over a white window they would wash out. `tintColor` does not dim the material,
+    /// so the scrim is painted here — dark enough to keep the labels readable, light enough to
+    /// leave the translucency that made the material worth using.
+    private static func scrimmed(_ content: NSView, cornerRadius: CGFloat) -> NSView {
+        content.layer?.backgroundColor = NSColor.black.withAlphaComponent(0.15).cgColor
+        content.layer?.cornerRadius = cornerRadius
+        content.layer?.masksToBounds = true
+        return content
     }
 
     private static func hud(cornerRadius: CGFloat, content: NSView) -> NSView {
