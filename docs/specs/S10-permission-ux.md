@@ -48,6 +48,14 @@ opens System Settings › Privacy & Security › Accessibility directly. Which o
 does is remembered for the session only — the prompt's own once-per-app rule is the system's
 to keep, not ours to mirror on disk.
 
+### Asking without waiting to be found
+
+The launch asks by itself when the permission is missing. The menu bar item was the only way
+in, and it is not guaranteed one: macOS draws no status item it cannot fit, and a bar already
+full to the notch simply drops ours with nothing said. Nothing in the app can claim that
+space, so the app stops depending on it — it asks on launch, and opening the app a second
+time brings up the settings window instead of a second copy.
+
 ### Recovery without a relaunch
 
 While the permission is missing, the app re-checks trust on a timer (two seconds — the check
@@ -65,6 +73,8 @@ back to the warning instead of leaving a switcher that silently does nothing.
 - [ ] Revoking it turns the icon back to the warning the next time the app is activated.
 - [ ] A tap that can only observe is reported as such, not as working.
 - [ ] The prompt is asked for once; later requests open System Settings.
+- [ ] A launch without the permission asks for it; a launch with it asks nothing.
+- [ ] Opening the app while it runs shows the settings window, whether or not its icon is drawn.
 - [ ] The polling stops once the permission is granted, and never runs while it is present.
 - [ ] The state derivation is unit-tested for all four trust/tap combinations.
 
@@ -83,6 +93,7 @@ back to the warning instead of leaving a switcher that silently does nothing.
 | 9 | first grant request | system prompt, not System Settings |
 | 10 | second grant request | System Settings, not a second prompt |
 | 11 | refresh after revocation | `blocked` published |
+| 12 | launch while untrusted, launch while trusted | one prompt, then none |
 
 ## Manual runbook
 
@@ -95,6 +106,10 @@ back to the warning instead of leaving a switcher that silently does nothing.
 4. Untick it, then click the menu bar icon → expected: the warning is back.
 5. Hold `Cmd+Tab` inside a secure input field (a password field) → expected: the state reads
    as observing, not as working.
+6. Revoke Accessibility and launch the app → expected: the system prompt appears without the
+   menu being touched.
+7. With the app running, open it again from Finder or Spotlight → expected: the settings
+   window comes up, and no second copy starts.
 
 ## Risks and open questions
 

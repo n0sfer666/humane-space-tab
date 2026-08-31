@@ -67,10 +67,14 @@ press **Open Anyway**, then launch the app again. Do not strip the quarantine at
 by hand — that habit disarms the check that protects you from everything else you
 download.
 
-The menu bar icon shows a warning until Accessibility is granted. Choose
-**Grant Accessibility…** from its menu; the switcher starts working within a couple of
-seconds, without a relaunch. macOS ties that grant to the code signature, so it has to be
-given again after every update.
+The app asks for Accessibility as it launches, and its menu bar icon shows a warning
+until the grant is there — **Grant Accessibility…** in that menu asks again. Either way
+the switcher starts working within a couple of seconds, without a relaunch. macOS ties
+the grant to the code signature, so it has to be given again after every update.
+
+A menu bar with no free slot left of the notch drops the icon: macOS draws no status item
+it cannot fit, and nothing in the app can claim the space. Free a slot, or open the app
+again from Finder or Spotlight — a second launch opens Settings instead of a new copy.
 
 If the icon instead says macOS is withholding key presses, an old entry for the app is
 denying it in **System Settings → Privacy & Security → Input Monitoring**. Remove that

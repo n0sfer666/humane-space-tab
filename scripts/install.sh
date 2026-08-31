@@ -56,4 +56,5 @@ pgrep -qx HumaneSpaceTab || fail "$installed did not start"
 
 echo "==> $installed is $version, running as pid $(pgrep -x HumaneSpaceTab | head -1)"
 echo "    Accessibility has to be granted again: every build carries its own ad-hoc"
-echo "    signature, and macOS ties the grant to it. Menu bar icon → Grant Accessibility…"
+echo "    signature, and macOS ties the grant to it. The app asks on launch; opening it"
+echo "    again brings up Settings if the menu bar has no room for its icon."
