@@ -22,11 +22,19 @@ enum OverlayBackdrop {
     /// labels are light: over a white window they would wash out. `tintColor` does not dim the
     /// material, so the scrim is painted here — dark enough to keep the labels readable, light
     /// enough to leave the translucency that made the material worth using.
+    ///
+    /// It is painted on a view of its own rather than on the ribbon, because a step slides the
+    /// ribbon's layer: a scrim travelling with it would drag a lighter stripe of bare glass
+    /// across the edge of the panel for the length of the animation.
     private static func scrimmed(_ content: NSView, cornerRadius: CGFloat) -> NSView {
-        content.layer?.backgroundColor = NSColor.black.withAlphaComponent(0.15).cgColor
-        content.layer?.cornerRadius = cornerRadius
-        content.layer?.masksToBounds = true
-        return content
+        let scrim = NSView()
+        scrim.wantsLayer = true
+        scrim.autoresizingMask = [.width, .height]
+        scrim.layer?.backgroundColor = NSColor.black.withAlphaComponent(0.15).cgColor
+        scrim.layer?.cornerRadius = cornerRadius
+        scrim.layer?.masksToBounds = true
+        scrim.addSubview(content)
+        return scrim
     }
 
     private static func hud(cornerRadius: CGFloat, content: NSView) -> NSView {
