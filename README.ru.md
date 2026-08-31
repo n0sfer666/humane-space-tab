@@ -59,7 +59,7 @@ System Settings → Privacy & Security.
 ## Установка
 
 Скачайте последний zip со страницы [Releases](../../releases), распакуйте и перенесите
-**HumaneSpaceTab.app** в `/Applications`.
+**Humane Space Tab.app** в `/Applications`.
 
 Первый запуск будет отклонён: macOS помещает в карантин скачанную сборку без Developer
 ID. Откройте **System Settings → Privacy & Security**, пролистайте вниз и нажмите
@@ -129,12 +129,12 @@ hardened runtime, со сторонней библиотекой или с не�
 Установка собственной сборки — ещё один скрипт поверх упаковки:
 
 ```sh
-scripts/install.sh 0.1.0        # упакует, заменит /Applications/HumaneSpaceTab.app, перезапустит
+scripts/install.sh 0.1.0        # упакует, заменит /Applications/Humane Space Tab.app, перезапустит
 ```
 
 Сначала упаковка, поэтому сборка, не прошедшая проверки, не установится; затем скрипт
 завершает работающее приложение, заменяет бандл, сверяет установленную версию и
-запускает его. Ожидаемые последние строки — `==> /Applications/HumaneSpaceTab.app is
+запускает его. Ожидаемые последние строки — `==> /Applications/Humane Space Tab.app is
 0.1.0, running as pid …` и напоминание, что Accessibility нужно выдать заново: у каждой
 локальной сборки своя ad-hoc подпись, а macOS привязывает разрешение к подписи.
 

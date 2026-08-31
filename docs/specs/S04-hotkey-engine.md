@@ -231,7 +231,7 @@ the witness tap is the only way to see that the event is gone rather than merely
 ## Manual runbook
 
 Run from the repository root; `APP` is
-`.build/xcode/Build/Products/Release/HumaneSpaceTab.app`.
+`.build/xcode/Build/Products/Release/Humane Space Tab.app`.
 
 1. `xcodegen generate && xcodebuild -project HumaneSpaceTab.xcodeproj -scheme HumaneSpaceTab
    -configuration Release -derivedDataPath .build/xcode build` → `** BUILD SUCCEEDED **`.

@@ -165,7 +165,7 @@ were attested.
 
 1. `scripts/package.sh 0.1.0` on a clean checkout → expected: `dist/HumaneSpaceTab-0.1.0.zip`
    and a printed SHA-256.
-2. `ditto -x -k dist/HumaneSpaceTab-0.1.0.zip /tmp/check && codesign --verify --strict --deep /tmp/check/HumaneSpaceTab.app`
+2. `ditto -x -k dist/HumaneSpaceTab-0.1.0.zip /tmp/check && codesign --verify --strict --deep '/tmp/check/Humane Space Tab.app'`
    → expected: no output, exit 0. `ditto`, not `unzip`: unpacking has to restore the
    extended attributes that packing preserved.
 3. Move the unpacked app to `/Applications`, launch it, grant Accessibility → expected:

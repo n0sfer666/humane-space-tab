@@ -30,7 +30,7 @@ cat <<NOTES
 ## Install
 
 1. Download \`HumaneSpaceTab-$version.zip\` and unpack it.
-2. Move **HumaneSpaceTab.app** to \`/Applications\`.
+2. Move **Humane Space Tab.app** to \`/Applications\`.
 3. Launch it. macOS will refuse the first time: open **System Settings → Privacy &
    Security**, scroll to the bottom and press **Open Anyway**, then launch it again.
 4. The menu bar icon shows a warning until Accessibility is granted. Use

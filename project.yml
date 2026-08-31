@@ -36,6 +36,8 @@ targets:
         NSHumanReadableCopyright: "Licensed under GPL-3.0-or-later"
     settings:
       base:
+        PRODUCT_NAME: "Humane Space Tab"
+        EXECUTABLE_NAME: HumaneSpaceTab
         PRODUCT_BUNDLE_IDENTIFIER: io.github.n0sfer666.humane-space-tab
         MARKETING_VERSION: "0.1.0"
         CURRENT_PROJECT_VERSION: "1"
