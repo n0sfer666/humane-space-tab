@@ -13,8 +13,16 @@ enum ForbiddenAPIRules {
     ].map { ForbiddenSymbol($0, reason: "the app never captures screen content") }
 
     private static let windowContent: [ForbiddenSymbol] = [
-        "kCGWindowName", "AXTitle",
-    ].map { ForbiddenSymbol($0, reason: "window titles are not read; they would require Screen Recording") }
+        ForbiddenSymbol(
+            "kCGWindowName",
+            reason: "a title from the window server would require Screen Recording"
+        ),
+        ForbiddenSymbol(
+            "kAXTitleAttribute",
+            reason: "only S16's window mode reads a title, and only over accessibility",
+            allowedFiles: ["AXWindowTitles.swift"]
+        ),
+    ]
 
     private static let automation: [ForbiddenSymbol] = [
         "NSAppleScript", "NSAppleEventDescriptor", "OSAScript", "AEDesc",

@@ -46,6 +46,19 @@ struct SourceGuardTests {
         #expect(guardian.scan(file: "Windows.swift", contents: "entry[kCGWindowNumber as String]").isEmpty)
     }
 
+    @Test("a window title is read in one file, and nowhere else")
+    func windowTitleAllowlist() {
+        let contents = "AXUIElementCopyAttributeValue(w, kAXTitleAttribute as CFString, &v)"
+        #expect(guardian.scan(file: "AXWindowTitles.swift", contents: contents).isEmpty)
+        #expect(guardian.scan(file: "Ribbon.swift", contents: contents).map(\.symbol) == ["kAXTitleAttribute"])
+    }
+
+    @Test("the window server's own title is refused everywhere")
+    func windowServerTitleIsRefused() {
+        let contents = "entry[kCGWindowName as String]"
+        #expect(guardian.scan(file: "AXWindowTitles.swift", contents: contents).map(\.symbol) == ["kCGWindowName"])
+    }
+
     @Test("dlopen is allowed only in the SkyLight shim")
     func dlopenAllowlist() {
         let contents = "let handle = dlopen(path, RTLD_LAZY)"
