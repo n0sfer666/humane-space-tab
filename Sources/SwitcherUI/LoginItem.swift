@@ -8,6 +8,10 @@ public final class LoginItem {
 
     public var status: LoginItemStatus { service.status }
 
+    /// What the system said when it last refused, kept so the window can show a reason
+    /// instead of a checkbox that silently springs back.
+    public private(set) var failure: String?
+
     public init(service: any LoginItemService, log: any LogSink) {
         self.service = service
         self.log = log
@@ -22,7 +26,9 @@ public final class LoginItem {
             } else {
                 try service.unregister()
             }
+            failure = nil
         } catch {
+            failure = "macOS refused: \(error.localizedDescription)"
             log.record(.loginItemChangeFailed)
         }
     }

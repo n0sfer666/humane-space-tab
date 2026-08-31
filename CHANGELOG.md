@@ -44,11 +44,5 @@ Space, and nothing else.
   Monitoring. Window titles are read only while window switching is on, and only to be
   drawn.
 
-### Known issues
-
-- **Open at login is refused on some copies.** `SMAppService` reports the bundle as
-  unregistrable and the checkbox stays disabled with that message. Nothing else is
-  affected.
-
 [Unreleased]: https://github.com/n0sfer/humane-space-tab/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/n0sfer/humane-space-tab/releases/tag/v0.1.0

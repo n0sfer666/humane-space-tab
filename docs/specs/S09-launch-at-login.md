@@ -28,14 +28,19 @@ can revoke a login item in System Settings without ever opening our window. So t
 checkbox reflects `SMAppService.mainApp.status` every time the window opens, and the
 preference file has no key for it.
 
-`LoginItemStatus` maps the four system answers onto what the window has to do:
+`LoginItemStatus` maps the system's answers onto what the window has to do:
 
 | Status | Checkbox | What the window says |
 |---|---|---|
 | `enabled` | on | nothing |
 | `notRegistered` | off | nothing |
 | `requiresApproval` | on | the item is waiting for approval in System Settings › General › Login Items |
-| `notFound` | off, disabled | the bundle is not in a place macOS can register — move it to Applications |
+
+`notFound` is not a fourth case. The system reports it for a copy it has never been
+asked to register, and registering out of it succeeds — so it means `notRegistered`
+here. Treating it as "macOS cannot register this copy" and disabling the checkbox is
+what the app did until it was measured, and it kept the feature off for every fresh
+install.
 
 `requiresApproval` is not an error: macOS has accepted the registration and is asking the
 user to confirm it once. Showing it as "off" would invite a second registration that
@@ -44,9 +49,10 @@ changes nothing.
 ### Failure is reported, not swallowed
 
 `register()` and `unregister()` throw. A throw means the checkbox goes back to what the
-system says rather than to what the user clicked, and the log records it. The app has no
-other way to tell the user, and silently drawing a checked box for a registration that did
-not happen is the one outcome worth avoiding.
+system says rather than to what the user clicked, the log records it, and the message row
+carries the system's own reason. Silently drawing a checked box for a registration that
+did not happen is the one outcome worth avoiding; a checkbox that springs back without a
+word is the next one.
 
 ### The window follows the message
 
@@ -61,7 +67,7 @@ the height the window was given when it opened.
 - [ ] Turning it on registers the app; turning it off unregisters it; both survive a relaunch.
 - [ ] `requiresApproval` reads as on, with a line telling the user where to approve it.
 - [ ] A failed register or unregister leaves the checkbox showing the system's state and is logged.
-- [ ] The status mapping is unit-tested for all four system answers.
+- [ ] The status mapping is unit-tested for every system answer.
 - [ ] The Release bundle still declares zero entitlements and links no non-system library beyond `ServiceManagement`.
 
 ## Test cases
@@ -71,9 +77,10 @@ the height the window was given when it opened.
 | 1 | status mapping, `enabled` | on, no message |
 | 2 | status mapping, `notRegistered` | off, no message |
 | 3 | status mapping, `requiresApproval` | on, approval message |
-| 4 | status mapping, `notFound` | off, disabled, relocation message |
+| 4 | status mapping, `notFound` | off, editable — the same as `notRegistered` |
 | 5 | toggling on, service succeeds | register called once, state re-read |
-| 6 | toggling on, service throws | no crash, state re-read, failure logged |
+| 6 | toggling on, service throws | no crash, state re-read, failure logged and shown |
+| 8 | a change that goes through after a refusal | the reason disappears |
 | 7 | toggling off, service succeeds | unregister called once, state re-read |
 
 ## Manual runbook
@@ -85,8 +92,8 @@ the height the window was given when it opened.
 3. Log out and back in → expected: the app is running, its menu bar item is present, and
    the checkbox is still on.
 4. Turn it off, log out and back in → expected: the app does not start.
-5. Run the bundle from a Downloads folder instead → expected: either it registers normally
-   or the window says the bundle has to move, and nothing crashes.
+5. Run the bundle from a Downloads folder instead → expected: it registers, or the window
+   shows the reason macOS gave for refusing, and nothing crashes.
 
 ## Risks and open questions
 

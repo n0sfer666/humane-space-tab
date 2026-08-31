@@ -96,10 +96,10 @@ final class PreferencesFormView: NSView {
 
     private func showLoginItem() {
         let status = loginItem.status
+        let note = loginItem.failure ?? status.message
         launch.state = status.isOn ? .on : .off
-        launch.isEnabled = status.isEditable
-        launchNote.stringValue = status.message ?? ""
-        launchNoteRow?.isHidden = status.message == nil
+        launchNote.stringValue = note ?? ""
+        launchNoteRow?.isHidden = note == nil
         window?.setContentSize(fittingSize)
     }
 
