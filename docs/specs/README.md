@@ -27,6 +27,8 @@ New specs start from [`TEMPLATE.md`](TEMPLATE.md).
 | S12+ | Beyond `Cmd+Tab` | Mission Control, App Exposé, hide/minimise — one spec per gesture | planned |
 | S13 | [Shortcut editor](S13-shortcut-editor.md) | Recording and validating a replacement for `Cmd+Tab` | agreed |
 | S14 | Overlay mouse interaction | Hover and click selection, and the panel changes it needs | planned |
+| S15 | [The deaf tap](S15-deaf-tap.md) | Noticing a tap that receives no key events, and naming the cure | agreed |
+| S16 | Windows of one application | Cycling windows instead of applications, behind S08's preference | planned |
 
 S00–S06 are close to pure logic and are covered by automated tests. S07 onwards
 needs verification on a real machine; each such spec carries a manual runbook.
