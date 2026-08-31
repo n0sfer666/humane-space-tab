@@ -79,7 +79,9 @@ throw away information the system already computed.
 - [x] The window source asks for all windows, including off-screen ones, so minimised
       windows survive into the model.
 - [x] `kCGWindowName` and `AXTitle` are in the forbidden-API guard and the sources never
-      read titles.
+      read titles. Amended by S16: `AXTitle` needs Accessibility and not Screen Recording,
+      so it stays in the guard with one allowlisted file, and only the window mode of S16
+      reads a title.
 - [x] The menu bar item can copy an inventory summary to the pasteboard, so the model can
       be inspected without a UI and without putting any of it in the log.
 - [ ] The inventory of a real machine matches what the stock `Cmd+Tab` shows, checked by

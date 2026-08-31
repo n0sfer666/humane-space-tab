@@ -41,14 +41,20 @@ its released artefacts, or landing malicious code in it through a pull request.
 
 | Permission | Requested | Rationale |
 |---|---|---|
-| Accessibility | yes, required | `CGEventTap` interception and raising other apps' windows |
+| Accessibility | yes, required | `CGEventTap` interception, raising other apps' windows, and — only in S16's window mode — reading window titles |
 | Input Monitoring | **never** | the tap works without a grant here; a row that *denies* it silently strips key presses from the tap, which S15 detects and explains |
 | Screen Recording | **never** | only needed for window previews and `kCGWindowName`; both are out of scope |
 | Full Disk Access, Camera, Microphone, Contacts, … | never | no use case exists |
 
 Window previews are not implemented, in any release, in any settings combination.
-Removing that feature removes an entire TCC domain from the model. The switcher
-shows application icons and application names only.
+Removing that feature removes an entire TCC domain from the model.
+
+Window titles are the one thing the switcher reads about a window's content, and only
+when the user turns S16's window mode on. They are read over `AX`, which the
+Accessibility grant already covers — `kCGWindowName` and its Screen Recording grant
+stay out of the app for good. A title is drawn and discarded with the session: never
+logged, never written to disk, never sent anywhere, because nothing in this app sends
+anything anywhere.
 
 ### Structural properties
 
