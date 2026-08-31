@@ -27,7 +27,7 @@ final class OverlayContentView: NSView {
         let previous = self.model
         let stepped =
             self.layout == layout && self.offset == offset
-            && previous.entries == model.entries
+            && previous.entries == model.entries && previous.titles == model.titles
         self.model = model
         self.layout = layout
         self.offset = offset
@@ -75,7 +75,7 @@ final class OverlayContentView: NSView {
         icons.icon(for: entry.application.pid)?
             .draw(in: CGRect(x: slot.minX, y: slot.minY, width: layout.iconSide, height: layout.iconSide))
         guard selected else { return }
-        let name = name(entry.application.name)
+        let name = name(model.label(of: entry))
         let area = metrics.nameArea(
             under: slot,
             icon: layout.iconSide,

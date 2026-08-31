@@ -8,6 +8,11 @@ final class PreferencesFormView: NSView {
     private let delay = NSSlider()
     private let delayValue = NSTextField(labelWithString: "")
     private let privateLayer = NSButton(checkboxWithTitle: "Use the private Space layer", target: nil, action: nil)
+    private let windowSwitching = NSButton(
+        checkboxWithTitle: "Switch between windows, not applications",
+        target: nil,
+        action: nil
+    )
     private let launch = NSButton(checkboxWithTitle: "Open at login", target: nil, action: nil)
     private let launchNote = NSTextField(wrappingLabelWithString: "")
     private let onChange: @MainActor (Preferences) -> Void
@@ -42,6 +47,8 @@ final class PreferencesFormView: NSView {
         buildLaunch()
         privateLayer.target = self
         privateLayer.action = #selector(edited)
+        windowSwitching.target = self
+        windowSwitching.action = #selector(edited)
         install(grid())
         show(preferences)
         showLoginItem()
@@ -54,6 +61,7 @@ final class PreferencesFormView: NSView {
         screens.selectItem(at: OverlayScreenChoice.allCases.firstIndex(of: preferences.overlayScreen) ?? 0)
         delay.doubleValue = preferences.revealDelay
         privateLayer.state = preferences.usesPrivateSpaceLayer ? .on : .off
+        windowSwitching.state = preferences.switchesWindows ? .on : .off
         showDelayValue()
     }
 
@@ -111,6 +119,7 @@ final class PreferencesFormView: NSView {
             [Self.label("Reveal delay"), delayRow],
             [NSGridCell.emptyContentView, launch],
             [NSGridCell.emptyContentView, launchNote],
+            [NSGridCell.emptyContentView, windowSwitching],
             [NSGridCell.emptyContentView, privateLayer],
             [NSGridCell.emptyContentView, caption],
         ])
@@ -140,6 +149,7 @@ final class PreferencesFormView: NSView {
                 revealDelay: delay.doubleValue,
                 overlayScreen: OverlayScreenChoice.allCases[screens.indexOfSelectedItem],
                 usesPrivateSpaceLayer: privateLayer.state == .on,
+                switchesWindows: windowSwitching.state == .on,
                 shortcut: shortcut
             )
         )

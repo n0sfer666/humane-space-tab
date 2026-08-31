@@ -32,6 +32,7 @@ struct UserDefaultsPreferencesStoreTests {
                 revealDelay: 0.4,
                 overlayScreen: .pointer,
                 usesPrivateSpaceLayer: true,
+                switchesWindows: true,
                 shortcut: Shortcut(key: .space, modifiers: [.control, .option])
             )
             store.save(preferences)
@@ -74,6 +75,15 @@ struct UserDefaultsPreferencesStoreTests {
         withDefaults("shortcut-half") { defaults in
             defaults.set(49, forKey: PreferencesKey.shortcutKeyCode)
             #expect(UserDefaultsPreferencesStore(defaults: defaults).load().shortcut == .commandTab)
+        }
+    }
+
+    @Test("both readers of the window switching key agree on its name")
+    func keepsWindowSwitchingKey() {
+        withDefaults("window-switching") { defaults in
+            defaults.set(true, forKey: "WindowSwitchingEnabled")
+            #expect(UserDefaultsPreferencesStore(defaults: defaults).load().switchesWindows)
+            #expect(UserDefaultsWindowSwitching(defaults: defaults).switchesWindows)
         }
     }
 

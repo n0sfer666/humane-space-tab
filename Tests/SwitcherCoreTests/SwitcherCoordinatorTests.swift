@@ -32,7 +32,7 @@ struct SwitcherCoordinatorTests {
     ) -> SwitcherCoordinator {
         SwitcherCoordinator(
             order: order,
-            snapshot: { pids.map(self.application) },
+            snapshot: { SpaceInventory(applications: pids.map(self.application), layer: .onScreen) },
             activate: { activator.activate($0) }
         )
     }

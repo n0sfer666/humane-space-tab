@@ -16,6 +16,7 @@ public struct UserDefaultsPreferencesStore: PreferencesStore {
             revealDelay: delay(),
             overlayScreen: OverlayScreenChoice(stored: defaults.string(forKey: PreferencesKey.overlayScreen)),
             usesPrivateSpaceLayer: defaults.bool(forKey: PreferencesKey.privateSpaceLayer),
+            switchesWindows: defaults.bool(forKey: PreferencesKey.windowSwitching),
             shortcut: shortcut()
         )
     }
@@ -24,6 +25,7 @@ public struct UserDefaultsPreferencesStore: PreferencesStore {
         defaults.set(preferences.revealDelay, forKey: PreferencesKey.revealDelay)
         defaults.set(preferences.overlayScreen.rawValue, forKey: PreferencesKey.overlayScreen)
         defaults.set(preferences.usesPrivateSpaceLayer, forKey: PreferencesKey.privateSpaceLayer)
+        defaults.set(preferences.switchesWindows, forKey: PreferencesKey.windowSwitching)
         defaults.set(Int(preferences.shortcut.key.rawValue), forKey: PreferencesKey.shortcutKeyCode)
         defaults.set(Int(preferences.shortcut.modifiers.rawValue), forKey: PreferencesKey.shortcutModifiers)
     }
