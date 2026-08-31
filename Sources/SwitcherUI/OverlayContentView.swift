@@ -75,21 +75,14 @@ final class OverlayContentView: NSView {
         icons.icon(for: application.pid)?
             .draw(in: CGRect(x: slot.minX, y: slot.minY, width: layout.iconSide, height: layout.iconSide))
         guard selected else { return }
-        name(application.name).draw(with: nameArea(under: slot), options: [.usesLineFragmentOrigin])
-    }
-
-    /// Only the selected application is named, so the name is free to be wider than its icon;
-    /// it stays centred on that icon and inside the panel.
-    private func nameArea(under slot: CGRect) -> CGRect {
-        let height = metrics.labelHeight(icon: layout.iconSide)
-        let inset = metrics.padding(icon: layout.iconSide)
-        let width = min(bounds.width - inset * 2, max(slot.width, layout.iconSide * 2.5))
-        return CGRect(
-            x: min(max(slot.midX - width / 2, inset), max(bounds.width - width - inset, inset)),
-            y: slot.minY + layout.iconSide + metrics.labelGap,
-            width: width,
-            height: height
+        let name = name(application.name)
+        let area = metrics.nameArea(
+            under: slot,
+            icon: layout.iconSide,
+            text: name.size().width,
+            panel: bounds.width
         )
+        name.draw(with: area, options: [.usesLineFragmentOrigin])
     }
 
     private func name(_ text: String) -> NSAttributedString {

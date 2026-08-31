@@ -37,7 +37,7 @@ about it needs a declarative framework.
 | `collectionBehavior` | `.canJoinAllSpaces, .stationary, .fullScreenAuxiliary, .ignoresCycle` | appears on whatever Space the user is on, including over a full-screen application, and never becomes a switch target itself |
 | `ignoresMouseEvents` | `true` | S07 has no mouse interaction; clicks must reach the application underneath |
 | `hidesOnDeactivate` | `false` | we are never active to begin with |
-| `backgroundColor` | `.clear`, with a `.hudWindow` visual-effect view and a 26 pt corner radius | native HUD look, no custom chrome |
+| `backgroundColor` | `.clear`, with the system's own panel material behind it and a 26 pt corner radius | native look, no custom chrome |
 
 The panel is created once at launch and reused: a session updates its contents and
 orders it front. Icons come from `NSRunningApplication.icon` — no permission, and no
@@ -115,14 +115,32 @@ Only the **selected** application is named, under its icon, in semibold — the 
 system does it. Names under every icon were tried first and dropped: at twenty-five
 applications they turn the ribbon into a wall of truncated text, and the one name the
 user is reading is the one they are switching to. Because only one name is drawn, it is
-free to be wider than its icon; it stays centred on that icon and inside the panel.
-The name scales with the icon — 13 pt at full size down to an 11 pt floor.
+free to be wider than its icon — up to two and a half times as wide, and never wider
+than the panel's own padding allows. The name scales with the icon — 13 pt at full size
+down to an 11 pt floor.
+
+The box it is drawn in is only as wide as the name itself. A box of a fixed width has to
+be pushed sideways to stay inside the panel whenever the icon is near an end of the
+ribbon, and the name, centred in it, is pushed with it — so a name that had room to sit
+on its icon ends up beside it instead. Measured against the system switcher, which
+moves a name inwards only when the name itself does not fit, this is the difference
+between a name that looks attached to its icon and one that looks misaligned. Sizing the
+box to the text keeps the two identical: a name that fits stays centred on its icon
+wherever the icon is, one that does not moves in by exactly what it takes to stay inside
+the panel, and past that it is truncated with an ellipsis.
 
 The selected icon is not enlarged, which is also what the system does: it carries a 22 %
 white rounded highlight drawn around it, and the row stays perfectly still as the
-selection moves. The panel itself is a `.hudWindow` blur with no tint of our own over it
-— the tint we used to paint made our ribbon visibly darker than the original — a 26 pt
-corner radius and a hairline white border.
+selection moves. The panel itself carries no tint of our own — the tint we used to paint
+made our ribbon visibly darker than the original — and a 26 pt corner radius.
+
+Its material is whichever one the system builds its own panels from. macOS 26 draws the
+switcher in Liquid Glass, so where `NSGlassEffectView` exists the ribbon is made of it;
+below that the panel keeps the `.hudWindow` blur with a hairline white border, which is
+what those systems render a HUD with. The choice is the system's version and nothing
+else: a preference here would only offer the user a way to look less native than their
+own machine. Both paths hand the same content view to the same panel, so the ribbon's
+geometry and drawing know nothing about which one is underneath.
 
 Only the selection changes between the steps of a session, so a step is not a repaint of
 the ribbon. The geometry is computed once per session and reused; the view invalidates
@@ -162,6 +180,8 @@ saw the two `flagsChanged` events and no `Tab` at all.
 - [ ] A session that stops receiving events hides itself instead of stranding the panel.
 - [ ] Interception never swallows a modifier change, and never swallows a key-up whose key-down went through.
 - [ ] Layout and scroll arithmetic is pure and unit-tested: fits, shrinks, freezes, scrolls.
+- [ ] The name of the selected application is centred on its icon wherever the icon sits in the ribbon, and moves inwards only when it would otherwise leave the panel.
+- [ ] On macOS 26 the panel is Liquid Glass; below it, the HUD blur.
 - [ ] With Accessibility granted the tap intercepts: the system switcher does not appear.
 - [ ] Without it the engine falls back to `.observe` and logs the fallback instead of dying.
 - [ ] The whole suite is green; `swift-format --strict` and `swiftlint --strict` are clean.
@@ -189,6 +209,12 @@ saw the two `flagsChanged` events and no `Tab` at all.
 | 5k | scroll, selection steps past an edge | offset moves by one, either way |
 | 5l | scroll, wrap to the first application | offset returns home |
 | 5m | scroll, a shorter ribbon | a stale offset is clamped back into range |
+| 5n | name area, a name that fits, at either end of the ribbon | centred on its icon |
+| 5o | name area, a name too wide for the first slot | moved in to the panel's inset, no further |
+| 5p | name area, a name too wide for the last slot | stops at the far inset |
+| 5q | name area, a name past the budget | capped at two and a half icons, truncated |
+| 5r | name area, any name | sits directly under its icon, one label high |
+| 5s | backdrop, the running system | the content view is inside whichever material the system provides |
 | 6 | controller, session opens | show is scheduled, nothing visible yet |
 | 7 | controller, commit before the delay | nothing was ever shown |
 | 8 | controller, delay elapses with the session open | the panel is shown once |
@@ -215,6 +241,11 @@ saw the two `flagsChanged` events and no `Tab` at all.
    above it.
 7. While the overlay is up, type into another application after the gesture ends →
    expected: keystrokes land normally, no modifier is stuck down.
+8. On a Space with more than a dozen applications, step to the first icon and to the last
+   → expected: the name sits under its own icon, not beside it, and never leaves the
+   panel.
+9. Put the ribbon over a busy window or wallpaper → expected: on macOS 26 the panel is
+   glass — the picture behind it bends at the panel's edge; below 26 it is the HUD blur.
 
 ## Risks and open questions
 

@@ -13,6 +13,8 @@ public struct OverlayMetrics: Sendable, Equatable {
     public let largestLabel: CGFloat
     public let smallestLabel: CGFloat
     public let widestShare: CGFloat
+    /// How much wider than its icon a name may grow before it is truncated.
+    public let widestName: CGFloat
     public let cornerRadius: CGFloat
     /// Past this many applications the icon stops shrinking and the ribbon scrolls instead.
     public let visibleLimit: Int
@@ -28,6 +30,7 @@ public struct OverlayMetrics: Sendable, Equatable {
         largestLabel: CGFloat = 13,
         smallestLabel: CGFloat = 11,
         widestShare: CGFloat = 0.96,
+        widestName: CGFloat = 2.5,
         cornerRadius: CGFloat = 26,
         visibleLimit: Int = 25
     ) {
@@ -41,6 +44,7 @@ public struct OverlayMetrics: Sendable, Equatable {
         self.largestLabel = largestLabel
         self.smallestLabel = smallestLabel
         self.widestShare = widestShare
+        self.widestName = widestName
         self.cornerRadius = cornerRadius
         self.visibleLimit = visibleLimit
     }
@@ -66,6 +70,22 @@ public struct OverlayMetrics: Sendable, Equatable {
     public func labelHeight(icon: CGFloat) -> CGFloat { (labelSize(icon: icon) * 1.35).rounded(.up) }
 
     public func slotHeight(icon: CGFloat) -> CGFloat { icon + labelGap + labelHeight(icon: icon) }
+
+    /// The name sits under its icon in a box no wider than the text itself, so a name that
+    /// fits stays centred on the icon instead of being pushed aside by the empty half of a
+    /// fixed box. A name too long for the room left at the ribbon's edge moves inwards by
+    /// exactly what it takes to stay inside the panel, and is truncated past that.
+    public func nameArea(under slot: CGRect, icon: CGFloat, text: CGFloat, panel: CGFloat) -> CGRect {
+        let inset = padding(icon: icon)
+        let budget = max(min(panel - inset * 2, icon * widestName), 0)
+        let width = min(text.rounded(.up), budget)
+        return CGRect(
+            x: min(max(slot.midX - width / 2, inset), max(panel - width - inset, inset)),
+            y: slot.minY + icon + labelGap,
+            width: width,
+            height: labelHeight(icon: icon)
+        )
+    }
 
     func rowWidth(count: Int, icon: CGFloat) -> CGFloat {
         guard count > 0 else { return 0 }
