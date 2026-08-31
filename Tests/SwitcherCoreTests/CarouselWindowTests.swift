@@ -4,12 +4,31 @@ import Testing
 
 @Suite("Carousel window")
 struct CarouselWindowTests {
-    @Test("a list that fits is shown whole, where it is")
-    func shortListsAreNotWindowed() {
-        #expect(CarouselWindow.indices(count: 3, selection: 2) == [0, 1, 2])
-        #expect(CarouselWindow.place(of: 2, count: 3) == 2)
-        #expect(CarouselWindow.indices(count: 10, selection: 9).count == 10)
-        #expect(CarouselWindow.place(of: 9, count: 10) == 9)
+    @Test("a list that fits turns under the selection instead of standing still")
+    func shortListsTurn() {
+        #expect(CarouselWindow.indices(count: 3, selection: 2) == [1, 2, 0])
+        #expect(CarouselWindow.place(of: 2, count: 3) == 1)
+        #expect(CarouselWindow.indices(count: 5, selection: 2) == [0, 1, 2, 3, 4])
+        #expect(CarouselWindow.indices(count: 5, selection: 3) == [1, 2, 3, 4, 0])
+    }
+
+    @Test("a list that fits shows every entry once and no entry twice")
+    func shortListsNeverRepeat() {
+        for count in 1...CarouselWindow.span {
+            for selection in 0..<count {
+                let indices = CarouselWindow.indices(count: count, selection: selection)
+                #expect(indices.count == count)
+                #expect(Set(indices).count == count)
+                #expect(indices[CarouselWindow.place(of: selection, count: count)] == selection)
+            }
+        }
+    }
+
+    @Test("two applications put the selection first, with the other beside it")
+    func twoApplications() {
+        #expect(CarouselWindow.indices(count: 2, selection: 0) == [0, 1])
+        #expect(CarouselWindow.indices(count: 2, selection: 1) == [1, 0])
+        #expect(CarouselWindow.place(of: 1, count: 2) == 0)
     }
 
     @Test("an empty list has no window")
@@ -17,7 +36,14 @@ struct CarouselWindowTests {
         #expect(CarouselWindow.indices(count: 0, selection: 0).isEmpty)
     }
 
-    @Test("past ten entries the selection keeps its place and the list moves under it")
+    @Test("the selection's place grows with the list until the ribbon is full")
+    func thePlaceGrowsWithTheList() {
+        let places = (1...CarouselWindow.span).map { CarouselWindow.place(of: 0, count: $0) }
+        #expect(places == [0, 0, 1, 1, 2, 2, 3, 3, 4, 4])
+        #expect(CarouselWindow.place(of: 0, count: CarouselWindow.span + 1) == CarouselWindow.before)
+    }
+
+    @Test("past a full ribbon the selection keeps its place and the list moves under it")
     func longListsWindow() {
         #expect(CarouselWindow.indices(count: 20, selection: 7) == Array(3...12))
         #expect(CarouselWindow.place(of: 7, count: 20) == CarouselWindow.before)
