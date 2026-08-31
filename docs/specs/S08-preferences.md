@@ -16,6 +16,9 @@ in `UserDefaults`, read once at launch and applied live, without a relaunch.
 - Selecting a tile with the mouse — S14. It means giving the panel back the mouse events
   S07 explicitly took away, which is a change to the panel, not a preference.
 - Launch at login — S09, which owns `SMAppService`.
+- Making the ribbon list windows instead of applications — S16. This spec defines the
+  preference that gates it, and nothing more: what the ribbon lists is a change to the
+  inventory, the order, activation and the panel, not a setting.
 - Syncing preferences anywhere. The app has no network code (S00), and the guard test
   enforces it.
 
@@ -49,6 +52,21 @@ takes `activate:`, which keeps the pure module free of the store.
 Two consumers subscribe: the overlay controller takes the delay, the window surface takes
 the screen choice. Both are on the main actor already.
 
+### Windows of one application
+
+Windows and Linux switch between windows; macOS switches between applications, and the
+ribbon is built on the second model — S05's MRU order, S06's activation and S07's one
+icon per application all follow from it. People who came from the other model want the
+first, so it becomes a preference, **off by default**: the default has to be what macOS
+itself does, and a switcher that suddenly lists four windows of one editor where the
+system lists one icon has stopped being the thing its user reached for.
+
+The key is defined here; the behaviour behind it is not. Listing windows changes what the
+inventory returns, what the MRU orders, what activation raises and what the panel draws —
+four specs' worth of consequences, which is what S16 is for. Until S16 ships, nothing
+reads this key and no control appears for it: a toggle that toggles nothing is a settings
+window that lies, and this spec already refuses to build one of those.
+
 ### Storage
 
 | Key | Type | Default |
@@ -56,6 +74,7 @@ the screen choice. Both are on the main actor already.
 | `RevealDelay` | seconds, `Double` | 0.12 |
 | `OverlayScreen` | `String` — `focused` / `pointer` | `focused` |
 | `PrivateSpaceLayerEnabled` | `Bool` | `false` |
+| `WindowSwitchingEnabled` | `Bool` | `false` — read by S16, not by this spec |
 
 The third key is the one S03 already writes, kept verbatim: a user who turned the private
 layer on before this spec must not silently lose that choice. A missing key means the
@@ -129,6 +148,9 @@ window.
 - **The pointer screen is resolved when the session opens**, not continuously; moving the
   pointer mid-gesture does not move the ribbon. Continuous tracking would need the mouse
   events S07 gave up.
+- **The window-switching preference is a promise this spec cannot keep alone.** It is
+  written down here so the default — off — is decided before the feature is designed, and
+  so S16 inherits a decision instead of making one under implementation pressure.
 - **A window with three controls invites more.** Every future preference has to justify
   itself against the product goal of nativeness — the settings window is not the place to
   park indecision.
