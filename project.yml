@@ -15,6 +15,7 @@ targets:
     sources:
       - path: Sources/App
         excludes: ["Info.plist"]
+      - path: Resources
     dependencies:
       - package: HumaneSpaceTab
         product: SwitcherCore
@@ -31,9 +32,11 @@ targets:
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         CFBundleDisplayName: Humane Space Tab
+        CFBundleIconFile: AppIcon
+        LSApplicationCategoryType: public.app-category.utilities
         LSUIElement: true
         LSMinimumSystemVersion: "15.0"
-        NSHumanReadableCopyright: "Licensed under GPL-3.0-or-later"
+        NSHumanReadableCopyright: "© 2026 the humane-space-tab authors. Licensed under GPL-3.0-or-later."
     settings:
       base:
         PRODUCT_NAME: "Humane Space Tab"
