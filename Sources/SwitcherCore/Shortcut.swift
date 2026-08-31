@@ -1,5 +1,6 @@
 public struct Shortcut: Hashable, Sendable {
     public static let commandTab = Shortcut(key: .tab, modifiers: [.command])
+    public static let commandGrave = Shortcut(key: .grave, modifiers: [.command])
 
     public let key: KeyCode
     public let modifiers: ModifierSet

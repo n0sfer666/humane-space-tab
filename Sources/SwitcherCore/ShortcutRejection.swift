@@ -4,4 +4,5 @@ public enum ShortcutRejection: Equatable, Sendable {
     case escape
     case reserved
     case modifierKey
+    case taken
 }

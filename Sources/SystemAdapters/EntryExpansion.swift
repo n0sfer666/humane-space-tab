@@ -26,4 +26,17 @@ public struct EntryExpansion {
             frontToBack: inventory.frontToBackWindows()
         )
     }
+
+    /// The window shortcut of S12 lists windows whatever the preference says: that is the
+    /// gesture, not a mode it can be in.
+    public func cycle(
+        _ applications: [SwitchableApplication],
+        onCurrentSpace: Set<WindowIdentifier>
+    ) -> [SwitcherEntry] {
+        FrontWindowCycle.entries(
+            front: applications.first,
+            onCurrentSpace: onCurrentSpace,
+            frontToBack: inventory.frontToBackWindows()
+        )
+    }
 }

@@ -15,20 +15,20 @@ struct HotkeyInterpreterTests {
     ) -> HotkeyDecision {
         HotkeyInterpreter.decide(
             KeyStroke(key: key, modifiers: modifiers, phase: phase),
-            shortcut: shortcut ?? self.shortcut,
-            sessionOpen: sessionOpen
+            shortcuts: ShortcutSet(applications: shortcut ?? self.shortcut),
+            session: sessionOpen ? .applications : nil
         )
     }
 
     @Test("the shortcut opens a session moving forward")
     func shortcutActivatesForward() {
-        #expect(decide(.tab, [.command], .down, sessionOpen: false) == .command(.activate(.forward)))
+        #expect(decide(.tab, [.command], .down, sessionOpen: false) == .command(.activate(.forward, .applications)))
     }
 
     @Test("the shortcut with shift opens a session moving backward")
     func shortcutActivatesBackward() {
         #expect(
-            decide(.tab, [.command, .shift], .down, sessionOpen: false) == .command(.activate(.backward))
+            decide(.tab, [.command, .shift], .down, sessionOpen: false) == .command(.activate(.backward, .applications))
         )
     }
 
@@ -99,7 +99,7 @@ struct HotkeyInterpreterTests {
         let custom = Shortcut(key: KeyCode(rawValue: 50), modifiers: [.option])
         #expect(
             decide(KeyCode(rawValue: 50), [.option], .down, sessionOpen: false, shortcut: custom)
-                == .command(.activate(.forward))
+                == .command(.activate(.forward, .applications))
         )
         #expect(decide(.tab, [.command], .down, sessionOpen: false, shortcut: custom) == .passThrough)
     }
@@ -109,7 +109,7 @@ struct HotkeyInterpreterTests {
         let custom = Shortcut(key: .tab, modifiers: [.control, .option])
         #expect(
             decide(.tab, [.control, .option], .down, sessionOpen: false, shortcut: custom)
-                == .command(.activate(.forward))
+                == .command(.activate(.forward, .applications))
         )
         #expect(decide(.tab, [.control], .down, sessionOpen: false, shortcut: custom) == .passThrough)
         #expect(
@@ -135,7 +135,7 @@ struct HotkeyInterpreterTests {
         let custom = Shortcut(key: .tab, modifiers: [.command, .shift])
         #expect(
             decide(.tab, [.command, .shift], .down, sessionOpen: false, shortcut: custom)
-                == .command(.activate(.forward))
+                == .command(.activate(.forward, .applications))
         )
         #expect(decide(.tab, [.command], .down, sessionOpen: false, shortcut: custom) == .passThrough)
     }
@@ -146,7 +146,7 @@ struct HotkeyInterpreterTests {
         #expect(decide(KeyCode(rawValue: 80), [], .flagsChanged, sessionOpen: true, shortcut: custom) == .consume)
         #expect(
             decide(KeyCode(rawValue: 80), [], .down, sessionOpen: false, shortcut: custom)
-                == .command(.activate(.forward))
+                == .command(.activate(.forward, .applications))
         )
     }
 }

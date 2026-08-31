@@ -9,10 +9,11 @@ public struct SwitcherMachine: Sendable {
 
     public mutating func open(
         _ entries: [SwitcherEntry],
-        _ direction: SelectionDirection
+        _ direction: SelectionDirection,
+        scope: SwitcherScope = .applications
     ) -> SwitcherEffect {
         guard session == nil,
-            let opened = SwitcherSession(entries: entries, direction: direction)
+            let opened = SwitcherSession(entries: entries, direction: direction, scope: scope)
         else { return .ignored }
         session = opened
         return .opened

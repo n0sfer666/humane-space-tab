@@ -1,10 +1,14 @@
 public struct SwitcherSession: Equatable, Sendable {
     public let entries: [SwitcherEntry]
+    /// Which shortcut opened it, so the release of a held modifier is read against that
+    /// shortcut and not against the other one (S12).
+    public let scope: SwitcherScope
     public private(set) var selection: Int
 
-    init?(entries: [SwitcherEntry], direction: SelectionDirection) {
+    init?(entries: [SwitcherEntry], direction: SelectionDirection, scope: SwitcherScope = .applications) {
         guard !entries.isEmpty else { return nil }
         self.entries = entries
+        self.scope = scope
         selection = 0
         step(direction)
     }

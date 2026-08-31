@@ -19,6 +19,12 @@ public final class SessionRuntime {
         switcher.isSessionOpen
     }
 
+    /// What the open session lists, or nothing when there is none: the tap reads a held
+    /// modifier's release against the shortcut that opened the session, not the other one.
+    public var openScope: SwitcherScope? {
+        switcher.session?.scope
+    }
+
     public func perform(_ command: HotkeyCommand) {
         report(switcher.handle(command))
     }

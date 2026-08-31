@@ -64,7 +64,7 @@ struct SessionPresenterTests {
             },
             activate: { _ in true }
         )
-        _ = coordinator.handle(.activate(.forward))
+        _ = coordinator.handle(.activate(.forward, .applications))
         return coordinator.session
     }
 

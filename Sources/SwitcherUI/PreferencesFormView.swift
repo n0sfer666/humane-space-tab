@@ -18,8 +18,7 @@ final class PreferencesFormView: NSView {
     private let onChange: @MainActor (Preferences) -> Void
     private var launchNoteRow: NSGridRow?
     private let loginItem: LoginItem
-    private var recorder: ShortcutRecorderView?
-    private var shortcut: Shortcut
+    private var shortcuts: ShortcutRows?
 
     init(
         preferences: Preferences,
@@ -31,15 +30,13 @@ final class PreferencesFormView: NSView {
     ) {
         self.onChange = onChange
         self.loginItem = loginItem
-        shortcut = preferences.shortcut
         super.init(frame: .zero)
-        recorder = ShortcutRecorderView(
-            shortcut: preferences.shortcut,
+        shortcuts = ShortcutRows(
+            preferences: preferences,
             formatter: formatter,
-            source: recording,
+            recording: recording,
             requestGrant: requestGrant
         ) { [weak self] in
-            self?.shortcut = $0
             self?.edited()
         }
         buildScreens()
@@ -114,7 +111,8 @@ final class PreferencesFormView: NSView {
         caption.textColor = .secondaryLabelColor
         caption.preferredMaxLayoutWidth = 320
         let grid = NSGridView(views: [
-            [Self.label("Shortcut"), recorder ?? NSGridCell.emptyContentView],
+            [Self.label("Applications"), shortcuts?.applicationsView ?? NSGridCell.emptyContentView],
+            [Self.label("Windows of the front app"), shortcuts?.windowsView ?? NSGridCell.emptyContentView],
             [Self.label("Show the ribbon on"), screens],
             [Self.label("Reveal delay"), delayRow],
             [NSGridCell.emptyContentView, launch],
@@ -150,7 +148,8 @@ final class PreferencesFormView: NSView {
                 overlayScreen: OverlayScreenChoice.allCases[screens.indexOfSelectedItem],
                 usesPrivateSpaceLayer: privateLayer.state == .on,
                 switchesWindows: windowSwitching.state == .on,
-                shortcut: shortcut
+                shortcut: shortcuts?.applications ?? .commandTab,
+                windowShortcut: shortcuts?.windows ?? .commandGrave
             )
         )
     }

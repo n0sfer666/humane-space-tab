@@ -20,7 +20,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var menuBar: MenuBarController?
     private var hotkeys: (any HotkeyEngine)?
     private var permissions: PermissionCenter?
-    private var appliedShortcut = Shortcut.commandTab
+    private var appliedShortcuts = ShortcutSet.standard
 
     init(log: any LogSink) {
         self.log = log
@@ -44,6 +44,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             order: MRUOrder(seed: seed),
             snapshot: { inventory.inventory() },
             expand: { expansion.entries($0, onCurrentSpace: $1) },
+            cycle: { expansion.cycle($0, onCurrentSpace: $1) },
             activate: { activation.activate($0) }
         )
         let icons = WorkspaceApplicationIconSource()
@@ -74,8 +75,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         surface.onGesture = { [runtime] gesture in runtime.handle(gesture) }
         let hotkeys = makeHotkeys()
         self.hotkeys = hotkeys
-        appliedShortcut = preferences.current.shortcut
-        preferences.observe { [weak self] preferences in self?.apply(preferences.shortcut) }
+        appliedShortcuts = preferences.current.shortcuts
+        preferences.observe { [weak self] preferences in self?.apply(preferences.shortcuts) }
         let permissions = PermissionCenter(
             authority: AXAccessibilityAuthority(),
             engine: hotkeys,
@@ -108,10 +109,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func makeHotkeys() -> InterceptingHotkeyEngine {
         InterceptingHotkeyEngine(log: log) { [log, runtime, preferences] mode in
             CGEventTapHotkeySource(
-                shortcut: preferences.current.shortcut,
+                shortcuts: preferences.current.shortcuts,
                 mode: mode,
                 log: log,
-                sessionOpen: { runtime.isSessionOpen },
+                session: { runtime.openScope },
                 emit: { command in runtime.perform(command) }
             )
         }
@@ -120,9 +121,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// Rebuilding goes through the permission centre because it owns the tap's lifecycle:
     /// while a shortcut is being recorded the tap is stood down, and the one that comes back
     /// afterwards is already built from the shortcut stored here.
-    private func apply(_ shortcut: Shortcut) {
-        guard shortcut != appliedShortcut else { return }
-        appliedShortcut = shortcut
+    private func apply(_ shortcuts: ShortcutSet) {
+        guard shortcuts != appliedShortcuts else { return }
+        appliedShortcuts = shortcuts
         permissions?.rebuildTap()
     }
 

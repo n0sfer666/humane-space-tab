@@ -7,4 +7,6 @@ public enum PreferencesKey {
     public static let windowSwitching = "WindowSwitchingEnabled"
     public static let shortcutKeyCode = "ShortcutKeyCode"
     public static let shortcutModifiers = "ShortcutModifiers"
+    public static let windowShortcutKeyCode = "WindowShortcutKeyCode"
+    public static let windowShortcutModifiers = "WindowShortcutModifiers"
 }

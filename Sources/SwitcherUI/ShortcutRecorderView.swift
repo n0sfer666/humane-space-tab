@@ -4,31 +4,37 @@ import SystemPorts
 
 @MainActor
 final class ShortcutRecorderView: NSView {
-    private let field = NSButton(title: "", target: nil, action: nil)
-    private let restore = NSButton(title: "Restore default", target: nil, action: nil)
-    private let grant = NSButton(title: "Grant Accessibility…", target: nil, action: nil)
-    private let reason = NSTextField(wrappingLabelWithString: "")
+    private var controls: ShortcutRecorderControls?
     private let formatter: ShortcutFormatter
     private let source: any ShortcutRecorderSource
     private let requestGrant: @MainActor () -> Void
+    private let taken: @MainActor () -> Shortcut?
+    private let willRecord: @MainActor () -> Void
     private let onChange: @MainActor (Shortcut) -> Void
+    private let standard: Shortcut
     private var shortcut: Shortcut
     private(set) var isRecording = false
 
     init(
         shortcut: Shortcut,
+        standard: Shortcut = .commandTab,
         formatter: ShortcutFormatter,
         source: any ShortcutRecorderSource,
         requestGrant: @escaping @MainActor () -> Void,
+        taken: @escaping @MainActor () -> Shortcut? = { nil },
+        willRecord: @escaping @MainActor () -> Void = {},
         onChange: @escaping @MainActor (Shortcut) -> Void
     ) {
         self.shortcut = shortcut
+        self.standard = standard
         self.formatter = formatter
         self.source = source
         self.requestGrant = requestGrant
+        self.taken = taken
+        self.willRecord = willRecord
         self.onChange = onChange
         super.init(frame: .zero)
-        build()
+        install()
         show()
     }
 
@@ -59,39 +65,23 @@ final class ShortcutRecorderView: NSView {
         )
     }
 
-    private func build() {
-        field.target = self
-        field.action = #selector(fieldClicked)
-        field.widthAnchor.constraint(greaterThanOrEqualToConstant: 120).isActive = true
-        restore.target = self
-        restore.action = #selector(restoreClicked)
-        grant.target = self
-        grant.action = #selector(grantClicked)
-        grant.isHidden = true
-        reason.font = .preferredFont(forTextStyle: .caption1)
-        reason.textColor = .secondaryLabelColor
-        reason.preferredMaxLayoutWidth = 320
-        install()
-    }
-
     private func install() {
-        let row = NSStackView(views: [field, restore, grant])
-        row.spacing = 8
-        let column = NSStackView(views: [row, reason])
-        column.orientation = .vertical
-        column.alignment = .leading
-        column.spacing = 4
-        column.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(column)
+        let controls = ShortcutRecorderControls(
+            onField: { [weak self] in self?.fieldClicked() },
+            onRestore: { [weak self] in self?.restoreClicked() },
+            onGrant: requestGrant
+        )
+        self.controls = controls
+        controls.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(controls)
         NSLayoutConstraint.activate([
-            column.topAnchor.constraint(equalTo: topAnchor),
-            column.leadingAnchor.constraint(equalTo: leadingAnchor),
-            trailingAnchor.constraint(equalTo: column.trailingAnchor),
-            bottomAnchor.constraint(equalTo: column.bottomAnchor),
+            controls.topAnchor.constraint(equalTo: topAnchor),
+            controls.leadingAnchor.constraint(equalTo: leadingAnchor),
+            trailingAnchor.constraint(equalTo: controls.trailingAnchor),
+            bottomAnchor.constraint(equalTo: controls.bottomAnchor),
         ])
     }
 
-    @objc
     private func fieldClicked() {
         if isRecording {
             endRecording()
@@ -100,15 +90,9 @@ final class ShortcutRecorderView: NSView {
         }
     }
 
-    @objc
     private func restoreClicked() {
-        adopt(.commandTab)
+        adopt(standard)
         endRecording()
-    }
-
-    @objc
-    private func grantClicked() {
-        requestGrant()
     }
 
     @objc
@@ -117,15 +101,16 @@ final class ShortcutRecorderView: NSView {
     }
 
     func beginRecording() {
+        willRecord()
         guard source.start(emit: { [weak self] in self?.handle($0) }) else {
-            reason.stringValue = Self.permissionMessage
-            grant.isHidden = false
+            controls?.message = Self.permissionMessage
+            controls?.showsGrant = true
             return
         }
-        grant.isHidden = true
+        controls?.showsGrant = false
         isRecording = true
         show()
-        reason.stringValue = Self.hint
+        controls?.message = Self.hint
     }
 
     func endRecording() {
@@ -144,8 +129,12 @@ final class ShortcutRecorderView: NSView {
         case .cancelled:
             endRecording()
         case .rejected(let rejection):
-            reason.stringValue = ShortcutRejectionMessage.text(for: rejection)
+            controls?.message = ShortcutRejectionMessage.text(for: rejection)
         case .recorded(let recorded):
+            if let rejection = ShortcutRule.rejection(for: recorded, taken: taken()) {
+                controls?.message = ShortcutRejectionMessage.text(for: rejection)
+                return
+            }
             adopt(recorded)
             endRecording()
         }
@@ -161,9 +150,11 @@ final class ShortcutRecorderView: NSView {
     }
 
     private func show() {
-        field.title = isRecording ? "Type a shortcut…" : formatter.label(for: shortcut)
-        restore.isEnabled = !isRecording && shortcut != .commandTab
-        if !isRecording { reason.stringValue = "" }
+        controls?.show(
+            isRecording ? "Type a shortcut…" : formatter.label(for: shortcut),
+            restoreEnabled: !isRecording && shortcut != standard
+        )
+        if !isRecording { controls?.message = "" }
     }
 
     private static let hint = "Press Escape to cancel."

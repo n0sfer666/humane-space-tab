@@ -13,6 +13,8 @@ enum ShortcutRejectionMessage {
             return "That shortcut quits or closes an app. Pick another one."
         case .modifierKey:
             return "That key only ever modifies another one. Pick a key to tap while holding it."
+        case .taken:
+            return "That is already the other shortcut. Pick a different one."
         }
     }
 }

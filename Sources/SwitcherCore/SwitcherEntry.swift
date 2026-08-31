@@ -23,4 +23,14 @@ extension SwitcherEntry {
     ) -> [SwitcherEntry] {
         applications.map { SwitcherEntry(application: $0) }
     }
+
+    /// The window cycle of S12 without the window server's stacking order, which only the
+    /// adapters can ask for: the front application's windows in the order the inventory
+    /// listed them.
+    public static func frontWindows(
+        _ applications: [SwitchableApplication],
+        _ onCurrentSpace: Set<WindowIdentifier>
+    ) -> [SwitcherEntry] {
+        FrontWindowCycle.entries(front: applications.first, onCurrentSpace: onCurrentSpace, frontToBack: [])
+    }
 }

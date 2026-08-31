@@ -7,28 +7,12 @@ public enum WindowExpansion {
         onCurrentSpace: Set<WindowIdentifier>,
         frontToBack: [WindowIdentifier]
     ) -> [SwitcherEntry] {
-        var rank: [WindowIdentifier: Int] = [:]
-        for (position, window) in frontToBack.enumerated() where rank[window] == nil {
-            rank[window] = position
-        }
-        var stacked: [(position: Int, entry: SwitcherEntry)] = []
-        var appended: [SwitcherEntry] = []
-        for application in applications {
+        let entries = applications.flatMap { application -> [SwitcherEntry] in
             let windows = listed(application, onCurrentSpace: onCurrentSpace)
-            guard !windows.isEmpty else {
-                appended.append(SwitcherEntry(application: application))
-                continue
-            }
-            for window in windows {
-                let entry = SwitcherEntry(application: application, window: window)
-                if let position = rank[window.id] {
-                    stacked.append((position, entry))
-                } else {
-                    appended.append(entry)
-                }
-            }
+            guard !windows.isEmpty else { return [SwitcherEntry(application: application)] }
+            return windows.map { SwitcherEntry(application: application, window: $0) }
         }
-        return stacked.sorted { $0.position < $1.position }.map(\.entry) + appended
+        return StackingOrder(frontToBack: frontToBack).sorted(entries)
     }
 
     /// The windows this Space can show: the ones it holds, plus the ones no Space claims —

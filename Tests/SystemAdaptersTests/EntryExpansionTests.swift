@@ -61,4 +61,18 @@ struct EntryExpansionTests {
         #expect(entries.map { $0.window?.id.rawValue } == [11, 10])
         #expect(inventory.asked == 1)
     }
+
+    @Test("the window cycle lists the front application's windows whatever the preference says")
+    func cyclesFrontWindows() {
+        let inventory = InventorySpy()
+        inventory.stack = [11, 10].map(WindowIdentifier.init(rawValue:))
+        let expansion = EntryExpansion(inventory: inventory, preference: Preference(switchesWindows: false))
+        let entries = expansion.cycle(
+            [application(1, windows: [10, 11]), application(2, windows: [20])],
+            onCurrentSpace: Set([10, 11, 20].map(WindowIdentifier.init(rawValue:)))
+        )
+        #expect(entries.map { $0.window?.id.rawValue } == [11, 10])
+        #expect(entries.allSatisfy { $0.application.pid == ProcessIdentifier(rawValue: 1) })
+        #expect(inventory.asked == 1)
+    }
 }

@@ -20,6 +20,8 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
     case hotkeyInterceptUnavailable
     case hotkeyActivateForward
     case hotkeyActivateBackward
+    case hotkeyActivateWindowsForward
+    case hotkeyActivateWindowsBackward
     case hotkeyStepForward
     case hotkeyStepBackward
     case hotkeyCancelled
@@ -53,8 +55,10 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
 
     public init(command: HotkeyCommand) {
         switch command {
-        case .activate(.forward): self = .hotkeyActivateForward
-        case .activate(.backward): self = .hotkeyActivateBackward
+        case .activate(.forward, .applications): self = .hotkeyActivateForward
+        case .activate(.backward, .applications): self = .hotkeyActivateBackward
+        case .activate(.forward, .frontWindows): self = .hotkeyActivateWindowsForward
+        case .activate(.backward, .frontWindows): self = .hotkeyActivateWindowsBackward
         case .step(.forward): self = .hotkeyStepForward
         case .step(.backward): self = .hotkeyStepBackward
         case .cancel: self = .hotkeyCancelled
@@ -73,7 +77,8 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
             .ui
         case .hotkeyTapStarted, .hotkeyTapStopped, .hotkeyTapUnavailable, .hotkeyTapReenabled,
             .hotkeyInterceptUnavailable,
-            .hotkeyActivateForward, .hotkeyActivateBackward, .hotkeyStepForward, .hotkeyStepBackward,
+            .hotkeyActivateForward, .hotkeyActivateBackward, .hotkeyActivateWindowsForward,
+            .hotkeyActivateWindowsBackward, .hotkeyStepForward, .hotkeyStepBackward,
             .hotkeyCancelled, .hotkeyCommitted:
             .hotkey
         case .switcherSessionOpened, .switcherSelectionMoved, .switcherSessionCancelled,
@@ -105,6 +110,8 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
         case .hotkeyInterceptUnavailable: "interception unavailable, falling back to observation"
         case .hotkeyActivateForward: "hotkey activated the switcher moving forward"
         case .hotkeyActivateBackward: "hotkey activated the switcher moving backward"
+        case .hotkeyActivateWindowsForward: "hotkey activated the window switcher moving forward"
+        case .hotkeyActivateWindowsBackward: "hotkey activated the window switcher moving backward"
         case .hotkeyStepForward: "hotkey stepped forward"
         case .hotkeyStepBackward: "hotkey stepped backward"
         case .hotkeyCancelled: "hotkey cancelled the session"
