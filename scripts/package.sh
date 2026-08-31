@@ -24,7 +24,7 @@ root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$root"
 
 derived=".build/release"
-app="$derived/Build/Products/Release/HumaneSpaceTab.app"
+app="$derived/Build/Products/Release/Humane Space Tab.app"
 plist="$app/Contents/Info.plist"
 binary="$app/Contents/MacOS/HumaneSpaceTab"
 log="$derived/xcodebuild.log"

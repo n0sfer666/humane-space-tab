@@ -14,7 +14,8 @@ root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$root"
 
 destination="/Applications"
-installed="$destination/HumaneSpaceTab.app"
+installed="$destination/Humane Space Tab.app"
+legacy="$destination/HumaneSpaceTab.app"
 zip="dist/HumaneSpaceTab-$version.zip"
 
 fail() {
@@ -37,7 +38,7 @@ if pgrep -qx HumaneSpaceTab; then
 fi
 
 echo "==> installing into $destination"
-rm -rf "$installed"
+rm -rf "$installed" "$legacy"
 ditto -x -k "$zip" "$destination"
 [[ -d "$installed" ]] || fail "$zip did not unpack into $installed"
 

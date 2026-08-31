@@ -59,7 +59,7 @@ The full threat model is [S00](docs/specs/S00-threat-model.md).
 ## Install
 
 Download the latest zip from [Releases](../../releases), unpack it and move
-**HumaneSpaceTab.app** to `/Applications`.
+**Humane Space Tab.app** to `/Applications`.
 
 The first launch is refused: macOS quarantines a downloaded build that carries no
 Developer ID. Open **System Settings → Privacy & Security**, scroll to the bottom and
@@ -130,12 +130,12 @@ script in CI and publishes a pre-release; the details are in
 Installing a build you made yourself is one script on top of it:
 
 ```sh
-scripts/install.sh 0.1.0        # packages, replaces /Applications/HumaneSpaceTab.app, relaunches
+scripts/install.sh 0.1.0        # packages, replaces /Applications/Humane Space Tab.app, relaunches
 ```
 
 It packages first, so it never installs a bundle that failed a check; it quits the
 running app, replaces the bundle, verifies the installed version and launches it. Expect
-the last lines to read `==> /Applications/HumaneSpaceTab.app is 0.1.0, running as pid …`
+the last lines to read `==> /Applications/Humane Space Tab.app is 0.1.0, running as pid …`
 followed by the reminder that Accessibility has to be granted again — every local build
 carries its own ad-hoc signature, and macOS ties the grant to the signature.
 
