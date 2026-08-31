@@ -12,7 +12,8 @@ the last piece that makes the switcher a switcher; showing the choice is S07.
 
 - Choosing *which* application — S05 owns the session and hands over one process.
 - Restoring a minimised window — deliberately not done, see below.
-- Raising a particular window of an application (`Cmd+~`) — S12+.
+- Raising a particular window of an application (`Cmd+~`) — S12+. Raising the window the
+  user picked in the ribbon is S16, which revises the verdict on `kAXRaiseAction` below.
 - Turning the tap to `.intercept` — still S07. Until then the system switcher
   activates first and ours activates the same application a moment later.
 
@@ -24,7 +25,7 @@ the last piece that makes the switcher a switcher; showing the choice is S07.
 |---|---|---|
 | `NSRunningApplication.activate()` | none | **chosen** — unhides, works from a background accessory process |
 | `activate(options: .activateIgnoringOtherApps)` | none | rejected: deprecated in macOS 14, and stealing activation is exactly what the cooperative API replaced |
-| `AXUIElementPerformAction(kAXRaiseAction)` | Accessibility | rejected for the application case: needs a grant we do not need yet, and raises a window rather than an application |
+| `AXUIElementPerformAction(kAXRaiseAction)` | Accessibility | rejected for the application case: it raises a window rather than an application. The grant argument expired when S07 took it for interception, and S16 uses this call for the window case |
 | Private SkyLight ordering | none, but private | rejected — S00 keeps the private layer to the single S03 shim |
 
 `activate()` needs no permission at all. That matters: until S07 turns the tap to

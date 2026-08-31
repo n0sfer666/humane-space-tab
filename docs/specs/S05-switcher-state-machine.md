@@ -28,7 +28,7 @@ macOS orders `Cmd+Tab` by most recent use, and that history predates our process
 | Source | Gives MRU | Cost | Verdict |
 |---|---|---|---|
 | `NSWorkspace.runningApplications` order | no — roughly launch order | free | rejected as an order |
-| `AXObserver` on focus changes | yes | one observer per app, Accessibility per app | rejected: heavy, and S00 keeps us off `AX` reads |
+| `AXObserver` on focus changes | yes | one observer per app, Accessibility per app | rejected: heavy. S16 later reads window titles over `AX`, but never keeps an observer alive |
 | Private `CGSGetWindowOrder` | yes | private, already have a public equivalent | rejected |
 | On-screen window list, front to back | yes, for anything with a window | one window-server call, at launch only | **chosen as the seed** |
 | `NSWorkspace.didActivateApplicationNotification` | yes, exactly | one notification | **chosen as the live signal** |
