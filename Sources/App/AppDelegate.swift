@@ -17,6 +17,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let overlay: OverlayController
     private let preferences: PreferencesCenter
     private let loginItem: LoginItem
+    private let inputMonitoring: any InputMonitoringSettings
     private var settings: PreferencesWindowController?
     private var menuBar: MenuBarController?
     private var hotkeys: (any HotkeyEngine)?
@@ -31,17 +32,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             log.record(.preferencesChanged)
         }
         loginItem = LoginItem(service: SMAppServiceLoginItem(), log: log)
-        let inventory = CurrentSpaceInventorySource(
-            applications: WorkspaceApplicationSource(),
-            windows: CoreGraphicsWindowSource(),
-            hierarchy: LibprocProcessHierarchy(),
-            spaces: PreferredSpaceMembership(
-                preference: UserDefaultsSpaceLayerPreference(),
-                privateLayer: SkyLightSpaceMembershipSource(),
-                publicLayer: OnScreenSpaceMembershipSource(),
-                log: log
-            )
-        )
+        inputMonitoring = SystemSettingsInputMonitoring()
+        let inventory = InventoryAssembly.make(log: log)
         report = InventoryReport(inventory: inventory, destination: PasteboardTextSink())
         activations = WorkspaceActivationObserver()
         let activator = WorkspaceApplicationActivator()
@@ -76,7 +68,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         self.hotkeys = hotkeys
         appliedShortcut = preferences.current.shortcut
         preferences.observe { [weak self] preferences in self?.apply(preferences.shortcut) }
-        let permissions = PermissionCenter(authority: AXAccessibilityAuthority(), engine: hotkeys, log: log) { work in
+        let permissions = PermissionCenter(
+            authority: AXAccessibilityAuthority(),
+            engine: hotkeys,
+            delivery: CGEventTapKeyDelivery(),
+            log: log
+        ) { work in
             DispatchQueue.main.asyncAfter(deadline: .now() + Self.trustPollInterval) {
                 MainActor.assumeIsolated(work)
             }
@@ -86,6 +83,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             log: log,
             openSettings: { [weak self] in self?.openSettings() },
             grantAccessibility: { [permissions] in permissions.requestGrant() },
+            openInputMonitoring: { [inputMonitoring] in inputMonitoring.open() },
             copyInventory: { [report] in report.copyToDestination() },
             quit: { NSApplication.shared.terminate(nil) }
         )

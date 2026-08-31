@@ -11,8 +11,9 @@ a relaunch — and stop claiming to work when the grant is taken away.
 
 ## Non-goals
 
-- Any second permission. S00 stands: no screen recording, no automation, no input monitoring
-  beyond the event tap Accessibility already covers.
+- Any second permission. S00 stands: no screen recording, no automation, and Input Monitoring
+  is never requested — S15 reads whether the tap receives key presses and points at the list
+  when it does not, which is the opposite of asking for a grant.
 - An onboarding window or a tour. The menu bar is where the user notices the app is broken,
   so that is where the state lives; the settings window stays about preferences.
 - Re-implementing System Settings deep links per OS version. One documented URL, and if it
@@ -22,16 +23,18 @@ a relaunch — and stop claiming to work when the grant is taken away.
 
 ### The state is derived, never stored
 
-Two facts decide everything: whether the process is trusted, and which tap the hotkey engine
-actually got. `PermissionState` is computed from that pair and from nothing else, so it
-cannot drift out of date the way a cached copy would.
+Three facts decide everything: whether the process is trusted, which tap the hotkey engine
+actually got, and whether that tap still carries key presses (S15). `PermissionState` is
+computed from those and from nothing else, so it cannot drift out of date the way a cached
+copy would.
 
-| Trusted | Tap | State | Menu bar | What the menu says |
-|---|---|---|---|---|
-| no | none | `blocked` | warning icon | Accessibility is off — `Cmd+Tab` still belongs to macOS; **Grant Accessibility…** |
-| yes | none | `blocked` | warning icon | macOS refused the event tap; relaunching is the only cure |
-| yes | observe | `observing` | warning icon | the switcher can see `Cmd+Tab` but not take it over |
-| yes | intercept | `intercepting` | plain icon | nothing |
+| Trusted | Tap | Keys | State | Menu bar | What the menu says |
+|---|---|---|---|---|---|
+| no | none | — | `blocked` | warning icon | Accessibility is off — `Cmd+Tab` still belongs to macOS; **Grant Accessibility…** |
+| yes | none | — | `blocked` | warning icon | macOS refused the event tap; relaunching is the only cure |
+| yes | any | no | `deaf` | warning icon | macOS is withholding key presses; **Open Input Monitoring…** |
+| yes | observe | yes | `observing` | warning icon | the switcher can see `Cmd+Tab` but not take it over |
+| yes | intercept | yes | `intercepting` | plain icon | nothing |
 
 `observing` is a real state, not an error: S04 already falls back to a listen-only tap when
 interception is refused (secure input, another switcher). The user has to be told, because

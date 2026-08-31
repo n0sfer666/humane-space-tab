@@ -6,29 +6,9 @@ import Testing
 @MainActor
 @Suite("Permission centre")
 struct PermissionCenterTests {
-    @MainActor
-    private final class Fixture {
-        let authority = AccessibilityAuthorityStub()
-        let engine = HotkeyEngineStub()
-        let log = LogSpy()
-        var ticks: [@MainActor () -> Void] = []
-        lazy var center = PermissionCenter(
-            authority: authority,
-            engine: engine,
-            log: log,
-            poll: { [unowned self] work in self.ticks.append(work) }
-        )
-
-        func tick() {
-            let pending = ticks
-            ticks = []
-            for work in pending { work() }
-        }
-    }
-
     @Test("starting without the permission publishes the blocked state and arms the timer")
     func startsBlocked() {
-        let fixture = Fixture()
+        let fixture = PermissionCenterFixture()
         var published: [PermissionState] = []
         fixture.center.observe { published.append($0) }
         fixture.center.start()
@@ -39,7 +19,7 @@ struct PermissionCenterTests {
 
     @Test("a timer that finds no permission arms itself again without touching the tap")
     func pollWhileStillBlocked() {
-        let fixture = Fixture()
+        let fixture = PermissionCenterFixture()
         fixture.center.start()
         fixture.tick()
         #expect(fixture.engine.starts == 1)
@@ -49,7 +29,7 @@ struct PermissionCenterTests {
 
     @Test("a granted permission rebuilds the tap and stops the timer")
     func pollAfterAGrant() {
-        let fixture = Fixture()
+        let fixture = PermissionCenterFixture()
         var published: [PermissionState] = []
         fixture.center.observe { published.append($0) }
         fixture.center.start()
@@ -64,7 +44,7 @@ struct PermissionCenterTests {
 
     @Test("starting with the permission in place arms no timer")
     func startsTrusted() {
-        let fixture = Fixture()
+        let fixture = PermissionCenterFixture()
         fixture.authority.isTrusted = true
         fixture.engine.tapWhenTrusted = .intercept
         fixture.center.start()
@@ -74,7 +54,7 @@ struct PermissionCenterTests {
 
     @Test("the first request shows the system prompt and the next one opens System Settings")
     func grantAsksOnce() {
-        let fixture = Fixture()
+        let fixture = PermissionCenterFixture()
         fixture.center.requestGrant()
         fixture.center.requestGrant()
         #expect(fixture.authority.prompts == 1)
@@ -83,7 +63,7 @@ struct PermissionCenterTests {
 
     @Test("a suspended tap is not put back by a refresh that fires meanwhile")
     func refreshRespectsSuspension() {
-        let fixture = Fixture()
+        let fixture = PermissionCenterFixture()
         fixture.authority.isTrusted = true
         fixture.engine.tapWhenTrusted = .intercept
         fixture.center.start()
@@ -97,7 +77,7 @@ struct PermissionCenterTests {
 
     @Test("resuming builds the tap again and publishes what came back")
     func resumeRebuildsTheTap() {
-        let fixture = Fixture()
+        let fixture = PermissionCenterFixture()
         fixture.authority.isTrusted = true
         fixture.engine.tapWhenTrusted = .intercept
         fixture.center.start()
@@ -110,7 +90,7 @@ struct PermissionCenterTests {
 
     @Test("a changed shortcut rebuilds the tap it is baked into")
     func rebuildAfterShortcutChange() {
-        let fixture = Fixture()
+        let fixture = PermissionCenterFixture()
         fixture.authority.isTrusted = true
         fixture.engine.tapWhenTrusted = .intercept
         fixture.center.start()
@@ -122,7 +102,7 @@ struct PermissionCenterTests {
 
     @Test("a permission revoked while the app ran is noticed on the next refresh")
     func refreshAfterRevocation() {
-        let fixture = Fixture()
+        let fixture = PermissionCenterFixture()
         fixture.authority.isTrusted = true
         fixture.engine.tapWhenTrusted = .intercept
         fixture.center.start()

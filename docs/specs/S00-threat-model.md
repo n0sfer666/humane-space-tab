@@ -42,6 +42,7 @@ its released artefacts, or landing malicious code in it through a pull request.
 | Permission | Requested | Rationale |
 |---|---|---|
 | Accessibility | yes, required | `CGEventTap` interception and raising other apps' windows |
+| Input Monitoring | **never** | the tap works without a grant here; a row that *denies* it silently strips key presses from the tap, which S15 detects and explains |
 | Screen Recording | **never** | only needed for window previews and `kCGWindowName`; both are out of scope |
 | Full Disk Access, Camera, Microphone, Contacts, … | never | no use case exists |
 
@@ -111,12 +112,16 @@ consequences, to be documented for users rather than hidden:
 
 - the Accessibility grant is tied to the code signature, so it must be granted
   again after every update or rebuild;
+- TCC rows are tied to the same signature, so a row left over from an older build can
+  keep **denying** Input Monitoring to a build that never asked for it, which strips
+  key presses from the tap without saying so;
 - a downloaded build carries the quarantine attribute and needs
   System Settings → Privacy & Security → Open Anyway on macOS 15+;
 - distribution is via source build and a project-owned Homebrew tap.
 
 The app must therefore *detect* that it has lost the Accessibility grant and explain
-why, rather than silently doing nothing. That behaviour is specified in S10.
+why, rather than silently doing nothing. That behaviour is specified in S10, and the
+tap that stays alive while macOS withholds key presses from it in S15.
 
 ### Supply chain
 
