@@ -66,6 +66,13 @@ public final class PermissionCenter {
         publish()
     }
 
+    /// A menu bar item is easy to miss, and the app does nothing at all until the permission
+    /// is there: the first launch without it asks by itself rather than waiting to be found.
+    public func requestGrantIfMissing() {
+        guard !authority.isTrusted else { return }
+        requestGrant()
+    }
+
     public func requestGrant() {
         if asked {
             authority.openSystemSettings()

@@ -26,7 +26,7 @@ public final class MenuBarController {
         self.openInputMonitoring = openInputMonitoring
         self.copyInventory = copyInventory
         self.quit = quit
-        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusItem.menu = Self.makeMenu(target: self)
         show(.intercepting)
         log.record(.menuBarItemInstalled)
@@ -35,10 +35,9 @@ public final class MenuBarController {
     /// The icon carries the state, because a menu bar app that quietly does nothing looks
     /// exactly like one that works.
     public func show(_ state: PermissionState) {
-        statusItem.button?.image = NSImage(
-            systemSymbolName: state.needsAttention ? "exclamationmark.triangle" : "square.on.square",
-            accessibilityDescription: "Humane Space Tab"
-        )
+        let image = MenuBarIcon.image(for: state)
+        statusItem.button?.image = image
+        statusItem.button?.title = image == nil ? MenuBarIcon.fallback : ""
         statusItem.menu.map { menu in Self.showPermission(state, in: menu, target: self) }
     }
 

@@ -61,6 +61,20 @@ struct PermissionCenterTests {
         #expect(fixture.authority.settingsOpened == 1)
     }
 
+    @Test("a launch without the permission asks for it once, a launch with it asks nothing")
+    func asksOnLaunchWhenMissing() {
+        let blocked = PermissionCenterFixture()
+        blocked.center.start()
+        blocked.center.requestGrantIfMissing()
+        #expect(blocked.authority.prompts == 1)
+        let trusted = PermissionCenterFixture()
+        trusted.authority.isTrusted = true
+        trusted.engine.tapWhenTrusted = .intercept
+        trusted.center.start()
+        trusted.center.requestGrantIfMissing()
+        #expect(trusted.authority.prompts == 0)
+    }
+
     @Test("a suspended tap is not put back by a refresh that fires meanwhile")
     func refreshRespectsSuspension() {
         let fixture = PermissionCenterFixture()

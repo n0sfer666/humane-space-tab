@@ -96,7 +96,7 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
         case .settingsOpenedFromMenu: "settings opened from menu"
         case .preferencesChanged: "preferences changed"
         case .loginItemChangeFailed: "the system refused to change the login item"
-        case .accessibilityRequested: "accessibility requested from the menu"
+        case .accessibilityRequested: "accessibility requested"
         case .accessibilityBlocked: "accessibility is missing, the switcher is idle"
         case .accessibilityDeaf: "the tap receives no key presses, input monitoring is refusing them"
         case .accessibilityObservingOnly: "the tap can observe but not intercept"

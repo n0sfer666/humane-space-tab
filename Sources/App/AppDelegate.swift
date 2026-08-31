@@ -98,10 +98,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         )
         permissions.observe { [weak self] state in self?.menuBar?.show(state) }
         permissions.start()
+        permissions.requestGrantIfMissing()
     }
 
     func applicationDidBecomeActive(_ notification: Notification) {
         permissions?.refresh()
+    }
+
+    /// A menu bar item is not guaranteed a slot: a bar already full to the notch simply drops
+    /// it, and with it every way into the app. Opening the app again is then the way back in.
+    func applicationShouldHandleReopen(_ application: NSApplication, hasVisibleWindows: Bool) -> Bool {
+        openSettings()
+        return true
     }
 
     private static let trustPollInterval: TimeInterval = 2
