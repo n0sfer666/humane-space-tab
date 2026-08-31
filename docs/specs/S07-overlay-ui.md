@@ -12,7 +12,7 @@ of the product.
 ## Non-goals
 
 - Window previews. Never, in any release: they need Screen Recording (S00).
-- Mouse interaction — hovering and clicking a tile is S08 together with preferences.
+- Mouse interaction — hovering, clicking and scrolling a tile is [S14](S14-overlay-mouse.md).
 - Per-window rows (`Cmd+~`, App Exposé) — S12+.
 - Choosing which display to show on — S08; S07 uses the focused screen.
 - Requesting or explaining the Accessibility permission — S10. S07 only degrades
@@ -35,7 +35,7 @@ about it needs a declarative framework.
 | `styleMask` | `[.nonactivatingPanel, .borderless]` | showing the overlay must not make us frontmost — measured: the previously frontmost application stayed frontmost, and the panel is neither key nor main |
 | `level` | `.popUpMenu` | above ordinary and floating windows, below the screen saver |
 | `collectionBehavior` | `.canJoinAllSpaces, .stationary, .fullScreenAuxiliary, .ignoresCycle` | appears on whatever Space the user is on, including over a full-screen application, and never becomes a switch target itself |
-| `ignoresMouseEvents` | `true` | S07 has no mouse interaction; clicks must reach the application underneath |
+| `ignoresMouseEvents` | `true`, until [S14](S14-overlay-mouse.md) gives the ribbon the pointer | S07 has no mouse interaction; clicks must reach the application underneath |
 | `hidesOnDeactivate` | `false` | we are never active to begin with |
 | `backgroundColor` | `.clear`, with the system's own panel material behind it and a 26 pt corner radius | native look, no custom chrome |
 
@@ -61,7 +61,7 @@ cancel hide it immediately.
 A ribbon nobody has touched for **10 seconds** hides itself. Interception makes the
 failure it guards against concrete: a tap disabled by the system mid-gesture never
 delivers the release of Command, so the session that would hide the panel never ends —
-and a panel that ignores the mouse leaves the user nothing to click. The watchdog is
+and a panel that ignored the mouse left the user nothing to click. The watchdog is
 re-armed on every step and cancelled on hide, so it only ever fires on a session that
 has stopped receiving events.
 

@@ -4,7 +4,8 @@ import Foundation
 public final class OverlayController {
     public static let revealDelay: TimeInterval = 0.12
     /// A ribbon nobody has touched for this long belongs to a session that will never end:
-    /// a tap killed mid-gesture leaves no way to dismiss a panel that ignores the mouse.
+    /// a tap killed mid-gesture never delivers the release of Command, and nothing else
+    /// takes the panel down.
     public static let idleLimit: TimeInterval = 10
 
     /// Preferences (S08) change this between sessions; a session already waiting keeps

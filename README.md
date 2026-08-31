@@ -37,6 +37,8 @@ project's standing commitments:
 - window titles are read only while the optional window switching is turned on, and
   only to be drawn on the ribbon: never logged, never written to disk, never sent
   anywhere;
+- the pointer is seen only over the ribbon's own panel, and only while the ribbon is
+  on screen: no global mouse monitoring, nothing recorded anywhere;
 - hardened runtime, no entitlements beyond what is strictly required;
 - everything auditable — the full source is here, under GPL-3.0.
 

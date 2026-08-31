@@ -44,6 +44,12 @@ public final class SwitcherCoordinator {
         return machine.open(expand(order.ordered(inventory.applications), inventory.windowsOnCurrentSpace), direction)
     }
 
+    /// The pointer names the entry it is over, so it moves the selection by index while the
+    /// keyboard moves it by direction; both end in the same session.
+    public func select(_ index: Int) -> SwitcherEffect {
+        machine.select(index)
+    }
+
     public func handle(_ command: HotkeyCommand) -> SwitcherEffect {
         switch command {
         case .activate(let direction): open(direction)

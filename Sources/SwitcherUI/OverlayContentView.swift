@@ -9,6 +9,9 @@ final class OverlayContentView: NSView {
     private var model = OverlayModel(entries: [], selection: 0)
     private var layout = OverlayLayout.empty
     private var offset = 0
+    private var mouse = RibbonMouse()
+
+    var onGesture: ((RibbonGesture) -> Void)?
 
     init(icons: any ApplicationIconSource, metrics: OverlayMetrics) {
         self.icons = icons
@@ -24,6 +27,7 @@ final class OverlayContentView: NSView {
     override var isFlipped: Bool { true }
 
     func render(_ model: OverlayModel, layout: OverlayLayout, offset: Int) {
+        mouse.rendered(layout: layout, offset: offset, selection: model.selection)
         let previous = self.model
         let stepped =
             self.layout == layout && self.offset == offset
@@ -36,6 +40,53 @@ final class OverlayContentView: NSView {
             return
         }
         setNeedsDisplay(changed)
+    }
+
+    func beginSession() {
+        mouse.reset()
+    }
+
+    override func updateTrackingAreas() {
+        super.updateTrackingAreas()
+        for area in trackingAreas { removeTrackingArea(area) }
+        addTrackingArea(
+            NSTrackingArea(rect: .zero, options: [.mouseMoved, .activeAlways, .inVisibleRect], owner: self)
+        )
+    }
+
+    override func mouseMoved(with event: NSEvent) {
+        hover(event)
+    }
+
+    override func mouseDragged(with event: NSEvent) {
+        hover(event)
+    }
+
+    override func mouseDown(with event: NSEvent) {
+        mouse.press(at: point(of: event))
+    }
+
+    override func mouseUp(with event: NSEvent) {
+        guard let gesture = mouse.release(at: point(of: event)) else { return }
+        onGesture?(gesture)
+    }
+
+    /// The inertial tail of a flick would keep stepping after the fingers left the glass, and a
+    /// switcher that goes on moving by itself switches to the wrong thing.
+    override func scrollWheel(with event: NSEvent) {
+        guard event.momentumPhase.isEmpty else { return }
+        let deltas = ScrollDeltas.of(event)
+        guard let scroll = mouse.scrolled(across: deltas.across, down: deltas.down) else { return }
+        for _ in 0..<scroll.count { onGesture?(.step(scroll.direction)) }
+    }
+
+    private func hover(_ event: NSEvent) {
+        guard let gesture = mouse.moved(to: point(of: event)) else { return }
+        onGesture?(gesture)
+    }
+
+    private func point(of event: NSEvent) -> CGPoint {
+        convert(event.locationInWindow, from: nil)
     }
 
     /// A step repaints the tile that lost the selection and the one that gained it, not the

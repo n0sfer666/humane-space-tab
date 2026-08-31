@@ -10,7 +10,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let log: any LogSink
     private let report: InventoryReport
     private let activations: any ApplicationActivationObserver
-    private let switcher: SwitcherCoordinator
+    private let runtime: SessionRuntime
     private let surface: OverlayWindowSurface
     private let presenter: SessionPresenter
     private let preferences: PreferencesCenter
@@ -40,7 +40,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         )
         let expansion = EntryExpansion(inventory: inventory, preference: UserDefaultsWindowSwitching())
         let seed = inventory.frontToBackApplications()
-        switcher = SwitcherCoordinator(
+        let switcher = SwitcherCoordinator(
             order: MRUOrder(seed: seed),
             snapshot: { inventory.inventory() },
             expand: { expansion.entries($0, onCurrentSpace: $1) },
@@ -50,7 +50,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         icons.prewarm(seed)
         let surface = OverlayWindowSurface(icons: icons)
         self.surface = surface
-        presenter = SessionPresenter(
+        let presenter = SessionPresenter(
             overlay: OverlayController(
                 surface: surface,
                 scheduler: MainQueueOverlayScheduler(),
@@ -59,6 +59,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             icons: icons,
             titles: SessionTitles(source: AXWindowTitles())
         )
+        self.presenter = presenter
+        runtime = SessionRuntime(switcher: switcher, presenter: presenter, log: log)
         super.init()
     }
 
@@ -68,7 +70,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             presenter.delay = preferences.revealDelay
             surface.screen = preferences.overlayScreen
         }
-        activations.observe { [switcher] process in switcher.recordActivation(of: process) }
+        activations.observe { [runtime] process in runtime.recordActivation(of: process) }
+        surface.onGesture = { [runtime] gesture in runtime.handle(gesture) }
         let hotkeys = makeHotkeys()
         self.hotkeys = hotkeys
         appliedShortcut = preferences.current.shortcut
@@ -103,17 +106,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private static let trustPollInterval: TimeInterval = 2
 
     private func makeHotkeys() -> InterceptingHotkeyEngine {
-        InterceptingHotkeyEngine(log: log) { [log, switcher, presenter, preferences] mode in
+        InterceptingHotkeyEngine(log: log) { [log, runtime, preferences] mode in
             CGEventTapHotkeySource(
                 shortcut: preferences.current.shortcut,
                 mode: mode,
                 log: log,
-                sessionOpen: { switcher.isSessionOpen },
-                emit: { command in
-                    let effect = switcher.handle(command)
-                    log.record(LogEvent(effect: effect))
-                    presenter.show(switcher.session, opened: effect == .opened)
-                }
+                sessionOpen: { runtime.isSessionOpen },
+                emit: { command in runtime.perform(command) }
             )
         }
     }
@@ -152,7 +151,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ notification: Notification) {
         hotkeys?.stop()
         activations.stop()
-        presenter.show(nil, opened: false)
+        runtime.end()
         log.record(.applicationWillTerminate)
     }
 }
