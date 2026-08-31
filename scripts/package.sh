@@ -66,6 +66,11 @@ built_version="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' 
 built_build="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$plist")"
 [[ "$built_build" == "$build" ]] || fail "the bundle is build $built_build, not $build"
 
+icon="$app/Contents/Resources/AppIcon.icns"
+[[ -f "$icon" ]] || fail "the bundle carries no icon — run scripts/make-icon.sh"
+named_icon="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIconFile' "$plist")"
+[[ "$named_icon" == "AppIcon" ]] || fail "the bundle asks for icon '$named_icon', not AppIcon"
+
 archs="$(lipo -archs "$binary")"
 for arch in "${required_archs[@]}"; do
     [[ " $archs " == *" $arch "* ]] || fail "the binary has no $arch slice, only: $archs"

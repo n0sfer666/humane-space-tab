@@ -1,3 +1,5 @@
+<img src="docs/images/icon.png" width="120" align="right" alt="">
+
 # humane-space-tab
 
 A humane app switcher for macOS.
@@ -11,6 +13,22 @@ Space-aware behaviour to the other grouping, hiding and revealing gestures of ma
 > can see, so releases stay below `1.0`.
 
 [Русская версия](README.ru.md)
+
+![The ribbon](docs/images/ribbon.png)
+
+## Using it
+
+Hold **⌘** and tap **Tab**. A quick tap switches to the previous application without
+showing anything; keep **⌘** down and the ribbon appears with the applications of the
+current Space — **Tab** steps forward, **⇧Tab** back, **Escape** cancels, releasing **⌘**
+switches. `` ⌘` `` does the same for the windows of the application in front. The pointer
+works on the ribbon too: move it to select, click to switch, scroll to step.
+
+Both shortcuts, the reveal delay, the screen the ribbon opens on, window switching and
+launch at login are in **Settings…**, in the menu bar icon's menu.
+
+The full guide — every setting, the menu bar, and what to do when something is wrong — is
+[docs/guide.md](docs/guide.md) ([по-русски](docs/guide.ru.md)).
 
 ## Goals
 
@@ -90,6 +108,8 @@ gh attestation verify HumaneSpaceTab-<version>.zip --repo n0sfer/humane-space-ta
 
 The attestation ties the artefact to the workflow run and the commit that built it.
 
+What changed between releases is in [CHANGELOG.md](CHANGELOG.md).
+
 ## Requirements
 
 - macOS 15 Sequoia or later
@@ -116,6 +136,11 @@ xcodebuild -project HumaneSpaceTab.xcodeproj -scheme HumaneSpaceTab \
 ```
 
 The Xcode project is generated from `project.yml` and is never committed.
+
+The bundle icon is drawn, not stored: `scripts/make-icon.sh` renders every size from
+`scripts/icon.swift` and packs `Resources/AppIcon.icns`. Change the drawing, run the
+script, commit the `.icns` it produced — `scripts/package.sh` refuses a bundle without
+one.
 
 Packaging is one script — the release workflow only calls it, so it can be run and broken
 on a laptop instead of at production:

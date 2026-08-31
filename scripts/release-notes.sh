@@ -27,6 +27,16 @@ read -r sum _ <"$sidecar"
 cat <<NOTES
 \`Cmd+Tab\` between the applications of the current Space, and nothing else.
 
+Hold \`Cmd\`, tap \`Tab\`: a quick tap switches to the previous application, holding it
+opens a ribbon of the applications on this desk — \`Shift\` reverses, \`Escape\` cancels, the
+mouse selects and clicks. \`\`Cmd+\` \`\` does the same for the windows of the front
+application. Both shortcuts, the reveal delay and the rest are in **Settings…**, in the
+menu bar icon's menu.
+
+- [What is in this release](https://github.com/$repo/blob/v$version/CHANGELOG.md)
+- [Guide](https://github.com/$repo/blob/v$version/docs/guide.md) ·
+  [Гайд по-русски](https://github.com/$repo/blob/v$version/docs/guide.ru.md)
+
 ## Install
 
 1. Download \`HumaneSpaceTab-$version.zip\` and unpack it.
