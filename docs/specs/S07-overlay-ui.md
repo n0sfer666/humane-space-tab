@@ -131,13 +131,18 @@ the panel, and past that it is truncated with an ellipsis.
 
 The selected icon is not enlarged, which is also what the system does: it carries a 22 %
 white rounded highlight drawn around it, and the row stays perfectly still as the
-selection moves. The panel itself carries no tint of our own — the tint we used to paint
-made our ribbon visibly darker than the original — and a 26 pt corner radius.
+selection moves. The panel carries a 26 pt corner radius and, behind the row, a 15 % black
+scrim — the least that keeps a white label readable when the desktop behind the glass is a
+white window. Anything heavier is what made an earlier ribbon visibly darker than the
+original.
 
 Its material is whichever one the system builds its own panels from. macOS 26 draws the
-switcher in Liquid Glass, so where `NSGlassEffectView` exists the ribbon is made of it;
-below that the panel keeps the `.hudWindow` blur with a hairline white border, which is
-what those systems render a HUD with. The choice is the system's version and nothing
+switcher in Liquid Glass, so where `NSGlassEffectView` exists the ribbon is made of it, in
+the `clear` style: the `regular` one is nearly opaque over a dark desktop and reads as a
+flat rectangle rather than as glass. `tintColor` does not dim that material, which is why
+the legibility scrim above is painted on the content instead. Below macOS 26 the panel
+keeps the `.hudWindow` blur with a hairline white border, which is what those systems
+render a HUD with. The choice is the system's version and nothing
 else: a preference here would only offer the user a way to look less native than their
 own machine. Both paths hand the same content view to the same panel, so the ribbon's
 geometry and drawing know nothing about which one is underneath.
