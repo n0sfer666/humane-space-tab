@@ -8,6 +8,12 @@ public final class OverlayWindowSurface: OverlaySurface {
     /// ribbon is placed, not tracked while it is up.
     public var screen: OverlayScreenChoice = .focused
 
+    /// What the pointer did to the ribbon, on its way to the session (S14).
+    public var onGesture: ((RibbonGesture) -> Void)? {
+        get { content.onGesture }
+        set { content.onGesture = newValue }
+    }
+
     private let metrics: OverlayMetrics
     private let panel: NSPanel
     private let content: OverlayContentView
@@ -23,6 +29,7 @@ public final class OverlayWindowSurface: OverlaySurface {
 
     public func show(_ model: OverlayModel) {
         scroll.reset()
+        content.beginSession()
         guard place(model) else { return }
         panel.orderFrontRegardless()
     }
@@ -89,7 +96,8 @@ public final class OverlayWindowSurface: OverlaySurface {
         panel.isOpaque = false
         panel.backgroundColor = .clear
         panel.hasShadow = true
-        panel.ignoresMouseEvents = true
+        panel.ignoresMouseEvents = false
+        panel.acceptsMouseMovedEvents = true
         panel.hidesOnDeactivate = false
         panel.isReleasedWhenClosed = false
         return panel

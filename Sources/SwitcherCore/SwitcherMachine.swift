@@ -26,6 +26,15 @@ public struct SwitcherMachine: Sendable {
         return current.selection == previous ? .ignored : .moved
     }
 
+    public mutating func select(_ index: Int) -> SwitcherEffect {
+        guard var current = session, current.entries.indices.contains(index), current.selection != index else {
+            return .ignored
+        }
+        current.select(index)
+        session = current
+        return .moved
+    }
+
     public mutating func cancel() -> SwitcherEffect {
         guard session != nil else { return .ignored }
         session = nil

@@ -131,4 +131,40 @@ struct SwitcherMachineTests {
         #expect(machine.session?.entries.count == 2)
         #expect(machine.session?.selection == 1)
     }
+
+    @Test("selecting another entry moves the selection")
+    func selectMoves() {
+        var machine = opened(3)
+        #expect(machine.select(2) == .moved)
+        #expect(machine.session?.selection == 2)
+    }
+
+    @Test("selecting the entry already selected changes nothing")
+    func selectSameIsIgnored() {
+        var machine = opened(3)
+        #expect(machine.select(1) == .ignored)
+        #expect(machine.session?.selection == 1)
+    }
+
+    @Test("selecting outside the ribbon changes nothing")
+    func selectOutOfRangeIsIgnored() {
+        var machine = opened(3)
+        #expect(machine.select(3) == .ignored)
+        #expect(machine.select(-1) == .ignored)
+        #expect(machine.session?.selection == 1)
+    }
+
+    @Test("selecting without a session changes nothing")
+    func selectWithoutSessionIsIgnored() {
+        var machine = SwitcherMachine()
+        #expect(machine.select(0) == .ignored)
+        #expect(machine.session == nil)
+    }
+
+    @Test("committing after a selection reports the selected entry")
+    func commitAfterSelect() {
+        var machine = opened(3)
+        _ = machine.select(0)
+        #expect(machine.commit() == .committed(SwitcherTarget(pid: ProcessIdentifier(rawValue: 1))))
+    }
 }

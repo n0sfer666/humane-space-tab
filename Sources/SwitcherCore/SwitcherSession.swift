@@ -13,6 +13,10 @@ public struct SwitcherSession: Equatable, Sendable {
         entries[selection]
     }
 
+    mutating func select(_ index: Int) {
+        selection = index
+    }
+
     mutating func step(_ direction: SelectionDirection) {
         let count = entries.count
         selection = (selection + direction.offset + count) % count

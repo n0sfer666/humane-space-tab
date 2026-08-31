@@ -26,7 +26,7 @@ New specs start from [`TEMPLATE.md`](TEMPLATE.md).
 | S11 | [Packaging & release](S11-packaging-release.md) | Packaging script, release workflow, provenance, what ad-hoc signing costs | agreed |
 | S12+ | Beyond `Cmd+Tab` | Mission Control, App Exposé, hide/minimise — one spec per gesture | planned |
 | S13 | [Shortcut editor](S13-shortcut-editor.md) | Recording and validating a replacement for `Cmd+Tab` | agreed |
-| S14 | Overlay mouse interaction | Hover and click selection, and the panel changes it needs | planned |
+| S14 | [Overlay mouse interaction](S14-overlay-mouse.md) | Hover, click and scroll selection, and the panel changes they need | agreed |
 | S15 | [The deaf tap](S15-deaf-tap.md) | Noticing a tap that receives no key events, and naming the cure | agreed |
 | S16 | [Windows of one application](S16-windows-of-one-application.md) | Cycling windows instead of applications, behind S08's preference | agreed |
 
