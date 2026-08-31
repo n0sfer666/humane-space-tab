@@ -89,21 +89,74 @@ Titles are therefore never read on the critical path:
 An application that never answers keeps its application name as its label. Degradation is a
 missing title, never a missing entry and never a stalled gesture.
 
-### Matching an AX window to a CG window
+### The application names its windows, not the window server
 
-AX has no public way to name a `CGWindowID`; `_AXUIElementGetWindow` is private and S00
-keeps the private layer to the single S03 shim. The public match is the frame: for each
-process, its AX windows and its CG windows are paired by identical position and size, which
-the window server and the accessibility API both report in screen coordinates.
+The window server's list is not a list of windows. Measured on one Space, one terminal with
+**two** windows open had **twenty-two** layer-0 entries under its pid: twenty of them marked
+off-screen, all sharing one frame to the pixel, plus four one-row strips. Every other
+application showed the same shape to a smaller degree. The window server keeps surfaces a
+process has stopped drawing, and it never promised otherwise.
 
-Two windows of one application with the same frame to the pixel are indistinguishable this
-way. They are then paired by their order in each list, and if that is still ambiguous the
-title is dropped for both — a wrong title on a window is worse than none, because the user
-would switch to the wrong one deliberately.
+So the accessibility list is the source of truth for *which* windows exist, and the window
+server keeps the two jobs it is right about: the stacking order, and which Space a window is
+on. For each application the ribbon lists:
+
+1. `kAXWindowsAttribute` — the windows the application itself names.
+2. `kAXSubroleAttribute` — only `AXStandardWindow` survives. Sheets, panels and system
+   dialogs are windows to the accessibility API and are not places to `Cmd+Tab` to; Finder's
+   desktop is one of these.
+3. `_AXUIElementGetWindow` — the id the window server knows that element by. It is the only
+   bridge between the two APIs, it is private, and it is resolved by name in one allowlisted
+   file exactly as S03 resolves SkyLight. An element it refuses is not a window: Finder's
+   desktop is refused, which is the filter working.
+
+The window server's entries for that process are then intersected with those ids. On the
+measured machine that turns 22 Ghostty entries into the 2 windows the user has, and they are
+exactly the two the window server also marks on-screen.
+
+**An earlier version of this spec paired AX windows to CG windows by frame.** That is why
+this section is a revision and not a design: two windows of one application with the same
+frame to the pixel are the normal case, not the edge case, and pairing them by frame both
+listed phantoms as entries and made the raise land on whichever window the application
+happened to have in front. The symptom was silent — the raise failed, S06 activated the
+application, and the wrong window came forward.
+
+**An application that names no window keeps its single application entry**, and an element
+that answers nothing at all when asked for its subrole is kept rather than dropped: a window
+missing from the ribbon is a worse failure than one entry too many, and an application whose
+toolkit sets no subrole would otherwise lose every window it has. That is already
+what S16 does for an application whose windows are all elsewhere, and it is the degradation
+path for every case where the accessibility answer is missing: a wedged application, a
+withdrawn grant, a future macOS without the private symbol. Losing the list entirely is
+logged once — `windowListUnavailable` when the system no longer names a window behind an
+element, `windowListUnanswered` when no application answered — so the feature cannot go
+missing in silence. Neither line names an application or a window (S00). Chromium and Electron
+applications answer this way until an accessibility client asks them to build their tree;
+`AXManualAccessibility` would ask them to, and it is **deliberately not set** — it makes
+another process pay for our feature, permanently, and one entry per such application is a
+better trade than that.
+
+### Cost, and where it is paid
+
+Unlike a title, the window list cannot arrive late: entries appearing under the user's
+fingers after the ribbon is up is worse than a plain application list. So this is the one
+accessibility call inside the gesture, and it is bounded three ways rather than trusted:
+
+- **Nothing is asked that cannot become an entry.** An application whose windows are all on
+  another Space is never asked about them, and only the ids that survive the S03 filter are
+  asked for a subrole — one message per window the ribbon could show, not one per window the
+  application happens to own.
+- **Per message, 20 ms**, against 50 ms for titles after the ribbon and 100 ms for the raise
+  on a commit, which is not racing a frame.
+- **Per gesture, 60 ms for the whole pass.** Past that the remaining applications are listed
+  as applications. This is the bound that holds when the per-message one does not: fifteen
+  wedged applications at 20 ms each would otherwise approach the ~1 s at which the window
+  server disables an event tap, and the cost of `_AXUIElementGetWindow` itself is not
+  measured here — it is undocumented, so it is bounded rather than assumed to be free.
 
 ### Raising one window
 
-Three calls, in this order, all on the AX element the match found:
+Three calls, in this order, all on the AX element that carries the committed id:
 
 1. `kAXMinimizedAttribute = false`, if the window is minimised — otherwise the raise lands
    on a window in the Dock.
@@ -143,11 +196,17 @@ for nothing else:
       application.
 - [x] The selected entry is labelled with its window title; an application that does not
       answer is labelled with its application name instead.
-- [x] No title is read inside the tap callback, and the session build stays inside the S05
-      frame budget — 1.4 ms median for the added call, ~4 ms for the build, against 16 ms.
+- [x] No title is read inside the tap callback. The window list is, because it decides how
+      many entries there are; it is bounded by a 60 ms budget for the whole pass and 20 ms
+      per message, on top of the frame budget the two window-server calls stay inside
+      (1.4 ms median for the on-screen list, ~4 ms for the build, against 16 ms).
+- [ ] The gesture stays responsive with the machine full: the ribbon appears without a
+      visible pause and the tap is never disabled. — manual runbook, step 7.
 - [ ] Committing a window entry raises that window, un-minimising it first, and activates
       its application. — the composition is tested; the accessibility raise itself is the
       manual runbook's second and third steps.
+- [ ] The ribbon lists the windows an application has, and not the window server's count of
+      them: two terminal windows are two entries, not twenty-two. — manual runbook, step 5.
 - [x] `AXTitle` stays in the forbidden-API guard, allowlisted in exactly one file.
 - [x] No title reaches the log at any level; the log line for a window commit names no
       window.
@@ -164,10 +223,10 @@ for nothing else:
 | 4 | expansion, minimised window | present, after the on-screen ones |
 | 5 | order, three windows front to back | the ribbon's order is the stacking order |
 | 6 | order, windows outside the on-screen list | appended in inventory order |
-| 7 | matching, one AX window and one CG window | paired |
-| 8 | matching, two windows, distinct frames | paired by frame, not by order |
-| 9 | matching, two windows, identical frames | paired by index |
-| 10 | matching, ambiguity that index cannot break | no title on either |
+| 7 | expansion, a window the application does not name | not an entry |
+| 8 | expansion, an application that names no window at all | one entry, the application |
+| 9 | the window cycle, a window the application does not name | not an entry |
+| 10 | the private symbol, an element that is not a window | refused, no id invented |
 | 11 | titles, an application that times out | its entries keep the application name |
 | 12 | titles, an answer arriving after the session ended | dropped, no redraw |
 | 13 | commit, a window entry | un-minimise, raise, activate, in that order |
@@ -186,15 +245,37 @@ for nothing else:
    it restores and focuses it.
 4. Switch to an application with a slow or beachballed window → expected: the ribbon opens
    immediately with icons; the label is the application name until the title arrives.
-5. Turn the preference off, reopen → expected: the ribbon lists applications again, and
+5. Open two windows of a terminal or of any application the window server reports many
+   layer-0 surfaces for, and reopen the switcher → expected: exactly two entries for it.
+   Tab to the second one and release → expected: that window comes forward, not the one that
+   was already in front. Repeat both directions twice: the failure this replaces was
+   intermittent-looking because activating the application sometimes lands on the right
+   window by luck.
+6. Open a Chromium or Electron application on this Space and reopen the switcher → expected:
+   one entry for it, named after the application, and choosing it activates the application.
+   This is the documented fallback, not a defect.
+7. With fifteen or more applications open, one of them beachballed, hold the shortcut →
+   expected: the ribbon appears with no pause the eye can catch, and
+   `log show --predicate 'subsystem == "io.github.n0sfer666.humane-space-tab"' --last 5m`
+   contains no `hotkeyTapReenabled`. A beachballed application is listed as an application;
+   that is the budget working, not a defect.
+8. Turn the preference off, reopen → expected: the ribbon lists applications again, and
    `log show --predicate 'subsystem == "io.github.n0sfer666.humane-space-tab"'` contains no
    window title anywhere in the session.
 
 ## Risks and open questions
 
-- **The frame match is a heuristic.** Tabbed windows, sheets and full-screen transitions can
-  make two frames equal for a moment. The fallback is a missing title, never a wrong one,
-  and never a missing entry.
+- **The private symbol can be dropped by a future macOS.** Then no element resolves to an
+  id, no application names a window this app can match, and the ribbon lists applications —
+  the same list it shows with the preference off. The shim's own test fails on that system,
+  which is how the loss is noticed.
+- **The subrole filter is strict.** An application that gives its real window a subrole other
+  than `AXStandardWindow` loses its window entries and keeps its application entry. That is
+  the safe direction: an entry that switches to a sheet is worse than one that switches to an
+  application.
+- **`AXManualAccessibility` is not set,** so Chromium and Electron applications are listed as
+  applications until something else on the machine turns their accessibility tree on. Making
+  another process build one on our behalf is a cost we do not get to impose.
 - **AX cost is another process's problem.** The timeout bounds it, but a machine full of
   slow applications will fill labels visibly late. That is the price of not blocking the
   gesture, and the ribbon is usable without a single title.

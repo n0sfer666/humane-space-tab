@@ -38,8 +38,8 @@ enum ForbiddenAPIRules {
     ].map {
         ForbiddenSymbol(
             $0,
-            reason: "dynamic loading is allowed only in the SkyLight shim",
-            allowedFiles: ["SkyLightShim.swift"]
+            reason: "dynamic loading is allowed only in the two private-symbol shims",
+            allowedFiles: ["SkyLightShim.swift", "AXWindowIDShim.swift"]
         )
     }
 }

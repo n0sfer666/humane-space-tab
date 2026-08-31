@@ -34,19 +34,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let inventory = InventoryAssembly.make(log: log)
         report = InventoryReport(inventory: inventory, destination: PasteboardTextSink())
         activations = WorkspaceActivationObserver()
-        let activation = TargetActivation(
-            activator: WorkspaceApplicationActivator(),
-            raiser: AXWindowRaiser()
-        )
-        let expansion = EntryExpansion(inventory: inventory, preference: UserDefaultsWindowSwitching())
         let seed = inventory.frontToBackApplications()
-        let switcher = SwitcherCoordinator(
-            order: MRUOrder(seed: seed),
-            snapshot: { inventory.inventory() },
-            expand: { expansion.entries($0, onCurrentSpace: $1) },
-            cycle: { expansion.cycle($0, onCurrentSpace: $1) },
-            activate: { activation.activate($0) }
-        )
+        let switcher = SwitcherAssembly.make(inventory: inventory, seed: seed, log: log)
         let icons = WorkspaceApplicationIconSource()
         icons.prewarm(seed)
         let surface = OverlayWindowSurface(icons: icons)

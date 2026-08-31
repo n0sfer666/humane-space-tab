@@ -3,8 +3,9 @@ import SystemPorts
 
 /// Turns what the ribbon chose into what the system does. An application entry is S06
 /// untouched; a window entry is raised inside its application first, and the raise is
-/// best-effort — a window the frame match could not name still leaves an application worth
-/// activating, and reporting a failure for it would blame the switcher for a missing title.
+/// best-effort — a window that closed between the ribbon opening and the commit still
+/// leaves an application worth activating, and reporting a failure for it would blame the
+/// switcher for the window's disappearance.
 @MainActor
 public struct TargetActivation {
     private let activator: any ApplicationActivator

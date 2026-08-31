@@ -7,53 +7,42 @@ import Testing
 @MainActor
 @Suite("Entry expansion")
 struct EntryExpansionTests {
-    private final class InventorySpy: SpaceInventorySource {
-        var stack: [WindowIdentifier] = []
-        var asked = 0
-
-        func inventory() -> SpaceInventory {
-            SpaceInventory(applications: [], layer: .onScreen)
-        }
-
-        func frontToBackApplications() -> [ProcessIdentifier] { [] }
-
-        func frontToBackWindows() -> [WindowIdentifier] {
-            asked += 1
-            return stack
-        }
-    }
-
-    private struct Preference: WindowSwitchingPreference {
-        let switchesWindows: Bool
-    }
-
-    private func application(_ pid: Int32, windows: [UInt32]) -> SwitchableApplication {
-        SwitchableApplication(
-            pid: ProcessIdentifier(rawValue: pid),
-            bundleIdentifier: "test.\(pid)",
-            name: "App \(pid)",
-            isActive: false,
-            windows: windows.map { ApplicationWindow(id: WindowIdentifier(rawValue: $0), visibility: .onScreen) }
-        )
-    }
-
     @Test("with the preference off the ribbon lists applications and the system is not asked")
     func listsApplications() {
         let inventory = InventorySpy()
-        let expansion = EntryExpansion(inventory: inventory, preference: Preference(switchesWindows: false))
+        let log = RecordingLogSink()
+        let clock = SteppingClock()
+        let identity = IdentitySpy(named: [10, 11])
+        let expansion = EntryExpansion(
+            inventory: inventory,
+            preference: Preference(switchesWindows: false),
+            identity: identity,
+            log: log,
+            now: clock.now
+        )
         let entries = expansion.entries(
             [application(1, windows: [10, 11])],
             onCurrentSpace: [WindowIdentifier(rawValue: 10)]
         )
         #expect(entries.map(\.window) == [nil])
         #expect(inventory.asked == 0)
+        #expect(identity.asked.isEmpty)
     }
 
     @Test("with the preference on every window of this Space is its own entry")
     func listsWindows() {
         let inventory = InventorySpy()
         inventory.stack = [11, 10].map(WindowIdentifier.init(rawValue:))
-        let expansion = EntryExpansion(inventory: inventory, preference: Preference(switchesWindows: true))
+        let log = RecordingLogSink()
+        let clock = SteppingClock()
+        let identity = IdentitySpy(named: [10, 11])
+        let expansion = EntryExpansion(
+            inventory: inventory,
+            preference: Preference(switchesWindows: true),
+            identity: identity,
+            log: log,
+            now: clock.now
+        )
         let entries = expansion.entries(
             [application(1, windows: [10, 11])],
             onCurrentSpace: Set([10, 11].map(WindowIdentifier.init(rawValue:)))
@@ -66,7 +55,16 @@ struct EntryExpansionTests {
     func cyclesFrontWindows() {
         let inventory = InventorySpy()
         inventory.stack = [11, 10].map(WindowIdentifier.init(rawValue:))
-        let expansion = EntryExpansion(inventory: inventory, preference: Preference(switchesWindows: false))
+        let log = RecordingLogSink()
+        let clock = SteppingClock()
+        let identity = IdentitySpy(named: [10, 11])
+        let expansion = EntryExpansion(
+            inventory: inventory,
+            preference: Preference(switchesWindows: false),
+            identity: identity,
+            log: log,
+            now: clock.now
+        )
         let entries = expansion.cycle(
             [application(1, windows: [10, 11]), application(2, windows: [20])],
             onCurrentSpace: Set([10, 11, 20].map(WindowIdentifier.init(rawValue:)))
@@ -74,5 +72,68 @@ struct EntryExpansionTests {
         #expect(entries.map { $0.window?.id.rawValue } == [11, 10])
         #expect(entries.allSatisfy { $0.application.pid == ProcessIdentifier(rawValue: 1) })
         #expect(inventory.asked == 1)
+    }
+
+    @Test("a window the application does not name is not an entry, whatever the window server says")
+    func dropsWindowsTheApplicationDoesNotName() {
+        let inventory = InventorySpy()
+        inventory.stack = [11].map(WindowIdentifier.init(rawValue:))
+        let log = RecordingLogSink()
+        let clock = SteppingClock()
+        let identity = IdentitySpy(named: [11])
+        let expansion = EntryExpansion(
+            inventory: inventory,
+            preference: Preference(switchesWindows: true),
+            identity: identity,
+            log: log,
+            now: clock.now
+        )
+        let entries = expansion.entries(
+            [application(1, windows: [10, 11, 12])],
+            onCurrentSpace: Set([10, 11, 12].map(WindowIdentifier.init(rawValue:)))
+        )
+        #expect(entries.map { $0.window?.id.rawValue } == [11])
+        #expect(identity.asked == [ProcessIdentifier(rawValue: 1)])
+    }
+
+    @Test("an application that names no window stays one entry instead of splitting into phantoms")
+    func keepsTheApplicationWhenItNamesNothing() {
+        let inventory = InventorySpy()
+        let log = RecordingLogSink()
+        let clock = SteppingClock()
+        let identity = IdentitySpy(named: [])
+        let expansion = EntryExpansion(
+            inventory: inventory,
+            preference: Preference(switchesWindows: true),
+            identity: identity,
+            log: log,
+            now: clock.now
+        )
+        let entries = expansion.entries(
+            [application(1, windows: [10, 11])],
+            onCurrentSpace: Set([10, 11].map(WindowIdentifier.init(rawValue:)))
+        )
+        #expect(entries.map(\.window) == [nil])
+    }
+
+    @Test("the window cycle drops the window server's phantoms too")
+    func cycleDropsPhantoms() {
+        let inventory = InventorySpy()
+        inventory.stack = [11, 10].map(WindowIdentifier.init(rawValue:))
+        let log = RecordingLogSink()
+        let clock = SteppingClock()
+        let identity = IdentitySpy(named: [10])
+        let expansion = EntryExpansion(
+            inventory: inventory,
+            preference: Preference(switchesWindows: false),
+            identity: identity,
+            log: log,
+            now: clock.now
+        )
+        let entries = expansion.cycle(
+            [application(1, windows: [10, 11])],
+            onCurrentSpace: Set([10, 11].map(WindowIdentifier.init(rawValue:)))
+        )
+        #expect(entries.map { $0.window?.id.rawValue } == [10])
     }
 }
