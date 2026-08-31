@@ -42,7 +42,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         switcher = SwitcherCoordinator(
             order: MRUOrder(seed: seed),
             snapshot: { inventory.inventory().applications },
-            activate: { [activator] process in activator.activate(process) }
+            activate: { [activator] target in activator.activate(target.pid) }
         )
         let icons = WorkspaceApplicationIconSource()
         self.icons = icons
@@ -109,7 +109,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                     log.record(LogEvent(effect: effect))
                     let session = switcher.session
                     if effect == .opened, let session {
-                        Self.prewarm(session.applications, with: icons)
+                        Self.prewarm(session.entries, with: icons)
                     }
                     overlay.render(session.map(OverlayModel.init(session:)))
                 }
@@ -151,10 +151,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// An application launched after this one pays its first icon load here, in the gap
     /// between the gesture opening and the ribbon appearing, never inside the tap callback.
     private static func prewarm(
-        _ applications: [SwitchableApplication],
+        _ entries: [SwitcherEntry],
         with icons: any ApplicationIconSource
     ) {
-        let processes = applications.map(\.pid)
+        let processes = entries.map(\.application.pid)
         Task { @MainActor in icons.prewarm(processes) }
     }
 

@@ -3,6 +3,6 @@ public enum SwitcherEffect: Hashable, Sendable {
     case opened
     case moved
     case cancelled
-    case committed(ProcessIdentifier)
-    case activationFailed(ProcessIdentifier)
+    case committed(SwitcherTarget)
+    case activationFailed(SwitcherTarget)
 }

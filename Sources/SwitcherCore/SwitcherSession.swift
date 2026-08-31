@@ -1,20 +1,20 @@
 public struct SwitcherSession: Equatable, Sendable {
-    public let applications: [SwitchableApplication]
+    public let entries: [SwitcherEntry]
     public private(set) var selection: Int
 
-    init?(applications: [SwitchableApplication], direction: SelectionDirection) {
-        guard !applications.isEmpty else { return nil }
-        self.applications = applications
+    init?(entries: [SwitcherEntry], direction: SelectionDirection) {
+        guard !entries.isEmpty else { return nil }
+        self.entries = entries
         selection = 0
         step(direction)
     }
 
-    public var selected: SwitchableApplication {
-        applications[selection]
+    public var selected: SwitcherEntry {
+        entries[selection]
     }
 
     mutating func step(_ direction: SelectionDirection) {
-        let count = applications.count
+        let count = entries.count
         selection = (selection + direction.offset + count) % count
     }
 }

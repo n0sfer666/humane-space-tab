@@ -38,7 +38,7 @@ public final class OverlayWindowSurface: OverlaySurface {
 
     private func place(_ model: OverlayModel) -> Bool {
         guard let area = area() else { return false }
-        let layout = layout(for: model.applications.count, in: area)
+        let layout = layout(for: model.entries.count, in: area)
         let frame = CGRect(
             x: area.midX - layout.size.width / 2,
             y: area.midY - layout.size.height / 2,
@@ -49,7 +49,7 @@ public final class OverlayWindowSurface: OverlaySurface {
         content.frame = CGRect(origin: .zero, size: layout.size)
         let offset = scroll.settle(
             selection: model.selection,
-            count: model.applications.count,
+            count: model.entries.count,
             visible: layout.visible
         )
         content.render(model, layout: layout, offset: offset)

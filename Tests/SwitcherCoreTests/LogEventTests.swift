@@ -43,8 +43,8 @@ struct LogEventTests {
     @Test("every switcher effect maps to its own event in the switcher category")
     func switcherEffectsMapToDistinctEvents() {
         let effects: [SwitcherEffect] = [
-            .ignored, .opened, .moved, .cancelled, .committed(ProcessIdentifier(rawValue: 1)),
-            .activationFailed(ProcessIdentifier(rawValue: 1)),
+            .ignored, .opened, .moved, .cancelled, .committed(SwitcherTarget(pid: ProcessIdentifier(rawValue: 1))),
+            .activationFailed(SwitcherTarget(pid: ProcessIdentifier(rawValue: 1))),
         ]
         let events = effects.map(LogEvent.init(effect:))
         #expect(Set(events).count == effects.count)
@@ -54,8 +54,8 @@ struct LogEventTests {
     @Test("a committed effect logs the same event whichever application it names")
     func commitEventCarriesNoTarget() {
         #expect(
-            LogEvent(effect: .committed(ProcessIdentifier(rawValue: 1)))
-                == LogEvent(effect: .committed(ProcessIdentifier(rawValue: 2)))
+            LogEvent(effect: .committed(SwitcherTarget(pid: ProcessIdentifier(rawValue: 1))))
+                == LogEvent(effect: .committed(SwitcherTarget(pid: ProcessIdentifier(rawValue: 2))))
         )
     }
 

@@ -8,13 +8,15 @@ import Testing
 struct OverlayControllerTests {
     private func model(_ selection: Int) -> OverlayModel {
         OverlayModel(
-            applications: (0..<3).map {
-                SwitchableApplication(
-                    pid: ProcessIdentifier(rawValue: Int32($0 + 1)),
-                    bundleIdentifier: nil,
-                    name: "App \($0)",
-                    isActive: false,
-                    windows: []
+            entries: (0..<3).map {
+                SwitcherEntry(
+                    application: SwitchableApplication(
+                        pid: ProcessIdentifier(rawValue: Int32($0 + 1)),
+                        bundleIdentifier: nil,
+                        name: "App \($0)",
+                        isActive: false,
+                        windows: []
+                    )
                 )
             },
             selection: selection
