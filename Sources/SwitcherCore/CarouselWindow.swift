@@ -1,7 +1,7 @@
-/// Which entries the ribbon shows around the selected one. Past ten entries the ribbon stops
-/// growing and becomes a window onto a list that wraps: the selection keeps its place, the
-/// icons move under it, and a step is always the same distance for the eye. Ten or fewer and
-/// there is nothing to scroll — the ribbon shows them all, where they are.
+/// Which entries the ribbon shows, and where. The selection keeps its place and the entries
+/// turn under it, so a step is always the same distance for the eye. The list has no ends:
+/// past the last application comes the first. A Space with fewer applications than the ribbon
+/// holds turns the same way, only with a shorter ribbon — no application is ever shown twice.
 public enum CarouselWindow {
     public static let before = 4
     public static let after = 5
@@ -9,15 +9,17 @@ public enum CarouselWindow {
 
     public static func indices(count: Int, selection: Int) -> [Int] {
         guard count > 0 else { return [] }
-        guard count > span else { return Array(0..<count) }
-        return (0..<span).map { step in
-            let index = (selection - before + step) % count
+        let place = place(of: selection, count: count)
+        return (0..<min(count, span)).map { step in
+            let index = (selection - place + step) % count
             return index < 0 ? index + count : index
         }
     }
 
-    /// Where in the window the selection is drawn: fixed once the list is long enough to wrap.
+    /// Where in the ribbon the selection is drawn. Once the list is longer than the ribbon it
+    /// is the fifth slot, four entries in; a shorter ribbon keeps the selection in its middle,
+    /// which is the same slot as the list grows to fill it.
     public static func place(of selection: Int, count: Int) -> Int {
-        count > span ? before : selection
+        count > span ? before : max(count - 1, 0) / 2
     }
 }

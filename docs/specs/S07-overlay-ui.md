@@ -94,13 +94,17 @@ So the layout keeps exactly one free variable, the icon side, and derives the re
    included — still fits 96 % of the screen width.
 3. The ribbon holds at most **ten** slots: four entries before the selection, the
    selection, and five after it. Past ten applications it stops growing and becomes a
-   **carousel** — a window onto a list that wraps.
-4. In a carousel the selection keeps its place, the fifth slot, and the icons move under
-   it. A step is therefore always the same distance for the eye, wherever in the list the
-   user is, and the list has no ends: stepping past the last application brings the first
-   one in from the right. Ten applications or fewer and there is nothing to scroll — the
-   ribbon is as long as the Space is, every entry keeps its place, and only the selection
-   moves.
+   window onto the list. Below ten it is as long as the Space is — the panel grows with
+   the number of applications.
+4. At every count the ribbon is a **carousel**: the selection keeps its slot and the
+   icons turn under it. A step is therefore always the same distance for the eye,
+   wherever in the list the user is, and the list has no ends — stepping past the last
+   application brings the first one in from the right. A ribbon shorter than ten slots
+   turns the same way, only with fewer icons: no application is ever shown twice, so with
+   two applications there is nothing to the left of the selection. The selection's slot
+   is the middle of what the ribbon holds — the first slot with two applications, the
+   third with five — which is the fifth slot by the time the list fills the ribbon, and
+   stays there from then on.
 
 Measured on a 1728 pt-wide display:
 
@@ -111,9 +115,9 @@ Measured on a 1728 pt-wide display:
 | 5 | 100 | 30 | 39 % | 5 |
 | 8 | 100 | 30 | 62 % | 8 |
 | 10 | 100 | 30 | 77 % | 10 |
-| 20 | 100 | 30 | 77 % | 10, carousel |
-| 45 | 100 | 30 | 77 % | 10, carousel |
-| 100 | 100 | 30 | 77 % | 10, carousel |
+| 20 | 100 | 30 | 77 % | 10, windowed |
+| 45 | 100 | 30 | 77 % | 10, windowed |
+| 100 | 100 | 30 | 77 % | 10, windowed |
 
 The icon now only shrinks where the screen makes it: a full ribbon needs 1330 pt, so
 below roughly a 1390 pt-wide display the ten slots shrink to fit, down to a 16 pt floor.
@@ -202,7 +206,7 @@ saw the two `flagsChanged` events and no `Tab` at all.
 - [ ] A press-and-release `Cmd+Tab` faster than the delay shows nothing at all.
 - [ ] The overlay lists exactly the applications of the S05 snapshot, in the same order, with the selected one highlighted and named under its icon.
 - [ ] The panel is never wider than 96 % of the screen, never wraps, and its geometry matches the measured system switcher within a couple of points while both show the same row.
-- [ ] Past ten applications the ribbon stops growing and turns into a wrapping carousel, with the selection in the fifth slot.
+- [ ] The ribbon turns under a stationary selection at any count, never showing an application twice, and past ten applications it stops growing with the selection in the fifth slot.
 - [ ] A session that stops receiving events hides itself instead of stranding the panel.
 - [ ] Interception never swallows a modifier change, and never swallows a key-up whose key-down went through.
 - [ ] Layout and carousel arithmetic is pure and unit-tested: fits, shrinks, freezes, wraps.
@@ -233,17 +237,18 @@ saw the two `flagsChanged` events and no `Tab` at all.
 | 5f | layout, label size | full size when roomy, smaller when crowded, never below the floor |
 | 5g | layout, any count | every slot is inside the panel |
 | 5h | layout, any count on four display widths | slots never overlap, the width budget holds |
-| 5i | carousel, ten applications or fewer | every entry is shown, where it is |
+| 5i | carousel, ten applications or fewer | every entry shown once, turning under the selection |
 | 5j | carousel, more than ten | ten entries, the selection in the fifth slot |
 | 5k | carousel, a step across either end | the window wraps, no duplicates, always full |
-| 5l | carousel, an empty list | no entries |
-| 5m | slide, one step either way | one slot of travel; a jump, a still ribbon or a changed shape, none |
-| 5n | name area, a name that fits, at either end of the ribbon | centred on its icon |
-| 5o | name area, a name too wide for the first slot | moved in to the panel's inset, no further |
-| 5p | name area, a name too wide for the last slot | stops at the far inset |
-| 5q | name area, a name past the panel | capped at the panel's inset, truncated in the middle |
-| 5r | name area, any name | sits directly under its icon, one label high |
-| 5s | backdrop, the running system | the content view is inside whichever material the system provides |
+| 5l | carousel, the selection's slot from one to ten entries | the middle of the ribbon, then the fifth slot from ten on |
+| 5m | carousel, an empty list | no entries |
+| 5n | slide, one step either way, at any count | one slot of travel; a jump, an unmoved ribbon or a changed shape, none |
+| 5o | name area, a name that fits, at either end of the ribbon | centred on its icon |
+| 5p | name area, a name too wide for the first slot | moved in to the panel's inset, no further |
+| 5q | name area, a name too wide for the last slot | stops at the far inset |
+| 5r | name area, a name past the panel | capped at the panel's inset, truncated in the middle |
+| 5s | name area, any name | sits directly under its icon, one label high |
+| 5t | backdrop, the running system | the content view is inside whichever material the system provides |
 | 6 | controller, session opens | show is scheduled, nothing visible yet |
 | 7 | controller, commit before the delay | nothing was ever shown |
 | 8 | controller, delay elapses with the session open | the panel is shown once |
@@ -275,7 +280,8 @@ saw the two `flagsChanged` events and no `Tab` at all.
    sliding under it by one per step, and stepping past the last application brings the
    first one back without a jump.
 8a. On a Space with three or four applications → expected: the ribbon is as long as the
-   Space is, the icons hold still, and only the selection moves.
+   Space is, the selection holds its slot, the icons turn under it, and no application is
+   shown twice.
 8b. Step to the first icon and to the last → expected: the name sits under its own icon,
    not beside it, and never leaves the panel.
 8c. Switch on window titles (S16) and select a window with a very long title → expected:
@@ -298,6 +304,10 @@ saw the two `flagsChanged` events and no `Tab` at all.
   what fits at full icon size on a laptop display without the ribbon dominating the screen.
   On a much wider display it could afford more; if that reads badly it becomes a share of
   the screen width rather than a count.
+- **A short ribbon turns rather than holds still.** It keeps one mechanic at every count,
+  at the price of icons that move on a Space with three applications where a fixed row
+  would have been calm. The alternative — standing still below ten and spinning above —
+  was tried and read as two different switchers; runbook step 8a is the check.
 - **Interception makes bugs expensive.** A wedged session now means a swallowed
   `Cmd+Tab`. The tap's re-arm already cancels an open session (S05); with an overlay on
   screen a wedge is at least visible.

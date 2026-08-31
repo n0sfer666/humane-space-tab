@@ -47,8 +47,8 @@ ribbon was drawn with — no AppKit, no view tree, unit-tested like `OverlayLayo
 so the ribbon has no dead stripes between tiles, and a point outside the panel or past
 the last slot claims nothing.
 
-A slot is a place in the ribbon, not an application: on a carousel (S07) the same slot
-carries a different entry after every step. So the hit test answers a slot, and the
+A slot is a place in the ribbon, not an application: the ribbon is a carousel (S07) at
+every count, so the same slot carries a different entry after every step. So the hit test answers a slot, and the
 pointer's meaning is read through the window the ribbon was last drawn with — the click
 commits the entry the user is looking at, not the one that stood there a step ago.
 
@@ -94,7 +94,7 @@ for free: a ribbon being pointed at is not a stranded one.
 - [ ] Scrolling over the ribbon steps the selection one entry per notch, in both directions, and ignores momentum.
 - [x] A hover that lands on the already selected tile changes nothing and redraws nothing.
 - [x] Hit testing is pure and unit-tested: tiles, gaps, outside the panel, past the last slot.
-- [x] A click on a carousel commits the entry the slot carries now, not the one it carried before the step.
+- [x] A click commits the entry the slot carries now, not the one it carried before the step — at any number of applications.
 - [x] Mouse and keyboard share one selection: a `Tab` after a hover continues from the hovered tile.
 - [ ] With window switching on (S16), pointing and clicking picks the window, not just its application.
 - [ ] Off screen, the panel still lets every click through to the application underneath.
