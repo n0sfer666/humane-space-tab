@@ -68,9 +68,19 @@ struct SessionRuntimeTests {
 
     private func opened() -> Fixture {
         let fixture = make()
-        fixture.runtime.perform(.activate(.forward))
+        fixture.runtime.perform(.activate(.forward, .applications))
         fixture.scheduler.fire()
         return fixture
+    }
+
+    @Test("the runtime names the scope of the session that is open")
+    func reportsTheOpenScope() {
+        let fixture = make()
+        #expect(fixture.runtime.openScope == nil)
+        fixture.runtime.perform(.activate(.forward, .applications))
+        #expect(fixture.runtime.openScope == .applications)
+        fixture.runtime.perform(.commit)
+        #expect(fixture.runtime.openScope == nil)
     }
 
     @Test("a hover moves the selection and redraws the ribbon")

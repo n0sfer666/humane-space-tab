@@ -24,11 +24,12 @@ New specs start from [`TEMPLATE.md`](TEMPLATE.md).
 | S09 | [Launch at login](S09-launch-at-login.md) | `SMAppService`, login-item state in the settings window | agreed |
 | S10 | [Permission UX](S10-permission-ux.md) | Requesting Accessibility, explaining it, recovering after revocation | agreed |
 | S11 | [Packaging & release](S11-packaging-release.md) | Packaging script, release workflow, provenance, what ad-hoc signing costs | agreed |
-| S12+ | Beyond `Cmd+Tab` | Mission Control, App Exposé, hide/minimise — one spec per gesture | planned |
+| S12 | [Windows of the front application](S12-front-application-windows.md) | A second shortcut cycling the front application's windows on this Space | agreed |
 | S13 | [Shortcut editor](S13-shortcut-editor.md) | Recording and validating a replacement for `Cmd+Tab` | agreed |
 | S14 | [Overlay mouse interaction](S14-overlay-mouse.md) | Hover, click and scroll selection, and the panel changes they need | agreed |
 | S15 | [The deaf tap](S15-deaf-tap.md) | Noticing a tap that receives no key events, and naming the cure | agreed |
 | S16 | [Windows of one application](S16-windows-of-one-application.md) | Cycling windows instead of applications, behind S08's preference | agreed |
+| S17+ | Beyond the ribbon | Mission Control, App Exposé, hide/minimise — one spec per gesture | planned |
 
 S00–S06 are close to pure logic and are covered by automated tests. S07 onwards
 needs verification on a real machine; each such spec carries a manual runbook.

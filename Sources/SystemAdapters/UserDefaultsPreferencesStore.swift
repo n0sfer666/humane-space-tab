@@ -17,7 +17,16 @@ public struct UserDefaultsPreferencesStore: PreferencesStore {
             overlayScreen: OverlayScreenChoice(stored: defaults.string(forKey: PreferencesKey.overlayScreen)),
             usesPrivateSpaceLayer: defaults.bool(forKey: PreferencesKey.privateSpaceLayer),
             switchesWindows: defaults.bool(forKey: PreferencesKey.windowSwitching),
-            shortcut: shortcut()
+            shortcut: shortcut(
+                keyCode: PreferencesKey.shortcutKeyCode,
+                modifiers: PreferencesKey.shortcutModifiers,
+                standard: Preferences.standard.shortcut
+            ),
+            windowShortcut: shortcut(
+                keyCode: PreferencesKey.windowShortcutKeyCode,
+                modifiers: PreferencesKey.windowShortcutModifiers,
+                standard: Preferences.standard.windowShortcut
+            )
         )
     }
 
@@ -28,17 +37,22 @@ public struct UserDefaultsPreferencesStore: PreferencesStore {
         defaults.set(preferences.switchesWindows, forKey: PreferencesKey.windowSwitching)
         defaults.set(Int(preferences.shortcut.key.rawValue), forKey: PreferencesKey.shortcutKeyCode)
         defaults.set(Int(preferences.shortcut.modifiers.rawValue), forKey: PreferencesKey.shortcutModifiers)
+        defaults.set(Int(preferences.windowShortcut.key.rawValue), forKey: PreferencesKey.windowShortcutKeyCode)
+        defaults.set(
+            Int(preferences.windowShortcut.modifiers.rawValue),
+            forKey: PreferencesKey.windowShortcutModifiers
+        )
     }
 
     /// Either key missing means the user never chose; a stored pair that is out of range
     /// for the value types is nonsense on disk, and `Preferences` refuses the rest.
-    private func shortcut() -> Shortcut {
-        guard defaults.object(forKey: PreferencesKey.shortcutKeyCode) != nil,
-            defaults.object(forKey: PreferencesKey.shortcutModifiers) != nil,
-            let key = UInt16(exactly: defaults.integer(forKey: PreferencesKey.shortcutKeyCode)),
-            let modifiers = UInt8(exactly: defaults.integer(forKey: PreferencesKey.shortcutModifiers))
-        else { return Preferences.standard.shortcut }
-        return Shortcut(key: KeyCode(rawValue: key), modifiers: ModifierSet(rawValue: modifiers))
+    private func shortcut(keyCode: String, modifiers: String, standard: Shortcut) -> Shortcut {
+        guard defaults.object(forKey: keyCode) != nil,
+            defaults.object(forKey: modifiers) != nil,
+            let key = UInt16(exactly: defaults.integer(forKey: keyCode)),
+            let bits = UInt8(exactly: defaults.integer(forKey: modifiers))
+        else { return standard }
+        return Shortcut(key: KeyCode(rawValue: key), modifiers: ModifierSet(rawValue: bits))
     }
 
     /// A missing key is not a zero delay: both are legal, and only the absent one means

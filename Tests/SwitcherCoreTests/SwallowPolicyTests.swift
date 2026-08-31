@@ -12,7 +12,7 @@ struct SwallowPolicyTests {
     func observeNeverSwallows() {
         var policy = SwallowPolicy(mode: .observe)
         let swallowed = [
-            policy.swallows(.command(.activate(.forward)), of: tab),
+            policy.swallows(.command(.activate(.forward, .applications)), of: tab),
             policy.swallows(.consume, of: tabUp),
             policy.swallows(.command(.commit), of: release),
         ]
@@ -22,7 +22,7 @@ struct SwallowPolicyTests {
     @Test("intercepting swallows a key-down the switcher handled")
     func swallowsHandledDown() {
         var policy = SwallowPolicy(mode: .intercept)
-        let swallowed = policy.swallows(.command(.activate(.forward)), of: tab)
+        let swallowed = policy.swallows(.command(.activate(.forward, .applications)), of: tab)
         #expect(swallowed)
     }
 

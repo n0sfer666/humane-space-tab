@@ -40,7 +40,7 @@ struct SwitcherCoordinatorTests {
     @Test("a session opens over the snapshot ordered by recent use")
     func opensOverOrderedSnapshot() {
         let coordinator = coordinator([1, 2, 3], order: MRUOrder(seed: [3, 2, 1].map(ProcessIdentifier.init)))
-        #expect(coordinator.handle(.activate(.forward)) == .opened)
+        #expect(coordinator.handle(.activate(.forward, .applications)) == .opened)
         #expect(coordinator.session?.entries.map(\.application.pid.rawValue) == [3, 2, 1])
         #expect(coordinator.session?.selection == 1)
     }
@@ -48,11 +48,11 @@ struct SwitcherCoordinatorTests {
     @Test("an activation recorded during a session reorders only the next one")
     func activationAppliesToTheNextSession() {
         let coordinator = coordinator([1, 2])
-        _ = coordinator.handle(.activate(.forward))
+        _ = coordinator.handle(.activate(.forward, .applications))
         coordinator.recordActivation(of: ProcessIdentifier(rawValue: 2))
         #expect(coordinator.session?.entries.map(\.application.pid.rawValue) == [1, 2])
         _ = coordinator.handle(.commit)
-        _ = coordinator.handle(.activate(.forward))
+        _ = coordinator.handle(.activate(.forward, .applications))
         #expect(coordinator.session?.entries.map(\.application.pid.rawValue) == [2, 1])
     }
 
@@ -60,7 +60,7 @@ struct SwitcherCoordinatorTests {
     func reportsSessionState() {
         let coordinator = coordinator([1, 2, 3])
         #expect(coordinator.isSessionOpen == false)
-        _ = coordinator.handle(.activate(.forward))
+        _ = coordinator.handle(.activate(.forward, .applications))
         #expect(coordinator.isSessionOpen)
         #expect(coordinator.handle(.step(.forward)) == .moved)
         #expect(coordinator.handle(.commit) == .committed(SwitcherTarget(pid: ProcessIdentifier(rawValue: 3))))
@@ -70,7 +70,7 @@ struct SwitcherCoordinatorTests {
     @Test("cancelling ends the session without choosing anything")
     func cancelEndsSession() {
         let coordinator = coordinator([1, 2])
-        _ = coordinator.handle(.activate(.forward))
+        _ = coordinator.handle(.activate(.forward, .applications))
         #expect(coordinator.handle(.cancel) == .cancelled)
         #expect(coordinator.isSessionOpen == false)
     }
@@ -79,7 +79,7 @@ struct SwitcherCoordinatorTests {
     func commitRaisesSelection() {
         let activator = ActivationSpy()
         let coordinator = coordinator([1, 2, 3], activator: activator)
-        _ = coordinator.handle(.activate(.forward))
+        _ = coordinator.handle(.activate(.forward, .applications))
         _ = coordinator.handle(.step(.forward))
         #expect(coordinator.handle(.commit) == .committed(SwitcherTarget(pid: ProcessIdentifier(rawValue: 3))))
         #expect(activator.raised == [SwitcherTarget(pid: ProcessIdentifier(rawValue: 3))])
@@ -90,7 +90,7 @@ struct SwitcherCoordinatorTests {
         let activator = ActivationSpy()
         activator.succeeds = false
         let coordinator = coordinator([1, 2], activator: activator)
-        _ = coordinator.handle(.activate(.forward))
+        _ = coordinator.handle(.activate(.forward, .applications))
         #expect(coordinator.handle(.commit) == .activationFailed(SwitcherTarget(pid: ProcessIdentifier(rawValue: 2))))
         #expect(coordinator.isSessionOpen == false)
     }
@@ -100,9 +100,16 @@ struct SwitcherCoordinatorTests {
         let activator = ActivationSpy()
         let coordinator = coordinator([1, 2], activator: activator)
         #expect(coordinator.handle(.commit) == .ignored)
-        _ = coordinator.handle(.activate(.forward))
+        _ = coordinator.handle(.activate(.forward, .applications))
         _ = coordinator.handle(.step(.forward))
         _ = coordinator.handle(.cancel)
         #expect(activator.raised.isEmpty)
+    }
+
+    @Test("an application session records its own scope")
+    func applicationSessionScope() {
+        let coordinator = coordinator([1, 2])
+        _ = coordinator.handle(.activate(.forward, .applications))
+        #expect(coordinator.session?.scope == .applications)
     }
 }

@@ -33,7 +33,8 @@ struct UserDefaultsPreferencesStoreTests {
                 overlayScreen: .pointer,
                 usesPrivateSpaceLayer: true,
                 switchesWindows: true,
-                shortcut: Shortcut(key: .space, modifiers: [.control, .option])
+                shortcut: Shortcut(key: .space, modifiers: [.control, .option]),
+                windowShortcut: Shortcut(key: .grave, modifiers: [.option])
             )
             store.save(preferences)
             #expect(store.load() == preferences)
@@ -93,6 +94,40 @@ struct UserDefaultsPreferencesStoreTests {
             defaults.set(true, forKey: "PrivateSpaceLayerEnabled")
             #expect(UserDefaultsPreferencesStore(defaults: defaults).load().usesPrivateSpaceLayer)
             #expect(UserDefaultsSpaceLayerPreference(defaults: defaults).prefersPrivateLayer)
+        }
+    }
+
+    @Test("an untouched domain reads the window shortcut as its own default")
+    func readsWindowShortcutDefault() {
+        withDefaults("window-shortcut-empty") { defaults in
+            #expect(UserDefaultsPreferencesStore(defaults: defaults).load().windowShortcut == .commandGrave)
+        }
+    }
+
+    @Test("a stored window shortcut the rules refuse falls back to its own default")
+    func normalisesStoredWindowShortcut() {
+        withDefaults("window-shortcut-nonsense") { defaults in
+            defaults.set(50, forKey: PreferencesKey.windowShortcutKeyCode)
+            defaults.set(Int(ModifierSet([.shift]).rawValue), forKey: PreferencesKey.windowShortcutModifiers)
+            #expect(UserDefaultsPreferencesStore(defaults: defaults).load().windowShortcut == .commandGrave)
+        }
+    }
+
+    @Test("the two shortcuts are stored under keys of their own")
+    func storesBothShortcuts() {
+        withDefaults("both-shortcuts") { defaults in
+            let store = UserDefaultsPreferencesStore(defaults: defaults)
+            store.save(
+                Preferences(
+                    shortcut: Shortcut(key: .space, modifiers: [.control]),
+                    windowShortcut: Shortcut(key: .grave, modifiers: [.option])
+                )
+            )
+            #expect(defaults.integer(forKey: PreferencesKey.shortcutKeyCode) == 49)
+            #expect(defaults.integer(forKey: PreferencesKey.windowShortcutKeyCode) == 50)
+            let loaded = store.load()
+            #expect(loaded.shortcut == Shortcut(key: .space, modifiers: [.control]))
+            #expect(loaded.windowShortcut == Shortcut(key: .grave, modifiers: [.option]))
         }
     }
 }

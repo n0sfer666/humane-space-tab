@@ -11,11 +11,16 @@ struct ShortcutRecorderViewTests {
         let source: ShortcutRecorderSourceStub
         var adopted: [Shortcut] = []
         var grants = 0
+        var begins = 0
+        var taken: Shortcut?
         lazy var view = ShortcutRecorderView(
             shortcut: .commandTab,
+            standard: .commandTab,
             formatter: ShortcutFormatter(naming: KeyNamingStub(names: [:])),
             source: source,
             requestGrant: { [unowned self] in self.grants += 1 },
+            taken: { [unowned self] in self.taken },
+            willRecord: { [unowned self] in self.begins += 1 },
             onChange: { [unowned self] in self.adopted.append($0) }
         )
 
@@ -65,6 +70,24 @@ struct ShortcutRecorderViewTests {
         #expect(fixture.adopted.isEmpty)
         #expect(fixture.view.isRecording == false)
         #expect(fixture.source.stops == 1)
+    }
+
+    @Test("the combination the other row holds is refused and the recorder keeps listening")
+    func refusesTheTakenShortcut() {
+        let fixture = Fixture()
+        fixture.taken = .commandGrave
+        fixture.view.beginRecording()
+        fixture.source.send(.recorded(.commandGrave))
+        #expect(fixture.adopted.isEmpty)
+        #expect(fixture.view.isRecording)
+        #expect(fixture.source.stops == 0)
+    }
+
+    @Test("a row that begins recording tells its owner first")
+    func announcesTheStart() {
+        let fixture = Fixture()
+        fixture.view.beginRecording()
+        #expect(fixture.begins == 1)
     }
 
     @Test("ending a recording that never began touches nothing")

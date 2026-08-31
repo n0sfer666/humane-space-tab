@@ -58,4 +58,24 @@ struct PreferencesTests {
         #expect(OverlayScreenChoice(stored: "sideways") == .focused)
         #expect(OverlayScreenChoice(stored: "pointer") == .pointer)
     }
+
+    @Test("the window shortcut defaults to command and the key left of one")
+    func windowShortcutDefault() {
+        #expect(Preferences.standard.windowShortcut == .commandGrave)
+        #expect(Preferences.standard.shortcuts == ShortcutSet.standard)
+    }
+
+    @Test("a window shortcut the rules refuse falls back to its own default, not to the other one")
+    func windowShortcutNormalises() {
+        let refused = Shortcut(key: .grave, modifiers: [])
+        #expect(Preferences(windowShortcut: refused).windowShortcut == .commandGrave)
+        let accepted = Shortcut(key: .grave, modifiers: [.option])
+        #expect(Preferences(windowShortcut: accepted).shortcuts.frontWindows == accepted)
+    }
+
+    @Test("a pair that collides is kept as it is")
+    func collidingPairIsKept() {
+        let preferences = Preferences(shortcut: .commandTab, windowShortcut: .commandTab)
+        #expect(preferences.windowShortcut == .commandTab)
+    }
 }

@@ -8,10 +8,10 @@ import Testing
 struct CGEventTapHotkeySourceTests {
     private func makeSource(_ log: RecordingLogSink) -> CGEventTapHotkeySource {
         CGEventTapHotkeySource(
-            shortcut: .commandTab,
+            shortcuts: .standard,
             mode: .observe,
             log: log,
-            sessionOpen: { false },
+            session: { nil },
             emit: { _ in }
         )
     }
@@ -53,10 +53,10 @@ struct CGEventTapHotkeySourceTests {
         let log = RecordingLogSink()
         var commands: [HotkeyCommand] = []
         let source = CGEventTapHotkeySource(
-            shortcut: .commandTab,
+            shortcuts: .standard,
             mode: .observe,
             log: log,
-            sessionOpen: { true },
+            session: { .applications },
             emit: { commands.append($0) }
         )
         #expect(source.swallows(TapEvent.disabled) == false)
@@ -69,14 +69,53 @@ struct CGEventTapHotkeySourceTests {
         let log = RecordingLogSink()
         var commands: [HotkeyCommand] = []
         let source = CGEventTapHotkeySource(
-            shortcut: .commandTab,
+            shortcuts: .standard,
             mode: .observe,
             log: log,
-            sessionOpen: { false },
+            session: { nil },
             emit: { commands.append($0) }
         )
         #expect(source.swallows(TapEvent.disabled) == false)
         #expect(commands.isEmpty)
         #expect(log.events.contains(.hotkeyTapReenabled))
+    }
+
+    private func intercepting(
+        opens: Bool,
+        commands: Box<[HotkeyCommand]>
+    ) -> CGEventTapHotkeySource {
+        let open = Box(false)
+        return CGEventTapHotkeySource(
+            shortcuts: .standard,
+            mode: .intercept,
+            log: RecordingLogSink(),
+            session: { open.value ? .frontWindows : nil },
+            emit: { command in
+                commands.value.append(command)
+                if case .activate = command { open.value = opens }
+            }
+        )
+    }
+
+    private func stroke(_ key: KeyCode, _ modifiers: ModifierSet, _ phase: KeyPhase) -> TapEvent {
+        .stroke(KeyStroke(key: key, modifiers: modifiers, phase: phase))
+    }
+
+    @Test("a shortcut that opens no session gives the key back to the system")
+    func passesThroughWhenNothingOpens() {
+        let commands = Box<[HotkeyCommand]>([])
+        let source = intercepting(opens: false, commands: commands)
+        #expect(source.swallows(stroke(.grave, [.command], .down)) == false)
+        #expect(commands.value == [.activate(.forward, .frontWindows)])
+        #expect(source.swallows(stroke(.grave, [.command], .up)) == false)
+    }
+
+    @Test("a shortcut that opens a session keeps the key")
+    func swallowsWhenSessionOpens() {
+        let commands = Box<[HotkeyCommand]>([])
+        let source = intercepting(opens: true, commands: commands)
+        #expect(source.swallows(stroke(.grave, [.command], .down)))
+        #expect(commands.value == [.activate(.forward, .frontWindows)])
+        #expect(source.swallows(stroke(.grave, [.command], .up)))
     }
 }

@@ -33,7 +33,14 @@ struct LogEventTests {
     @Test("every hotkey command maps to its own event in the hotkey category")
     func hotkeyCommandsMapToDistinctEvents() {
         let commands: [HotkeyCommand] = [
-            .activate(.forward), .activate(.backward), .step(.forward), .step(.backward), .cancel, .commit,
+            .activate(.forward, .applications),
+            .activate(.backward, .applications),
+            .activate(.forward, .frontWindows),
+            .activate(.backward, .frontWindows),
+            .step(.forward),
+            .step(.backward),
+            .cancel,
+            .commit,
         ]
         let events = commands.map(LogEvent.init(command:))
         #expect(Set(events).count == commands.count)

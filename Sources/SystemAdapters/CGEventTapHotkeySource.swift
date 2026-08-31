@@ -9,10 +9,10 @@ public final class CGEventTapHotkeySource: HotkeyEngine {
         | (1 << CGEventType.keyUp.rawValue)
         | (1 << CGEventType.flagsChanged.rawValue)
 
-    private let shortcut: Shortcut
+    private let shortcuts: ShortcutSet
     private let mode: HotkeyTapMode
     private let log: any LogSink
-    private let sessionOpen: @MainActor () -> Bool
+    private let session: @MainActor () -> SwitcherScope?
     private let emit: @MainActor (HotkeyCommand) -> Void
     private var port: HotkeyEventTap?
     private var swallowing: SwallowPolicy
@@ -20,16 +20,16 @@ public final class CGEventTapHotkeySource: HotkeyEngine {
     public var tap: HotkeyTapMode? { port == nil ? nil : mode }
 
     public init(
-        shortcut: Shortcut,
+        shortcuts: ShortcutSet,
         mode: HotkeyTapMode,
         log: any LogSink,
-        sessionOpen: @escaping @MainActor () -> Bool,
+        session: @escaping @MainActor () -> SwitcherScope?,
         emit: @escaping @MainActor (HotkeyCommand) -> Void
     ) {
-        self.shortcut = shortcut
+        self.shortcuts = shortcuts
         self.mode = mode
         self.log = log
-        self.sessionOpen = sessionOpen
+        self.session = session
         self.emit = emit
         swallowing = SwallowPolicy(mode: mode)
     }
@@ -82,16 +82,20 @@ public final class CGEventTapHotkeySource: HotkeyEngine {
     }
 
     private func recoverSession() {
-        guard sessionOpen() else { return }
+        guard session() != nil else { return }
         log.record(LogEvent(command: .cancel))
         emit(.cancel)
     }
 
+    /// An activation that opened nothing is not ours to keep: the key belongs to whatever
+    /// is in front, and treating it as a pass-through is also what keeps the swallow policy
+    /// honest — a press nobody swallowed leaves no unpaired release behind it.
     private func swallows(_ stroke: KeyStroke) -> Bool {
-        let decision = HotkeyInterpreter.decide(stroke, shortcut: shortcut, sessionOpen: sessionOpen())
+        var decision = HotkeyInterpreter.decide(stroke, shortcuts: shortcuts, session: session())
         if case .command(let command) = decision {
             log.record(LogEvent(command: command))
             emit(command)
+            if case .activate = command, session() == nil { decision = .passThrough }
         }
         return swallowing.swallows(decision, of: stroke)
     }

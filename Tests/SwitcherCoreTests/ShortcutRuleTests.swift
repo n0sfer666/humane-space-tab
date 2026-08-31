@@ -59,4 +59,17 @@ struct ShortcutRuleTests {
         #expect(ShortcutRule.normalised(accepted) == accepted)
         #expect(ShortcutRule.normalised(Shortcut(key: KeyCode(rawValue: 56), modifiers: [.command])) == .commandTab)
     }
+
+    @Test("a combination the other gesture already holds is refused")
+    func refusesTaken() {
+        #expect(ShortcutRule.rejection(for: .commandTab, taken: .commandGrave) == nil)
+        #expect(ShortcutRule.rejection(for: .commandTab, taken: .commandTab) == .taken)
+    }
+
+    @Test("normalisation falls back to the shortcut it is given")
+    func normalisesToItsOwnDefault() {
+        let refused = Shortcut(key: .tab, modifiers: [])
+        #expect(ShortcutRule.normalised(refused) == .commandTab)
+        #expect(ShortcutRule.normalised(refused, fallback: .commandGrave) == .commandGrave)
+    }
 }

@@ -1,19 +1,21 @@
 public enum HotkeyInterpreter {
     private static let forceQuit: ModifierSet = [.command, .option]
 
+    /// An open session is read against the one shortcut that opened it: the other binding
+    /// shares the modifier often enough that reading a release against it would commit the
+    /// session at the wrong moment.
     public static func decide(
         _ stroke: KeyStroke,
-        shortcut: Shortcut,
-        sessionOpen: Bool
+        shortcuts: ShortcutSet,
+        session: SwitcherScope?
     ) -> HotkeyDecision {
-        sessionOpen ? decideWithOpenSession(stroke, shortcut) : decideWhileIdle(stroke, shortcut)
+        guard let session else { return decideWhileIdle(stroke, shortcuts) }
+        return decideWithOpenSession(stroke, shortcuts.shortcut(for: session))
     }
 
-    private static func decideWhileIdle(_ stroke: KeyStroke, _ shortcut: Shortcut) -> HotkeyDecision {
-        guard stroke.phase == .down, let direction = shortcut.direction(for: stroke) else {
-            return .passThrough
-        }
-        return .command(.activate(direction))
+    private static func decideWhileIdle(_ stroke: KeyStroke, _ shortcuts: ShortcutSet) -> HotkeyDecision {
+        guard stroke.phase == .down, let matched = shortcuts.match(stroke) else { return .passThrough }
+        return .command(.activate(matched.direction, matched.scope))
     }
 
     private static func decideWithOpenSession(_ stroke: KeyStroke, _ shortcut: Shortcut) -> HotkeyDecision {
