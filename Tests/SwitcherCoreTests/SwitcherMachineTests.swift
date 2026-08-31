@@ -4,35 +4,37 @@ import Testing
 
 @Suite("Switcher machine")
 struct SwitcherMachineTests {
-    private func applications(_ count: Int) -> [SwitchableApplication] {
+    private func entries(_ count: Int) -> [SwitcherEntry] {
         (0..<count).map {
-            SwitchableApplication(
-                pid: ProcessIdentifier(rawValue: Int32($0 + 1)),
-                bundleIdentifier: "test.\($0)",
-                name: "App \($0)",
-                isActive: $0 == 0,
-                windows: []
+            SwitcherEntry(
+                application: SwitchableApplication(
+                    pid: ProcessIdentifier(rawValue: Int32($0 + 1)),
+                    bundleIdentifier: "test.\($0)",
+                    name: "App \($0)",
+                    isActive: $0 == 0,
+                    windows: []
+                )
             )
         }
     }
 
     private func opened(_ count: Int, _ direction: SelectionDirection = .forward) -> SwitcherMachine {
         var machine = SwitcherMachine()
-        _ = machine.open(applications(count), direction)
+        _ = machine.open(entries(count), direction)
         return machine
     }
 
     @Test("opening forward selects the application before the front one")
     func opensForward() {
         var machine = SwitcherMachine()
-        #expect(machine.open(applications(3), .forward) == .opened)
+        #expect(machine.open(entries(3), .forward) == .opened)
         #expect(machine.session?.selection == 1)
     }
 
     @Test("opening backward selects the last application")
     func opensBackward() {
         var machine = SwitcherMachine()
-        #expect(machine.open(applications(3), .backward) == .opened)
+        #expect(machine.open(entries(3), .backward) == .opened)
         #expect(machine.session?.selection == 2)
     }
 
@@ -55,7 +57,7 @@ struct SwitcherMachineTests {
     @Test("a single application is selected when the session opens")
     func singleApplicationOpens() {
         var machine = SwitcherMachine()
-        #expect(machine.open(applications(1), .forward) == .opened)
+        #expect(machine.open(entries(1), .forward) == .opened)
         #expect(machine.session?.selection == 0)
     }
 
@@ -76,8 +78,8 @@ struct SwitcherMachineTests {
     @Test("opening a session while one is open leaves it untouched")
     func doubleOpenIsIgnored() {
         var machine = opened(3)
-        #expect(machine.open(applications(5), .backward) == .ignored)
-        #expect(machine.session?.applications.count == 3)
+        #expect(machine.open(entries(5), .backward) == .ignored)
+        #expect(machine.session?.entries.count == 3)
         #expect(machine.session?.selection == 1)
     }
 
@@ -110,7 +112,7 @@ struct SwitcherMachineTests {
     @Test("committing reports the selected application and closes the session")
     func commitReportsSelection() {
         var machine = opened(3)
-        #expect(machine.commit() == .committed(ProcessIdentifier(rawValue: 2)))
+        #expect(machine.commit() == .committed(SwitcherTarget(pid: ProcessIdentifier(rawValue: 2))))
         #expect(machine.session == nil)
     }
 
@@ -118,15 +120,15 @@ struct SwitcherMachineTests {
     func commitAfterSteps() {
         var machine = opened(3)
         _ = machine.step(.forward)
-        #expect(machine.commit() == .committed(ProcessIdentifier(rawValue: 3)))
+        #expect(machine.commit() == .committed(SwitcherTarget(pid: ProcessIdentifier(rawValue: 3))))
     }
 
     @Test("a session opened after a commit uses the new snapshot")
     func reopenUsesNewSnapshot() {
         var machine = opened(3)
         _ = machine.commit()
-        #expect(machine.open(applications(2), .backward) == .opened)
-        #expect(machine.session?.applications.count == 2)
+        #expect(machine.open(entries(2), .backward) == .opened)
+        #expect(machine.session?.entries.count == 2)
         #expect(machine.session?.selection == 1)
     }
 }

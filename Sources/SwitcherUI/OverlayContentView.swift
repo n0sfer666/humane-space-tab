@@ -6,7 +6,7 @@ import SystemPorts
 final class OverlayContentView: NSView {
     private let icons: any ApplicationIconSource
     private let metrics: OverlayMetrics
-    private var model = OverlayModel(applications: [], selection: 0)
+    private var model = OverlayModel(entries: [], selection: 0)
     private var layout = OverlayLayout.empty
     private var offset = 0
 
@@ -27,7 +27,7 @@ final class OverlayContentView: NSView {
         let previous = self.model
         let stepped =
             self.layout == layout && self.offset == offset
-            && previous.applications == model.applications
+            && previous.entries == model.entries
         self.model = model
         self.layout = layout
         self.offset = offset
@@ -52,14 +52,14 @@ final class OverlayContentView: NSView {
     }
 
     override func draw(_ dirtyRect: NSRect) {
-        for (index, slot) in layout.slots.enumerated() where index < model.applications.count {
+        for (index, slot) in layout.slots.enumerated() where index < model.entries.count {
             let placed = place(slot)
             guard placed.intersects(dirtyRect) else { continue }
-            draw(model.applications[index], in: placed, selected: index == model.selection)
+            draw(model.entries[index], in: placed, selected: index == model.selection)
         }
     }
 
-    private func draw(_ application: SwitchableApplication, in slot: CGRect, selected: Bool) {
+    private func draw(_ entry: SwitcherEntry, in slot: CGRect, selected: Bool) {
         if selected {
             let radius = metrics.tileRadius(icon: layout.iconSide)
             NSColor.white.withAlphaComponent(0.22).setFill()
@@ -72,10 +72,10 @@ final class OverlayContentView: NSView {
                 yRadius: radius
             ).fill()
         }
-        icons.icon(for: application.pid)?
+        icons.icon(for: entry.application.pid)?
             .draw(in: CGRect(x: slot.minX, y: slot.minY, width: layout.iconSide, height: layout.iconSide))
         guard selected else { return }
-        let name = name(application.name)
+        let name = name(entry.application.name)
         let area = metrics.nameArea(
             under: slot,
             icon: layout.iconSide,

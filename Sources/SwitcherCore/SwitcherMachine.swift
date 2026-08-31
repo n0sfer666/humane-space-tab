@@ -8,11 +8,11 @@ public struct SwitcherMachine: Sendable {
     }
 
     public mutating func open(
-        _ applications: [SwitchableApplication],
+        _ entries: [SwitcherEntry],
         _ direction: SelectionDirection
     ) -> SwitcherEffect {
         guard session == nil,
-            let opened = SwitcherSession(applications: applications, direction: direction)
+            let opened = SwitcherSession(entries: entries, direction: direction)
         else { return .ignored }
         session = opened
         return .opened
@@ -35,6 +35,6 @@ public struct SwitcherMachine: Sendable {
     public mutating func commit() -> SwitcherEffect {
         guard let current = session else { return .ignored }
         session = nil
-        return .committed(current.selected.pid)
+        return .committed(current.selected.target)
     }
 }
