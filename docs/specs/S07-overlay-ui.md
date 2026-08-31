@@ -81,43 +81,53 @@ Three facts come out of that. The row **never wraps**: a crowded Space shrinks i
 instead of growing a second line. The panel is **not a fixed share** of the screen — it
 hugs its content and grows toward a ~96 % ceiling. And everything around the icon —
 gap, padding, the room under it — stays **proportional to the icon**, which is why the
-ribbon reads the same at five applications and at twenty-five.
+ribbon reads the same at three applications and at ten. Where we part company with the
+system is the crowded end: it answers twenty-five applications by shrinking them to 48 pt,
+which is a row of dots nobody can tell apart. We keep the icons legible and move the list
+under them instead.
 
 So the layout keeps exactly one free variable, the icon side, and derives the rest:
 
-1. Gap is **30 %** of the icon, panel padding another 30 %, the selected tile's inset 8 %.
+1. Gap is **30 %** of the icon, panel padding another 30 %, and the selected icon is drawn
+   **20 %** larger than the rest.
 2. The icon starts at **100 pt** and is the largest value whose row — gaps and paddings
    included — still fits 96 % of the screen width.
-3. Past **25 applications** the icon stops shrinking: the panel freezes at its 25-slot
-   width and the ribbon **scrolls** instead. Beyond that, shrinking further would trade a
-   readable ribbon for a row of unrecognisable dots.
-4. Scrolling moves by the smallest amount that keeps the selection visible: the ribbon
-   stays put while the selection is inside the window and slides one slot when it steps
-   past an edge, so cycling through a crowded Space does not slide the icons under the
-   eye. It starts each session at the beginning.
+3. The ribbon holds at most **ten** slots: four entries before the selection, the
+   selection, and five after it. Past ten applications it stops growing and becomes a
+   **carousel** — a window onto a list that wraps.
+4. In a carousel the selection keeps its place, the fifth slot, and the icons move under
+   it. A step is therefore always the same distance for the eye, wherever in the list the
+   user is, and the list has no ends: stepping past the last application brings the first
+   one in from the right. Ten applications or fewer and there is nothing to scroll — the
+   ribbon is as long as the Space is, every entry keeps its place, and only the selection
+   moves.
 
-Measured on a 1728 pt-wide display, against the numbers above:
+Measured on a 1728 pt-wide display:
 
-| applications | icon | gap | panel width | visible |
+| applications | icon | gap | panel width | slots |
 |---|---|---|---|---|
+| 1 | 100 | — | 9 % | 1 |
 | 3 | 100 | 30 | 24 % | 3 |
 | 5 | 100 | 30 | 39 % | 5 |
-| 8 | 100 | 30 | 61 % | 8 |
-| 13 | 96 | 29 | 95 % | 13 |
-| 20 | 62 | 19 | 94 % | 20 |
-| 25 | 50 | 15 | 94 % | 25 |
-| 34 | 50 | 15 | 94 % | 25, scrolled |
+| 8 | 100 | 30 | 62 % | 8 |
+| 10 | 100 | 30 | 77 % | 10 |
+| 20 | 100 | 30 | 77 % | 10, carousel |
+| 45 | 100 | 30 | 77 % | 10, carousel |
+| 100 | 100 | 30 | 77 % | 10, carousel |
 
-That arithmetic lives in `OverlayLayout` and `RibbonScroll`, takes only numbers, imports
-no AppKit, and is unit-tested against every branch: fits, shrinks, freezes, scrolls.
+The icon now only shrinks where the screen makes it: a full ribbon needs 1330 pt, so
+below roughly a 1390 pt-wide display the ten slots shrink to fit, down to a 16 pt floor.
+
+That arithmetic lives in `CarouselWindow` — which entries the ten slots carry — and
+`OverlayLayout` — where the slots are. Both take only numbers, import no AppKit, and are
+unit-tested against every branch: fits, shrinks, freezes, wraps.
 
 Only the **selected** application is named, under its icon, in semibold — the way the
-system does it. Names under every icon were tried first and dropped: at twenty-five
+system does it. Names under every icon were tried first and dropped: at twenty
 applications they turn the ribbon into a wall of truncated text, and the one name the
 user is reading is the one they are switching to. Because only one name is drawn, it is
-free to be wider than its icon — up to two and a half times as wide, and never wider
-than the panel's own padding allows. The name scales with the icon — 13 pt at full size
-down to an 11 pt floor.
+free to be wider than its icon, up to the panel's own width. The name scales with the
+icon — 13 pt at full size down to an 11 pt floor.
 
 The box it is drawn in is only as wide as the name itself. A box of a fixed width has to
 be pushed sideways to stay inside the panel whenever the icon is near an end of the
@@ -127,33 +137,44 @@ moves a name inwards only when the name itself does not fit, this is the differe
 between a name that looks attached to its icon and one that looks misaligned. Sizing the
 box to the text keeps the two identical: a name that fits stays centred on its icon
 wherever the icon is, one that does not moves in by exactly what it takes to stay inside
-the panel, and past that it is truncated with an ellipsis.
+the panel, and past that it is truncated.
 
-The selected icon is not enlarged, which is also what the system does: it carries a 22 %
-white rounded highlight drawn around it, and the row stays perfectly still as the
-selection moves. The panel carries a 26 pt corner radius and, behind the row, a 15 % black
-scrim — the least that keeps a white label readable when the desktop behind the glass is a
-white window. Anything heavier is what made an earlier ribbon visibly darker than the
-original.
+Where it is truncated matters once window titles are switched on (S16). A title is as
+long as the document someone opened, and its ends carry the meaning — the document at
+the front, the application at the back — so it is cut in the **middle**. An earlier
+ribbon capped the name at two and a half icons instead, which was too narrow to read at
+one application and wide enough to sprawl under its neighbours at three; the panel's own
+width is the only bound left.
+
+The selection is marked by the icon itself rather than by a frame around it: it is drawn
+at full strength and 20 % larger, and its neighbours are dimmed to 62 %. A white rounded
+tile was tried first — it is what the system draws — and next to Liquid Glass it reads as
+a second panel stacked on the first. Nothing else moves: the slots stay where they are,
+so the enlargement is the only thing the eye has to follow.
+
+The panel carries a 26 pt corner radius and, behind the row, a 15 % black scrim — the
+least that keeps a white label readable when the desktop behind the glass is a white
+window. Anything heavier is what made an earlier ribbon visibly darker than the original.
 
 Its material is whichever one the system builds its own panels from. macOS 26 draws the
 switcher in Liquid Glass, so where `NSGlassEffectView` exists the ribbon is made of it, in
-the `clear` style: the `regular` one is nearly opaque over a dark desktop and reads as a
-flat rectangle rather than as glass. `tintColor` does not dim that material, which is why
-the legibility scrim above is painted on the content instead. Below macOS 26 the panel
-keeps the `.hudWindow` blur with a hairline white border, which is what those systems
-render a HUD with. The choice is the system's version and nothing
-else: a preference here would only offer the user a way to look less native than their
-own machine. Both paths hand the same content view to the same panel, so the ribbon's
+the `regular` style: the `clear` style takes so much of what is behind it that over a flat
+desktop the panel reads as nothing at all — the effect measurably disappeared. Below
+macOS 26 the panel keeps the `.hudWindow` blur with a hairline white border, which is what
+those systems render a HUD with. The choice is the system's version and nothing else: a
+preference here would only offer the user a way to look less native than their own
+machine. Both paths hand the same content view to the same panel, so the ribbon's
 geometry and drawing know nothing about which one is underneath.
 
-Only the selection changes between the steps of a session, so a step is not a repaint of
-the ribbon. The geometry is computed once per session and reused; the view invalidates
-the tile that lost the selection and the tile that gained it — grown by the room the
-highlight and the name take outside their slot — and draws only the slots that intersect
-the dirty rectangle. The content view is layer-backed and masks its bounds, which both
-clears the dirty rectangle before `draw(_:)` and clips the slots that have scrolled past
-the panel's edge.
+### A step is a slide, not a redraw
+
+A carousel that jumped from one arrangement of icons to the next would give the eye
+nothing to follow. So the ribbon is drawn where it lands, and its layer is slid in from
+where it came: one `transform.translation.x` animation of 0.12 s on the content layer,
+which the compositor runs without a second frame of drawing. The keystroke that triggers
+it stays off that path entirely. Only a single step is animated — a jump of several slots,
+a click on a distant icon, or a ribbon that did not move is drawn where it is, because a
+slide that does not match the distance travelled is worse than none.
 
 ### Interception
 
@@ -180,13 +201,16 @@ saw the two `flagsChanged` events and no `Tab` at all.
 - [ ] Showing it does not change which application is frontmost, and the panel is never key or main.
 - [ ] A press-and-release `Cmd+Tab` faster than the delay shows nothing at all.
 - [ ] The overlay lists exactly the applications of the S05 snapshot, in the same order, with the selected one highlighted and named under its icon.
-- [ ] The panel is never wider than 96 % of the screen, never wraps, and its geometry matches the measured system switcher within a couple of points.
-- [ ] Past 25 applications the icon stops shrinking and the ribbon scrolls, always keeping the selection visible.
+- [ ] The panel is never wider than 96 % of the screen, never wraps, and its geometry matches the measured system switcher within a couple of points while both show the same row.
+- [ ] Past ten applications the ribbon stops growing and turns into a wrapping carousel, with the selection in the fifth slot.
 - [ ] A session that stops receiving events hides itself instead of stranding the panel.
 - [ ] Interception never swallows a modifier change, and never swallows a key-up whose key-down went through.
-- [ ] Layout and scroll arithmetic is pure and unit-tested: fits, shrinks, freezes, scrolls.
+- [ ] Layout and carousel arithmetic is pure and unit-tested: fits, shrinks, freezes, wraps.
 - [ ] The name of the selected application is centred on its icon wherever the icon sits in the ribbon, and moves inwards only when it would otherwise leave the panel.
-- [ ] On macOS 26 the panel is Liquid Glass; below it, the HUD blur.
+- [ ] On macOS 26 the panel is Liquid Glass in the `regular` style, visibly frosted over any desktop; below it, the HUD blur.
+- [ ] The selected icon is 20 % larger and at full strength, its neighbours dimmed, with no tile drawn behind anything.
+- [ ] A name longer than the panel is truncated in the middle, keeping both ends of the title.
+- [ ] A single step slides the ribbon; a jump does not.
 - [ ] With Accessibility granted the tap intercepts: the system switcher does not appear.
 - [ ] Without it the engine falls back to `.observe` and logs the fallback instead of dying.
 - [ ] The whole suite is green; `swift-format --strict` and `swiftlint --strict` are clean.
@@ -198,7 +222,7 @@ saw the two `flagsChanged` events and no `Tab` at all.
 |---|------|----------|
 | 1 | layout, three icons on a wide screen | one row, full icon size |
 | 2 | layout, a row wider than the budget | icon side shrinks, still one row |
-| 3 | layout, more applications than the visible limit | icon frozen, panel frozen, ribbon scrolls |
+| 3 | layout, more applications than the window holds | icon frozen, panel frozen, ten slots |
 | 4 | layout, a single icon | one slot, no negative gaps |
 | 5 | layout, zero icons | zero size, no slots |
 | 5a | layout, any non-empty count | panel width never exceeds 96 % of the screen |
@@ -207,17 +231,17 @@ saw the two `flagsChanged` events and no `Tab` at all.
 | 5d | layout, slots | a slot holds the icon and the room its name needs |
 | 5e | layout, the measured counts | icon and gap match the system switcher table |
 | 5f | layout, label size | full size when roomy, smaller when crowded, never below the floor |
-| 5g | layout, past the limit | hidden slots sit outside the panel |
+| 5g | layout, any count | every slot is inside the panel |
 | 5h | layout, any count on four display widths | slots never overlap, the width budget holds |
-| 5i | scroll, everything visible | never scrolls |
-| 5j | scroll, selection inside the window | offset unchanged |
-| 5k | scroll, selection steps past an edge | offset moves by one, either way |
-| 5l | scroll, wrap to the first application | offset returns home |
-| 5m | scroll, a shorter ribbon | a stale offset is clamped back into range |
+| 5i | carousel, ten applications or fewer | every entry is shown, where it is |
+| 5j | carousel, more than ten | ten entries, the selection in the fifth slot |
+| 5k | carousel, a step across either end | the window wraps, no duplicates, always full |
+| 5l | carousel, an empty list | no entries |
+| 5m | slide, one step either way | one slot of travel; a jump, a still ribbon or a changed shape, none |
 | 5n | name area, a name that fits, at either end of the ribbon | centred on its icon |
 | 5o | name area, a name too wide for the first slot | moved in to the panel's inset, no further |
 | 5p | name area, a name too wide for the last slot | stops at the far inset |
-| 5q | name area, a name past the budget | capped at two and a half icons, truncated |
+| 5q | name area, a name past the panel | capped at the panel's inset, truncated in the middle |
 | 5r | name area, any name | sits directly under its icon, one label high |
 | 5s | backdrop, the running system | the content view is inside whichever material the system provides |
 | 6 | controller, session opens | show is scheduled, nothing visible yet |
@@ -246,11 +270,20 @@ saw the two `flagsChanged` events and no `Tab` at all.
    above it.
 7. While the overlay is up, type into another application after the gesture ends →
    expected: keystrokes land normally, no modifier is stuck down.
-8. On a Space with more than a dozen applications, step to the first icon and to the last
-   → expected: the name sits under its own icon, not beside it, and never leaves the
-   panel.
-9. Put the ribbon over a busy window or wallpaper → expected: on macOS 26 the panel is
-   glass — the picture behind it bends at the panel's edge; below 26 it is the HUD blur.
+8. On a Space with more than a dozen applications, hold Command and step through the whole
+   list → expected: ten icons at a time, the selection always in the fifth slot, the icons
+   sliding under it by one per step, and stepping past the last application brings the
+   first one back without a jump.
+8a. On a Space with three or four applications → expected: the ribbon is as long as the
+   Space is, the icons hold still, and only the selection moves.
+8b. Step to the first icon and to the last → expected: the name sits under its own icon,
+   not beside it, and never leaves the panel.
+8c. Switch on window titles (S16) and select a window with a very long title → expected:
+   the name is cut in the middle, with the start of the title and the application's name
+   at the end both still readable.
+9. Put the ribbon over a busy window, over a flat white window and over a plain wallpaper →
+   expected: on macOS 26 the panel is visibly frosted glass in every case — never an
+   invisible rectangle; below 26 it is the HUD blur.
 
 ## Risks and open questions
 
@@ -261,10 +294,10 @@ saw the two `flagsChanged` events and no `Tab` at all.
   documented choice, not an accident.
 - **The 120 ms delay is a guess.** It matches the feel of the system switcher on this
   machine; if it turns out to be visibly wrong it becomes a preference in S08.
-- **The 25-application limit is a judgement call.** It is where the system switcher's own
-  icons land at about 48 pt on a 1728 pt display; on a much wider display the ribbon could
-  afford more before scrolling. If that reads badly it becomes a share of the screen width
-  rather than a count.
+- **The ten-slot window is a judgement call.** Four before and five after the selection is
+  what fits at full icon size on a laptop display without the ribbon dominating the screen.
+  On a much wider display it could afford more; if that reads badly it becomes a share of
+  the screen width rather than a count.
 - **Interception makes bugs expensive.** A wedged session now means a swallowed
   `Cmd+Tab`. The tap's re-arm already cancels an open session (S05); with an overlay on
   screen a wedge is at least visible.

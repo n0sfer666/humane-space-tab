@@ -18,7 +18,7 @@ struct RibbonHitTestTests {
     @Test("a point on a tile hits it")
     func hitsTile() {
         let layout = layout(5)
-        #expect(RibbonHitTest.slot(at: middle(of: layout, 3), layout: layout, offset: 0) == 3)
+        #expect(RibbonHitTest.slot(at: middle(of: layout, 3), layout: layout) == 3)
     }
 
     @Test("a point in the gap belongs to the nearer tile")
@@ -26,8 +26,8 @@ struct RibbonHitTestTests {
         let layout = layout(5)
         let gap = layout.slots[1].maxX + (layout.step - layout.iconSide) / 2
         let row = layout.slots[1].midY
-        #expect(RibbonHitTest.slot(at: CGPoint(x: gap - 1, y: row), layout: layout, offset: 0) == 1)
-        #expect(RibbonHitTest.slot(at: CGPoint(x: gap + 1, y: row), layout: layout, offset: 0) == 2)
+        #expect(RibbonHitTest.slot(at: CGPoint(x: gap - 1, y: row), layout: layout) == 1)
+        #expect(RibbonHitTest.slot(at: CGPoint(x: gap + 1, y: row), layout: layout) == 2)
     }
 
     @Test("a point outside the panel hits nothing")
@@ -36,10 +36,10 @@ struct RibbonHitTestTests {
         let inside = middle(of: layout, 0)
         let below = CGPoint(x: inside.x, y: layout.size.height + 1)
         let beyond = CGPoint(x: layout.size.width + 1, y: inside.y)
-        #expect(RibbonHitTest.slot(at: CGPoint(x: inside.x, y: -1), layout: layout, offset: 0) == nil)
-        #expect(RibbonHitTest.slot(at: below, layout: layout, offset: 0) == nil)
-        #expect(RibbonHitTest.slot(at: CGPoint(x: -1, y: inside.y), layout: layout, offset: 0) == nil)
-        #expect(RibbonHitTest.slot(at: beyond, layout: layout, offset: 0) == nil)
+        #expect(RibbonHitTest.slot(at: CGPoint(x: inside.x, y: -1), layout: layout) == nil)
+        #expect(RibbonHitTest.slot(at: below, layout: layout) == nil)
+        #expect(RibbonHitTest.slot(at: CGPoint(x: -1, y: inside.y), layout: layout) == nil)
+        #expect(RibbonHitTest.slot(at: beyond, layout: layout) == nil)
     }
 
     @Test("the padding beside the ribbon hits nothing")
@@ -47,20 +47,19 @@ struct RibbonHitTestTests {
         let layout = layout(5)
         let row = layout.slots[0].midY
         let far = CGPoint(x: layout.size.width - 1, y: row)
-        #expect(RibbonHitTest.slot(at: CGPoint(x: 1, y: row), layout: layout, offset: 0) == nil)
-        #expect(RibbonHitTest.slot(at: far, layout: layout, offset: 0) == nil)
+        #expect(RibbonHitTest.slot(at: CGPoint(x: 1, y: row), layout: layout) == nil)
+        #expect(RibbonHitTest.slot(at: far, layout: layout) == nil)
     }
 
-    @Test("a scrolled ribbon hits what the user sees")
-    func followsTheScrollOffset() {
-        let layout = layout(30)
-        let first = middle(of: layout, 0)
-        #expect(RibbonHitTest.slot(at: first, layout: layout, offset: 4) == 4)
-        #expect(RibbonHitTest.slot(at: first, layout: layout, offset: 0) == 0)
+    @Test("a crowded Space is hit by slot, not by application")
+    func crowdedRibbonHitsItsSlots() {
+        let layout = layout(60)
+        #expect(RibbonHitTest.slot(at: middle(of: layout, 0), layout: layout) == 0)
+        #expect(RibbonHitTest.slot(at: middle(of: layout, layout.visible - 1), layout: layout) == layout.visible - 1)
     }
 
     @Test("an empty ribbon hits nothing")
     func missesOnAnEmptyRibbon() {
-        #expect(RibbonHitTest.slot(at: .zero, layout: .empty, offset: 0) == nil)
+        #expect(RibbonHitTest.slot(at: .zero, layout: .empty) == nil)
     }
 }

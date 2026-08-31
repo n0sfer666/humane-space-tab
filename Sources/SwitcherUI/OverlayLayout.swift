@@ -6,10 +6,11 @@ public struct OverlayLayout: Sendable, Equatable {
 
     public let size: CGSize
     public let iconSide: CGFloat
-    /// How many slots the panel shows at once; the rest are reached by scrolling.
+    /// How many slots the panel holds; past that the ribbon stops growing and the entries
+    /// move through it instead.
     public let visible: Int
-    /// One rect per application, holding the icon; the name is drawn under it. Slots beyond
-    /// the visible window sit past the panel's trailing edge until the ribbon scrolls to them.
+    /// One rect per slot, holding the icon; the name is drawn under it. Which entry a slot
+    /// carries is `CarouselWindow`'s answer, and it changes with every step.
     public let slots: [CGRect]
 
     public var step: CGFloat { slots.count > 1 ? slots[1].minX - slots[0].minX : 0 }
@@ -36,7 +37,7 @@ public struct OverlayLayout: Sendable, Equatable {
             size: size,
             iconSide: icon,
             visible: visible,
-            slots: (0..<count).map { index in
+            slots: (0..<visible).map { index in
                 CGRect(
                     x: padding + CGFloat(index) * step,
                     y: padding,

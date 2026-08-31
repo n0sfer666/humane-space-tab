@@ -1,4 +1,5 @@
 import CoreGraphics
+import SwitcherCore
 
 /// Everything except the icon is a share of the icon, the way the system switcher scales:
 /// one row that keeps its proportions from three applications to forty.
@@ -7,57 +8,50 @@ public struct OverlayMetrics: Sendable, Equatable {
     public let tiniestIcon: CGFloat
     public let gapShare: CGFloat
     public let paddingShare: CGFloat
-    public let tileShare: CGFloat
-    public let tileRadiusShare: CGFloat
+    /// How much larger the selected icon is drawn than the rest.
+    public let selectedScale: CGFloat
+    /// What is left of an unselected icon, so the selected one is the one the eye lands on.
+    public let dimmed: CGFloat
     public let labelGap: CGFloat
     public let largestLabel: CGFloat
     public let smallestLabel: CGFloat
     public let widestShare: CGFloat
-    /// How much wider than its icon a name may grow before it is truncated.
-    public let widestName: CGFloat
     public let cornerRadius: CGFloat
-    /// Past this many applications the icon stops shrinking and the ribbon scrolls instead.
-    public let visibleLimit: Int
 
     public init(
         largestIcon: CGFloat = 100,
         tiniestIcon: CGFloat = 16,
         gapShare: CGFloat = 0.30,
         paddingShare: CGFloat = 0.30,
-        tileShare: CGFloat = 0.08,
-        tileRadiusShare: CGFloat = 0.20,
+        selectedScale: CGFloat = 1.20,
+        dimmed: CGFloat = 0.62,
         labelGap: CGFloat = 2,
         largestLabel: CGFloat = 13,
         smallestLabel: CGFloat = 11,
         widestShare: CGFloat = 0.96,
-        widestName: CGFloat = 2.5,
-        cornerRadius: CGFloat = 26,
-        visibleLimit: Int = 25
+        cornerRadius: CGFloat = 26
     ) {
         self.largestIcon = largestIcon
         self.tiniestIcon = tiniestIcon
         self.gapShare = gapShare
         self.paddingShare = paddingShare
-        self.tileShare = tileShare
-        self.tileRadiusShare = tileRadiusShare
+        self.selectedScale = selectedScale
+        self.dimmed = dimmed
         self.labelGap = labelGap
         self.largestLabel = largestLabel
         self.smallestLabel = smallestLabel
         self.widestShare = widestShare
-        self.widestName = widestName
         self.cornerRadius = cornerRadius
-        self.visibleLimit = visibleLimit
     }
 
-    public func visible(count: Int) -> Int { min(count, visibleLimit) }
+    public func visible(count: Int) -> Int { min(count, CarouselWindow.span) }
 
     public func gap(icon: CGFloat) -> CGFloat { (icon * gapShare).rounded() }
 
     public func padding(icon: CGFloat) -> CGFloat { (icon * paddingShare).rounded() }
 
-    public func tilePadding(icon: CGFloat) -> CGFloat { (icon * tileShare).rounded() }
-
-    public func tileRadius(icon: CGFloat) -> CGFloat { (icon * tileRadiusShare).rounded() }
+    /// What the selected icon takes beyond its slot, on every side.
+    public func growth(icon: CGFloat) -> CGFloat { (icon * (selectedScale - 1) / 2).rounded() }
 
     /// The name shrinks with the icon so a crowded ribbon stays legible without towering labels.
     public func labelSize(icon: CGFloat) -> CGFloat {
@@ -69,19 +63,22 @@ public struct OverlayMetrics: Sendable, Equatable {
 
     public func labelHeight(icon: CGFloat) -> CGFloat { (labelSize(icon: icon) * 1.35).rounded(.up) }
 
-    public func slotHeight(icon: CGFloat) -> CGFloat { icon + labelGap + labelHeight(icon: icon) }
+    public func slotHeight(icon: CGFloat) -> CGFloat {
+        icon + growth(icon: icon) + labelGap + labelHeight(icon: icon)
+    }
 
     /// The name sits under its icon in a box no wider than the text itself, so a name that
     /// fits stays centred on the icon instead of being pushed aside by the empty half of a
-    /// fixed box. A name too long for the room left at the ribbon's edge moves inwards by
-    /// exactly what it takes to stay inside the panel, and is truncated past that.
+    /// fixed box. A window title is as long as the document behind it, so the only bound
+    /// left is the panel: a name too long for the room at the ribbon's edge moves inwards by
+    /// exactly what it takes to stay inside, and is truncated past the panel's own width.
     public func nameArea(under slot: CGRect, icon: CGFloat, text: CGFloat, panel: CGFloat) -> CGRect {
         let inset = padding(icon: icon)
-        let budget = max(min(panel - inset * 2, icon * widestName), 0)
+        let budget = max(panel - inset * 2, 0)
         let width = min(text.rounded(.up), budget)
         return CGRect(
             x: min(max(slot.midX - width / 2, inset), max(panel - width - inset, inset)),
-            y: slot.minY + icon + labelGap,
+            y: slot.minY + icon + growth(icon: icon) + labelGap,
             width: width,
             height: labelHeight(icon: icon)
         )

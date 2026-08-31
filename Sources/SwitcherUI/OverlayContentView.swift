@@ -8,7 +8,7 @@ final class OverlayContentView: NSView {
     private let metrics: OverlayMetrics
     private var model = OverlayModel(entries: [], selection: 0)
     private var layout = OverlayLayout.empty
-    private var offset = 0
+    private var shown: [Int] = []
     private var mouse = RibbonMouse()
 
     var onGesture: ((RibbonGesture) -> Void)?
@@ -26,23 +26,21 @@ final class OverlayContentView: NSView {
 
     override var isFlipped: Bool { true }
 
-    func render(_ model: OverlayModel, layout: OverlayLayout, offset: Int) {
-        mouse.rendered(layout: layout, offset: offset, selection: model.selection)
-        let previous = self.model
-        let stepped =
-            self.layout == layout && self.offset == offset
-            && previous.entries == model.entries && previous.titles == model.titles
+    func render(_ model: OverlayModel, layout: OverlayLayout) {
+        let shown = CarouselWindow.indices(count: model.entries.count, selection: model.selection)
+        let travelled =
+            self.layout == layout && self.model.entries == model.entries
+            ? CarouselShift.between(self.shown, shown) : 0
         self.model = model
         self.layout = layout
-        self.offset = offset
-        guard stepped, let changed = changedArea(from: previous.selection, to: model.selection) else {
-            needsDisplay = true
-            return
-        }
-        setNeedsDisplay(changed)
+        self.shown = shown
+        mouse.rendered(layout: layout, window: shown, selection: model.selection)
+        needsDisplay = true
+        CarouselSlide.apply(shift: travelled, step: layout.step, to: layer)
     }
 
     func beginSession() {
+        shown = []
         mouse.reset()
     }
 
@@ -89,67 +87,37 @@ final class OverlayContentView: NSView {
         convert(event.locationInWindow, from: nil)
     }
 
-    /// A step repaints the tile that lost the selection and the one that gained it, not the
-    /// ribbon — grown by the room the tile and the name take outside their slot.
-    private func changedArea(from previous: Int, to current: Int) -> CGRect? {
-        let slots = layout.slots
-        guard slots.indices.contains(previous), slots.indices.contains(current) else { return nil }
-        let bleed = max(metrics.tilePadding(icon: layout.iconSide), layout.iconSide) + 1
-        return place(slots[previous].union(slots[current])).insetBy(dx: -bleed, dy: -bleed)
-    }
-
-    private func place(_ slot: CGRect) -> CGRect {
-        slot.offsetBy(dx: -CGFloat(offset) * layout.step, dy: 0)
-    }
-
     override func draw(_ dirtyRect: NSRect) {
-        for (index, slot) in layout.slots.enumerated() where index < model.entries.count {
-            let placed = place(slot)
-            guard placed.intersects(dirtyRect) else { continue }
-            draw(model.entries[index], in: placed, selected: index == model.selection)
+        let place = CarouselWindow.place(of: model.selection, count: model.entries.count)
+        for (slot, entry) in shown.enumerated() where layout.slots.indices.contains(slot) {
+            draw(model.entries[entry], in: layout.slots[slot], selected: slot == place)
         }
     }
 
+    /// The selection is the icon at full strength and full size; its neighbours are the same
+    /// icons, dimmed and smaller, so the eye lands on the choice without a frame drawn around
+    /// it.
     private func draw(_ entry: SwitcherEntry, in slot: CGRect, selected: Bool) {
-        if selected {
-            let radius = metrics.tileRadius(icon: layout.iconSide)
-            NSColor.white.withAlphaComponent(0.22).setFill()
-            NSBezierPath(
-                roundedRect: slot.insetBy(
-                    dx: -metrics.tilePadding(icon: layout.iconSide),
-                    dy: -metrics.tilePadding(icon: layout.iconSide)
-                ),
-                xRadius: radius,
-                yRadius: radius
-            ).fill()
-        }
+        let icon = CGRect(x: slot.minX, y: slot.minY, width: layout.iconSide, height: layout.iconSide)
+        let grown = metrics.growth(icon: layout.iconSide)
         icons.icon(for: entry.application.pid)?
-            .draw(in: CGRect(x: slot.minX, y: slot.minY, width: layout.iconSide, height: layout.iconSide))
+            .draw(
+                in: selected ? icon.insetBy(dx: -grown, dy: -grown) : icon,
+                from: .zero,
+                operation: .sourceOver,
+                fraction: selected ? 1 : metrics.dimmed
+            )
         guard selected else { return }
-        let name = name(model.label(of: entry))
+        let name = OverlayName.text(
+            model.label(of: entry),
+            size: metrics.labelSize(icon: layout.iconSide)
+        )
         let area = metrics.nameArea(
             under: slot,
             icon: layout.iconSide,
             text: name.size().width,
             panel: bounds.width
         )
-        name.draw(with: area, options: [.usesLineFragmentOrigin])
-    }
-
-    private func name(_ text: String) -> NSAttributedString {
-        let paragraph = NSMutableParagraphStyle()
-        paragraph.alignment = .center
-        paragraph.lineBreakMode = .byTruncatingTail
-        return NSAttributedString(
-            string: text,
-            attributes: [
-                .font: NSFont.systemFont(
-                    ofSize: metrics.labelSize(icon: layout.iconSide),
-                    weight: .semibold
-                ),
-                .foregroundColor: NSColor.white.withAlphaComponent(0.95),
-                .paragraphStyle: paragraph,
-            ]
-        )
+        OverlayName.draw(name, in: area)
     }
 }

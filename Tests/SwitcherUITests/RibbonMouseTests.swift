@@ -10,7 +10,17 @@ struct RibbonMouseTests {
         var mouse = RibbonMouse()
         mouse.rendered(
             layout: OverlayLayout.compute(count: count, screen: CGSize(width: 1728, height: 1117)),
-            offset: 0,
+            window: CarouselWindow.indices(count: count, selection: selection),
+            selection: selection
+        )
+        return mouse
+    }
+
+    private func wrapped(count: Int = 20, selection: Int = 0) -> RibbonMouse {
+        var mouse = RibbonMouse()
+        mouse.rendered(
+            layout: OverlayLayout.compute(count: count, screen: CGSize(width: 1728, height: 1117)),
+            window: CarouselWindow.indices(count: count, selection: selection),
             selection: selection
         )
         return mouse
@@ -95,6 +105,15 @@ struct RibbonMouseTests {
         let scroll = mouse.scrolled(across: 0, down: -ScrollSteps.threshold)
         #expect(scroll?.direction == .backward)
         #expect(scroll?.count == 1)
+    }
+
+    @Test("on a wrapped carousel a slot means the entry it carries")
+    func slotsCarryTheirEntry() {
+        var mouse = wrapped()
+        #expect(mouse.moved(to: tile(0, count: 20)) == .select(16))
+        var clicking = wrapped()
+        clicking.press(at: tile(9, count: 20))
+        #expect(clicking.release(at: tile(9, count: 20)) == .commit(5))
     }
 
     @Test("a ribbon that has not been drawn answers nothing")
