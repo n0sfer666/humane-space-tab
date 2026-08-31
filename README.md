@@ -40,7 +40,9 @@ project's standing commitments:
 The app asks for **Accessibility and nothing else**. It never requests Screen
 Recording, which means it deliberately does not show window previews — that
 feature is the reason comparable switchers hold a permission that can read the
-contents of every window on your screen.
+contents of every window on your screen. It never asks for Input Monitoring
+either; where a stale entry in that list makes macOS withhold key presses, the
+menu bar says so and offers the pane that can undo it.
 
 Builds are **ad-hoc signed** — there is no Apple Developer ID. Two consequences you
 should know about before installing: macOS will ask you to grant Accessibility
@@ -64,6 +66,11 @@ The menu bar icon shows a warning until Accessibility is granted. Choose
 **Grant Accessibility…** from its menu; the switcher starts working within a couple of
 seconds, without a relaunch. macOS ties that grant to the code signature, so it has to be
 given again after every update.
+
+If the icon instead says macOS is withholding key presses, an old entry for the app is
+denying it in **System Settings → Privacy & Security → Input Monitoring**. Remove that
+entry with **−** — the app does not need the permission, only the absence of a refusal —
+and click back into the app; the tap is rebuilt without a relaunch.
 
 ### Verify what you downloaded
 

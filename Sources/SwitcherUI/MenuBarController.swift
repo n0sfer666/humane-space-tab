@@ -8,6 +8,7 @@ public final class MenuBarController {
     private let log: any LogSink
     private let openSettings: @MainActor () -> Void
     private let grantAccessibility: @MainActor () -> Void
+    private let openInputMonitoring: @MainActor () -> Void
     private let copyInventory: @MainActor () -> Void
     private let quit: @MainActor () -> Void
 
@@ -15,12 +16,14 @@ public final class MenuBarController {
         log: any LogSink,
         openSettings: @escaping @MainActor () -> Void,
         grantAccessibility: @escaping @MainActor () -> Void,
+        openInputMonitoring: @escaping @MainActor () -> Void,
         copyInventory: @escaping @MainActor () -> Void,
         quit: @escaping @MainActor () -> Void
     ) {
         self.log = log
         self.openSettings = openSettings
         self.grantAccessibility = grantAccessibility
+        self.openInputMonitoring = openInputMonitoring
         self.copyInventory = copyInventory
         self.quit = quit
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
@@ -39,6 +42,10 @@ public final class MenuBarController {
         statusItem.menu.map { menu in Self.showPermission(state, in: menu, target: self) }
     }
 
+    var itemTitles: [String] {
+        statusItem.menu?.items.map(\.title) ?? []
+    }
+
     private static func showPermission(_ state: PermissionState, in menu: NSMenu, target: MenuBarController) {
         for item in menu.items where item.tag == permissionTag { menu.removeItem(item) }
         guard let detail = state.detail else { return }
@@ -51,6 +58,17 @@ public final class MenuBarController {
             let grant = item(title: "Grant Accessibility…", action: #selector(grantSelected), key: "", target: target)
             grant.tag = permissionTag
             menu.insertItem(grant, at: next)
+            next += 1
+        }
+        if state.offersInputMonitoring {
+            let pane = item(
+                title: "Open Input Monitoring…",
+                action: #selector(inputMonitoringSelected),
+                key: "",
+                target: target
+            )
+            pane.tag = permissionTag
+            menu.insertItem(pane, at: next)
             next += 1
         }
         let separator = NSMenuItem.separator()
@@ -83,6 +101,11 @@ public final class MenuBarController {
     @objc
     private func grantSelected() {
         grantAccessibility()
+    }
+
+    @objc
+    private func inputMonitoringSelected() {
+        openInputMonitoring()
     }
 
     @objc

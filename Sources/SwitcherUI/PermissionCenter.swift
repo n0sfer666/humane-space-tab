@@ -5,6 +5,7 @@ import SystemPorts
 public final class PermissionCenter {
     private let authority: any AccessibilityAuthority
     private let engine: any HotkeyEngine
+    private let delivery: any KeyEventDelivery
     private let log: any LogSink
     private let poll: @MainActor (@escaping @MainActor () -> Void) -> Void
     private var observers: [@MainActor (PermissionState) -> Void] = []
@@ -16,11 +17,13 @@ public final class PermissionCenter {
     public init(
         authority: any AccessibilityAuthority,
         engine: any HotkeyEngine,
+        delivery: any KeyEventDelivery,
         log: any LogSink,
         poll: @escaping @MainActor (@escaping @MainActor () -> Void) -> Void
     ) {
         self.authority = authority
         self.engine = engine
+        self.delivery = delivery
         self.log = log
         self.poll = poll
     }
@@ -38,11 +41,13 @@ public final class PermissionCenter {
     /// Called when the app becomes active: a permission revoked in System Settings shows up
     /// nowhere else, and a permission granted there deserves a working tap without a relaunch.
     /// A tap kept alive without the permission behind it is the one thing worse than no tap,
-    /// so it is dropped and rebuilt when the permission comes back.
+    /// so it is dropped and rebuilt when the permission comes back. A deaf tap is rebuilt for
+    /// the same reason: its mask is decided at creation, so a fixed Input Monitoring row
+    /// reaches the switcher only through a new tap.
     public func refresh() {
         guard !isSuspended else { return }
         if authority.isTrusted {
-            if engine.tap != .intercept {
+            if engine.tap != .intercept || !delivery.deliversKeyEvents {
                 engine.stop()
                 _ = engine.start()
             }
@@ -72,7 +77,11 @@ public final class PermissionCenter {
     }
 
     private func publish() {
-        let next = PermissionState(isTrusted: authority.isTrusted, tap: engine.tap)
+        let next = PermissionState(
+            isTrusted: authority.isTrusted,
+            tap: engine.tap,
+            deliversKeys: delivery.deliversKeyEvents
+        )
         if next != state {
             state = next
             for observer in observers { observer(next) }

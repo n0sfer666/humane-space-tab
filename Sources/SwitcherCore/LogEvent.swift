@@ -8,6 +8,7 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
     case loginItemChangeFailed
     case accessibilityRequested
     case accessibilityBlocked
+    case accessibilityDeaf
     case accessibilityObservingOnly
     case accessibilityIntercepting
     case inventoryCopiedToPasteboard
@@ -44,6 +45,7 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
     public init(permission: PermissionState) {
         switch permission {
         case .blocked: self = .accessibilityBlocked
+        case .deaf: self = .accessibilityDeaf
         case .observing: self = .accessibilityObservingOnly
         case .intercepting: self = .accessibilityIntercepting
         }
@@ -66,7 +68,7 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
             .lifecycle
         case .menuBarItemInstalled, .quitRequestedFromMenu, .inventoryCopiedToPasteboard,
             .settingsOpenedFromMenu, .preferencesChanged, .loginItemChangeFailed,
-            .accessibilityRequested, .accessibilityBlocked, .accessibilityObservingOnly,
+            .accessibilityRequested, .accessibilityBlocked, .accessibilityDeaf, .accessibilityObservingOnly,
             .accessibilityIntercepting:
             .ui
         case .hotkeyTapStarted, .hotkeyTapStopped, .hotkeyTapUnavailable, .hotkeyTapReenabled,
@@ -91,6 +93,7 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
         case .loginItemChangeFailed: "the system refused to change the login item"
         case .accessibilityRequested: "accessibility requested from the menu"
         case .accessibilityBlocked: "accessibility is missing, the switcher is idle"
+        case .accessibilityDeaf: "the tap receives no key presses, input monitoring is refusing them"
         case .accessibilityObservingOnly: "the tap can observe but not intercept"
         case .accessibilityIntercepting: "the switcher is intercepting the shortcut"
         case .inventoryCopiedToPasteboard: "inventory summary copied to the pasteboard"
