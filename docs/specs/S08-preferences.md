@@ -128,6 +128,7 @@ window.
 | 10 | controller, delay changed while idle | the next session uses the new delay |
 | 11 | screen resolver, `focused` | the screen with keyboard focus |
 | 12 | screen resolver, `pointer` on a single display | that display |
+| 12a | screen resolver, neither signal available | the primary display, never nothing |
 
 ## Manual runbook
 
