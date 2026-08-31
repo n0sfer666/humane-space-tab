@@ -127,6 +127,18 @@ and it checks each slice of the universal binary separately, because `codesign` 
 script in CI and publishes a pre-release; the details are in
 [S11](docs/specs/S11-packaging-release.md).
 
+Installing a build you made yourself is one script on top of it:
+
+```sh
+scripts/install.sh 0.1.0        # packages, replaces /Applications/HumaneSpaceTab.app, relaunches
+```
+
+It packages first, so it never installs a bundle that failed a check; it quits the
+running app, replaces the bundle, verifies the installed version and launches it. Expect
+the last lines to read `==> /Applications/HumaneSpaceTab.app is 0.1.0, running as pid …`
+followed by the reminder that Accessibility has to be granted again — every local build
+carries its own ad-hoc signature, and macOS ties the grant to the signature.
+
 ## Licence
 
 [GPL-3.0](LICENSE)
