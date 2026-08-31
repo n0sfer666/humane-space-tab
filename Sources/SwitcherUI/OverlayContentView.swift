@@ -105,7 +105,9 @@ final class OverlayContentView: NSView {
                 in: selected ? icon.insetBy(dx: -grown, dy: -grown) : icon,
                 from: .zero,
                 operation: .sourceOver,
-                fraction: selected ? 1 : metrics.dimmed
+                fraction: selected ? 1 : metrics.dimmed,
+                respectFlipped: true,
+                hints: nil
             )
         guard selected else { return }
         let name = OverlayName.text(
