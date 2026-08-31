@@ -34,13 +34,13 @@ struct RibbonMouseTests {
     @Test("moving onto another tile selects the entry that tile carries")
     func moveSelects() {
         var mouse = mouse()
-        #expect(mouse.moved(to: tile(3)) == .select(2))
+        #expect(mouse.moved(to: tile(3)) == .select(3))
     }
 
     @Test("moving onto the selected tile asks for nothing")
     func moveOntoSelectionIsSilent() {
         var mouse = mouse()
-        #expect(mouse.moved(to: tile(2)) == nil)
+        #expect(mouse.moved(to: tile(1)) == nil)
     }
 
     @Test("moving outside the ribbon asks for nothing")
@@ -52,37 +52,37 @@ struct RibbonMouseTests {
     @Test("a click that begins and ends on one tile commits it")
     func clickCommits() {
         var mouse = mouse()
-        mouse.press(at: tile(4))
-        #expect(mouse.release(at: tile(4)) == .commit(3))
+        mouse.press(at: tile(2))
+        #expect(mouse.release(at: tile(2)) == .commit(2))
     }
 
     @Test("a click that ends on another tile commits nothing")
     func draggedClickIsDropped() {
         var mouse = mouse()
-        mouse.press(at: tile(4))
+        mouse.press(at: tile(2))
         #expect(mouse.release(at: tile(3)) == nil)
     }
 
     @Test("a release with no press commits nothing")
     func strayReleaseIsDropped() {
         var mouse = mouse()
-        #expect(mouse.release(at: tile(4)) == nil)
+        #expect(mouse.release(at: tile(2)) == nil)
     }
 
     @Test("a second release after a click commits nothing")
     func clickIsSpentOnce() {
         var mouse = mouse()
-        mouse.press(at: tile(4))
-        _ = mouse.release(at: tile(4))
-        #expect(mouse.release(at: tile(4)) == nil)
+        mouse.press(at: tile(2))
+        _ = mouse.release(at: tile(2))
+        #expect(mouse.release(at: tile(2)) == nil)
     }
 
     @Test("a session that ends forgets the press it was holding")
     func resetForgetsThePress() {
         var mouse = mouse()
-        mouse.press(at: tile(4))
+        mouse.press(at: tile(2))
         mouse.reset()
-        #expect(mouse.release(at: tile(4)) == nil)
+        #expect(mouse.release(at: tile(2)) == nil)
     }
 
     @Test("a scroll shorter than a notch steps nothing")

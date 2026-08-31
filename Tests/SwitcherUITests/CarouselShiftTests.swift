@@ -43,9 +43,15 @@ struct CarouselShiftTests {
         #expect(CarouselShift.between(window(5), window(5, count: 12)) == 0)
     }
 
-    @Test("a short ribbon slides too, its own entries turning under the selection")
-    func shortRibbonsSlide() {
+    @Test("a ribbon of five slides too, its own entries turning under the selection")
+    func turningRibbonsSlide() {
         #expect(CarouselShift.between(window(1, count: 5), window(2, count: 5)) == 1)
-        #expect(CarouselShift.between(window(0, count: 2), window(1, count: 2)) == 1)
+        #expect(CarouselShift.between(window(2, count: 5), window(1, count: 5)) == -1)
+    }
+
+    @Test("a ribbon too short to turn holds still while the selection moves along it")
+    func ribbonsBelowFiveDoNotSlide() {
+        #expect(CarouselShift.between(window(1, count: 4), window(2, count: 4)) == 0)
+        #expect(CarouselShift.between(window(0, count: 2), window(1, count: 2)) == 0)
     }
 }
