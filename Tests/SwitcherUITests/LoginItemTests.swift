@@ -14,10 +14,11 @@ struct LoginItemTests {
         item.set(true)
         #expect(service.registered == 1)
         #expect(item.status == .enabled)
+        #expect(item.failure == nil)
         #expect(log.events.isEmpty)
     }
 
-    @Test("a refused registration keeps the state the system reports and is logged")
+    @Test("a refused registration keeps the state the system reports and says why")
     func reportsFailure() {
         let service = LoginItemServiceStub()
         service.fails = true
@@ -25,7 +26,19 @@ struct LoginItemTests {
         let item = LoginItem(service: service, log: log)
         item.set(true)
         #expect(item.status == .notRegistered)
+        #expect(item.failure?.isEmpty == false)
         #expect(log.events == [.loginItemChangeFailed])
+    }
+
+    @Test("a change that goes through clears the reason the last one failed")
+    func clearsFailure() {
+        let service = LoginItemServiceStub()
+        service.fails = true
+        let item = LoginItem(service: service, log: LogSpy())
+        item.set(true)
+        service.fails = false
+        item.set(true)
+        #expect(item.failure == nil)
     }
 
     @Test("turning it off unregisters the app")

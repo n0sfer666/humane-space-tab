@@ -10,11 +10,13 @@ public final class SMAppServiceLoginItem: LoginItemService {
         self.service = service
     }
 
+    /// `notFound` is what the system reports for a copy it has never been asked to register —
+    /// not a refusal. Registering out of it succeeds, so it means the same thing here as
+    /// `notRegistered`: off, and free to turn on.
     public var status: LoginItemStatus {
         switch service.status {
         case .enabled: .enabled
         case .requiresApproval: .requiresApproval
-        case .notFound: .notFound
         default: .notRegistered
         }
     }

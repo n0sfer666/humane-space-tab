@@ -114,9 +114,11 @@ back into the app; the tap is rebuilt without a relaunch.
 the previous build. Use **Grant Accessibility…**, and if the list already has an entry for
 the app, remove it with **−** and grant it again.
 
-**"macOS cannot register this copy" under "Open at login".** `SMAppService` refuses to
-register the bundle; a copy built locally and launched from several build directories runs
-into it. Known and unresolved — the rest of the app is unaffected.
+**"Open at login" does not stick.** If macOS refuses the registration it says so under the
+checkbox, in its own words. The usual reason is a build the system does not recognise:
+every local build carries its own ad-hoc signature, so a registration made by yesterday's
+copy does not belong to today's. Turn it off and on again on the copy that is in
+`/Applications`.
 
 ## What the app can see
 
