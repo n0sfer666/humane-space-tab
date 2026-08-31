@@ -18,21 +18,7 @@ public final class OverlayWindowSurface: OverlaySurface {
         self.metrics = metrics
         content = OverlayContentView(icons: icons, metrics: metrics)
         panel = Self.makePanel()
-        let effect = NSVisualEffectView()
-        effect.material = .hudWindow
-        effect.blendingMode = .behindWindow
-        effect.state = .active
-        effect.wantsLayer = true
-        effect.layer?.cornerRadius = metrics.cornerRadius
-        effect.layer?.borderWidth = 1
-        effect.layer?.borderColor = NSColor.white.withAlphaComponent(0.12).cgColor
-        effect.layer?.masksToBounds = true
-        effect.autoresizingMask = [.width, .height]
-        content.wantsLayer = true
-        content.autoresizingMask = [.width, .height]
-        effect.addSubview(content)
-
-        panel.contentView = effect
+        panel.contentView = OverlayBackdrop.make(cornerRadius: metrics.cornerRadius, content: content)
     }
 
     public func show(_ model: OverlayModel) {
