@@ -15,12 +15,12 @@ struct OverlayBackdropTests {
         #expect(content.wantsLayer)
     }
 
-    @Test("the glass stays clear, and the ribbon keeps a scrim to read against a bright desktop")
+    @Test("the glass is frosted, and the ribbon keeps a scrim to read against a bright desktop")
     @available(macOS 26.0, *)
-    func theGlassIsClearAndScrimmed() throws {
+    func theGlassIsFrostedAndScrimmed() throws {
         let content = NSView()
         let glass = try #require(OverlayBackdrop.make(cornerRadius: 26, content: content) as? NSGlassEffectView)
-        #expect(glass.style == .clear)
+        #expect(glass.style == .regular)
         let scrim = try #require(content.layer?.backgroundColor)
         #expect(scrim.alpha > 0)
         #expect(content.layer?.masksToBounds == true)

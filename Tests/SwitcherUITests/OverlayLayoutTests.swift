@@ -1,4 +1,5 @@
 import CoreGraphics
+import SwitcherCore
 import Testing
 
 @testable import SwitcherUI
@@ -15,10 +16,14 @@ struct OverlayLayoutTests {
         #expect(layout.slots.count == 3)
     }
 
-    @Test("a crowded ribbon shrinks the icon and never wraps")
-    func crowdedShrinks() {
-        for count in [12, 16, 25] {
-            let layout = OverlayLayout.compute(count: count, screen: screen, metrics: metrics)
+    @Test("a full ribbon on a narrow screen shrinks the icon and never wraps")
+    func narrowScreensShrink() {
+        for width in [900.0, 1000.0, 1100.0] {
+            let layout = OverlayLayout.compute(
+                count: CarouselWindow.span,
+                screen: CGSize(width: width, height: 700),
+                metrics: metrics
+            )
             #expect(layout.iconSide < metrics.largestIcon)
             #expect(Set(layout.slots.map(\.origin.y)).count == 1)
         }
@@ -34,7 +39,7 @@ struct OverlayLayoutTests {
 
     @Test("gaps and paddings stay shares of the icon")
     func spacingFollowsTheIcon() {
-        for count in 2...25 {
+        for count in 2...CarouselWindow.span {
             let layout = OverlayLayout.compute(count: count, screen: screen, metrics: metrics)
             let icon = layout.iconSide
             #expect(layout.slots[1].minX - layout.slots[0].maxX == metrics.gap(icon: icon))
@@ -43,23 +48,24 @@ struct OverlayLayoutTests {
         }
     }
 
-    @Test("past the visible limit the icon stops shrinking and the ribbon scrolls")
-    func beyondTheLimitTheRibbonScrolls() {
-        let full = OverlayLayout.compute(count: metrics.visibleLimit, screen: screen, metrics: metrics)
-        for count in [metrics.visibleLimit + 1, 40, 120] {
+    @Test("past a full window the ribbon stops growing and the entries move through it")
+    func beyondTheWindowTheRibbonHoldsStill() {
+        let full = OverlayLayout.compute(count: CarouselWindow.span, screen: screen, metrics: metrics)
+        for count in [CarouselWindow.span + 1, 40, 120] {
             let layout = OverlayLayout.compute(count: count, screen: screen, metrics: metrics)
-            #expect(layout.iconSide == full.iconSide)
             #expect(layout.size == full.size)
-            #expect(layout.visible == metrics.visibleLimit)
-            #expect(layout.slots.count == count)
+            #expect(layout.visible == CarouselWindow.span)
+            #expect(layout.slots == full.slots)
         }
     }
 
-    @Test("the slots past the visible window sit outside the panel")
-    func hiddenSlotsAreOutside() {
-        let layout = OverlayLayout.compute(count: 40, screen: screen, metrics: metrics)
-        #expect(layout.slots[layout.visible - 1].maxX <= layout.size.width)
-        #expect(layout.slots[layout.visible].minX >= layout.size.width)
+    @Test("every slot is inside the panel")
+    func slotsAreInsideThePanel() {
+        for count in [1, 4, CarouselWindow.span, 40] {
+            let layout = OverlayLayout.compute(count: count, screen: screen, metrics: metrics)
+            #expect(layout.slots.allSatisfy { $0.maxX <= layout.size.width })
+            #expect(layout.slots.count == min(count, CarouselWindow.span))
+        }
     }
 
     @Test("the step is one icon plus one gap")
@@ -73,9 +79,7 @@ struct OverlayLayoutTests {
         let layout = OverlayLayout.compute(count: 5, screen: screen, metrics: metrics)
         for slot in layout.slots {
             #expect(slot.width == layout.iconSide)
-            #expect(
-                slot.height == layout.iconSide + metrics.labelGap + metrics.labelHeight(icon: layout.iconSide)
-            )
+            #expect(slot.height == metrics.slotHeight(icon: layout.iconSide))
         }
     }
 
@@ -98,7 +102,11 @@ struct OverlayLayoutTests {
     @Test("the name shrinks with the icon and never below the floor")
     func labelFollowsIcon() {
         let roomy = OverlayLayout.compute(count: 4, screen: screen, metrics: metrics)
-        let crowded = OverlayLayout.compute(count: 25, screen: screen, metrics: metrics)
+        let crowded = OverlayLayout.compute(
+            count: CarouselWindow.span,
+            screen: CGSize(width: 700, height: 500),
+            metrics: metrics
+        )
         #expect(metrics.labelSize(icon: roomy.iconSide) == metrics.largestLabel)
         #expect(metrics.labelSize(icon: crowded.iconSide) < metrics.largestLabel)
         #expect(metrics.labelSize(icon: crowded.iconSide) >= metrics.smallestLabel)
@@ -110,8 +118,8 @@ struct OverlayLayoutTests {
     }
 
     @Test(
-        "the ribbon matches the measured system switcher",
-        arguments: [[5, 100, 30], [13, 96, 29], [25, 50, 15]]
+        "the ribbon matches the measured system switcher while both show the same row",
+        arguments: [[3, 100, 30], [5, 100, 30], [10, 100, 30]]
     )
     func matchesTheSystemSwitcher(row: [Int]) {
         let layout = OverlayLayout.compute(

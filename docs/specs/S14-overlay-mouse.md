@@ -43,10 +43,14 @@ nudge and the ribbon follows it.
 
 Where a point lands is decided by `RibbonHitTest`, a pure function over the layout the
 ribbon was drawn with — no AppKit, no view tree, unit-tested like `OverlayLayout` and
-`RibbonScroll` beside it. Each slot claims its icon plus half the gap on either side,
+`CarouselWindow` beside it. Each slot claims its icon plus half the gap on either side,
 so the ribbon has no dead stripes between tiles, and a point outside the panel or past
-the last slot claims nothing. The scroll offset is applied first, so a scrolled ribbon
-hits what the user sees rather than what the layout says at rest.
+the last slot claims nothing.
+
+A slot is a place in the ribbon, not an application: on a carousel (S07) the same slot
+carries a different entry after every step. So the hit test answers a slot, and the
+pointer's meaning is read through the window the ribbon was last drawn with — the click
+commits the entry the user is looking at, not the one that stood there a step ago.
 
 ### Clicking is the same commit the keyboard makes
 
@@ -66,9 +70,9 @@ instead of flying through the ribbon, and momentum is dropped: the inertial tail
 flick would keep stepping after the fingers left the glass, and a switcher that keeps
 moving on its own is a switcher that switches to the wrong thing.
 
-Scrolling is also the only way the mouse reaches a Space with more than 25
-applications, where S07 freezes the icon size and the ribbon scrolls: the tiles the
-pointer cannot see, it can now step to.
+Scrolling is also the only way the mouse reaches a Space with more than ten
+applications, where S07 turns the ribbon into a carousel: the entries the pointer cannot
+see, it can now bring into view.
 
 ### One selection, one path
 
@@ -89,7 +93,8 @@ for free: a ribbon being pointed at is not a stranded one.
 - [ ] Clicking the ribbon does not make the switcher the frontmost application.
 - [ ] Scrolling over the ribbon steps the selection one entry per notch, in both directions, and ignores momentum.
 - [x] A hover that lands on the already selected tile changes nothing and redraws nothing.
-- [x] Hit testing is pure, offset-aware and unit-tested: tiles, gaps, outside the panel, past the last slot, scrolled.
+- [x] Hit testing is pure and unit-tested: tiles, gaps, outside the panel, past the last slot.
+- [x] A click on a carousel commits the entry the slot carries now, not the one it carried before the step.
 - [x] Mouse and keyboard share one selection: a `Tab` after a hover continues from the hovered tile.
 - [ ] With window switching on (S16), pointing and clicking picks the window, not just its application.
 - [ ] Off screen, the panel still lets every click through to the application underneath.
@@ -109,7 +114,7 @@ because it is unit-tested.
 | 2 | hit test, a point in the gap between two tiles | the nearer tile, no dead stripe |
 | 3 | hit test, a point outside the panel | nothing |
 | 4 | hit test, a point past the last slot | nothing |
-| 5 | hit test, a scrolled ribbon | the index the user sees, not the one at rest |
+| 5 | hit test, a crowded Space | the slot under the pointer, and the entry that slot carries |
 | 6 | hit test, an empty ribbon | nothing |
 | 7 | machine, select a different index | `.moved`, selection follows |
 | 8 | machine, select the current index | `.ignored` |
@@ -137,8 +142,9 @@ because it is unit-tested.
    once, the ribbon disappears, and releasing Command does nothing extra.
 5. Scroll over the ribbon with a wheel and with two fingers → expected: one entry per
    notch, both directions; a flick does not keep stepping after the fingers lift.
-6. On a Space with more than 25 applications, scroll to a tile that was off the ribbon and
-   click it → expected: the ribbon scrolls, and the clicked tile is the one that comes up.
+6. On a Space with more than ten applications, scroll until an application that was off
+   the ribbon comes into view, then click it → expected: the icons move under a still
+   selection, and the application that comes up is the one whose icon was clicked.
 7. With window switching on, hover and click a window of an application that has several →
    expected: that window is raised, not merely its application.
 8. Without the ribbon on screen, click where it was → expected: the click lands in the
