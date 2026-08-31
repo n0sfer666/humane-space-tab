@@ -1,45 +1,44 @@
 import ApplicationServices
-import CoreGraphics
-import Foundation
 import SwitcherCore
 
-/// Finds the accessibility element behind a window the window server named. Every call sets
-/// a short messaging timeout first: the reply comes from another application, and a wedged
-/// one must cost a missing title, never a stalled gesture.
+/// The windows an application itself admits to having, each under the id the window server
+/// knows it by. The accessibility list is the truthful one: the window server keeps listing
+/// windows a process has stopped drawing — twenty of them for one terminal with two windows
+/// open — and those are not places a user can switch to.
 @MainActor
 enum AXWindowElements {
-    static let timeout: Float = 0.05
+    /// The list is read inside the gesture (S16), so it is given the shortest patience of
+    /// the three: a wedged application must cost a missing entry, never the frame. Titles
+    /// arrive after the ribbon is up, and a raise happens once, on a commit that is not
+    /// racing the frame — both can afford to wait longer than the list can.
+    static let listTimeout: Float = 0.02
+    static let titleTimeout: Float = 0.05
+    static let raiseTimeout: Float = 0.1
 
+    private static let identifiers = AXWindowIDShim()
+
+    static var canIdentifyWindows: Bool { identifiers != nil }
+
+    /// Only the wanted ids are asked for their subrole: that is one message per window the
+    /// caller could use, instead of one per window the application happens to own.
     static func elements(
         of process: ProcessIdentifier,
-        windows: [WindowIdentifier]
+        wanted: Set<WindowIdentifier>,
+        timeout: Float
     ) -> [WindowIdentifier: AXUIElement] {
-        let wanted = Set(windows)
-        let frames = frames(of: wanted)
-        guard !frames.isEmpty else { return [:] }
+        guard let identifiers, !wanted.isEmpty else { return [:] }
         let application = AXUIElementCreateApplication(process.rawValue)
         AXUIElementSetMessagingTimeout(application, timeout)
-        let elements = self.windows(of: application).compactMap { element in
-            frame(of: element).map { (element: element, frame: $0) }
-        }
-        return WindowFrameMatch.pair(windows: frames, elements: elements)
-    }
-
-    private static func frames(of windows: Set<WindowIdentifier>) -> [(id: WindowIdentifier, frame: CGRect)] {
-        let options: CGWindowListOption = [.optionAll, .excludeDesktopElements]
-        guard let entries = CGWindowListCopyWindowInfo(options, kCGNullWindowID) as? [[String: Any]] else {
-            return []
-        }
-        return entries.compactMap { entry in
-            guard let number = entry[kCGWindowNumber as String] as? UInt32,
-                case let id = WindowIdentifier(rawValue: number), windows.contains(id),
-                let bounds = entry[kCGWindowBounds as String] as? NSDictionary,
-                let frame = CGRect(dictionaryRepresentation: bounds)
+        var elements: [WindowIdentifier: AXUIElement] = [:]
+        for element in windows(of: application) {
+            guard let identifier = identifiers.identifier(of: element), wanted.contains(identifier),
+                isStandard(element)
             else {
-                return nil
+                continue
             }
-            return (id, frame)
+            elements[identifier] = element
         }
+        return elements
     }
 
     private static func windows(of application: AXUIElement) -> [AXUIElement] {
@@ -52,45 +51,18 @@ enum AXWindowElements {
         return windows
     }
 
-    private static func frame(of element: AXUIElement) -> CGRect? {
-        guard let origin = point(kAXPositionAttribute, of: element),
-            let size = size(kAXSizeAttribute, of: element)
-        else {
-            return nil
-        }
-        return CGRect(origin: origin, size: size)
-    }
-
-    private static func point(_ attribute: String, of element: AXUIElement) -> CGPoint? {
-        var point = CGPoint.zero
-        guard let value = value(attribute, of: element),
-            AXValueGetValue(value, .cgPoint, &point)
-        else {
-            return nil
-        }
-        return point
-    }
-
-    private static func size(_ attribute: String, of element: AXUIElement) -> CGSize? {
-        var size = CGSize.zero
-        guard let value = value(attribute, of: element),
-            AXValueGetValue(value, .cgSize, &size)
-        else {
-            return nil
-        }
-        return size
-    }
-
-    /// The attribute comes back as an untyped `CFTypeRef`, and Swift offers no checked cast
-    /// to a Core Foundation type: the type identifier is compared first, which is exactly
-    /// what such a cast would do, and the reinterpretation below cannot then be wrong.
-    private static func value(_ attribute: String, of element: AXUIElement) -> AXValue? {
+    /// Sheets, panels and system dialogs are windows to the accessibility API and are not
+    /// entries anyone wants to `Cmd+Tab` to. Only an application that answers and names
+    /// something else is refused: an element that answers nothing — it timed out, or its
+    /// toolkit sets no subrole — keeps its place, because a window missing from the ribbon
+    /// is a worse failure than one entry too many.
+    private static func isStandard(_ element: AXUIElement) -> Bool {
         var copied: CFTypeRef?
-        guard AXUIElementCopyAttributeValue(element, attribute as CFString, &copied) == .success,
-            let copied, CFGetTypeID(copied) == AXValueGetTypeID()
+        guard AXUIElementCopyAttributeValue(element, kAXSubroleAttribute as CFString, &copied) == .success,
+            let subrole = copied as? String
         else {
-            return nil
+            return true
         }
-        return unsafeDowncast(copied, to: AXValue.self)
+        return subrole == kAXStandardWindowSubrole
     }
 }

@@ -13,8 +13,12 @@ public struct AXWindowTitles: WindowTitleSource {
         of process: ProcessIdentifier,
         windows: [WindowIdentifier]
     ) -> [WindowIdentifier: String] {
-        AXWindowElements.elements(of: process, windows: windows)
-            .compactMapValues(Self.title)
+        AXWindowElements.elements(
+            of: process,
+            wanted: Set(windows),
+            timeout: AXWindowElements.titleTimeout
+        )
+        .compactMapValues(Self.title)
     }
 
     private static func title(of element: AXUIElement) -> String? {

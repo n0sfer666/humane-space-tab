@@ -73,8 +73,9 @@ Each of these is a property of the built binary, not a policy statement:
   ScreenCaptureKit symbols anywhere in the source.
 - **No third-party runtime dependencies.** The bundle links only Apple frameworks.
   Build-time tools (XcodeGen, SwiftLint) never enter the bundle.
-- **No dynamic code loading**, except the single private-API shim in S03, which is
-  confined to one allowlisted file and resolves a fixed list of SkyLight symbols.
+- **No dynamic code loading**, except two private-API shims — the SkyLight one of S03
+  and `_AXUIElementGetWindow` of S16 — each confined to its own allowlisted file and
+  each resolving a fixed list of symbols by name.
 - **No sandbox** — technically impossible alongside `CGEventTap` and cross-app
   window control. **Hardened Runtime** is on, with no exceptions: in particular
   `disable-library-validation` and `allow-dyld-environment-variables` stay off, so
@@ -159,7 +160,7 @@ tap that stays alive while macOS withholds key presses from it in S15.
 | 4 | Source guard over a file using `NSAppleScript` / `NSAppleEventDescriptor` | fails |
 | 5 | Source guard over a file using `NSXPCConnection` / `Process` / `NSTask` | fails |
 | 6 | Source guard over a file using `DistributedNotificationCenter` | fails |
-| 7 | `dlopen` in the allowlisted SkyLight shim | passes |
+| 7 | `dlopen` in either allowlisted shim | passes |
 | 8 | `dlopen` in any other file | fails |
 | 9 | Source guard over the current clean tree | passes |
 | 10 | Settings storage asked to persist an application name | rejected at the type level |
@@ -197,9 +198,10 @@ build configuration.
   permission is somehow narrowed.
 - **Ad-hoc signing weakens the distribution story** and trains users to bypass
   Gatekeeper. Accepted, documented, revisited only if a Developer ID is obtained.
-- **The private SkyLight shim is the one hole in "no dynamic loading".** Its symbol
-  list is fixed and reviewed; S03 defines the degradation path when a symbol is
-  missing.
+- **The two private shims are the whole hole in "no dynamic loading".** Both symbol
+  lists are fixed and reviewed, both read and never write, and both have a degradation
+  path for a symbol that a future macOS drops: S03 falls back to the public Space
+  layer, S16 falls back to listing applications instead of windows.
 - **Open:** whether the source guard runs as a Swift test or a standalone CI script.
   Decided in S01, once the module layout exists.
 - **Open:** the exact subsystem and category naming for `os.log`. Decided in S01.

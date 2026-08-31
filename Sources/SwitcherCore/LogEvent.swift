@@ -13,6 +13,8 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
     case accessibilityIntercepting
     case inventoryCopiedToPasteboard
     case privateSpaceLayerUnavailable
+    case windowListUnavailable
+    case windowListUnanswered
     case hotkeyTapStarted
     case hotkeyTapStopped
     case hotkeyTapUnavailable
@@ -68,7 +70,8 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
 
     public var category: LogCategory {
         switch self {
-        case .applicationDidLaunch, .applicationWillTerminate, .privateSpaceLayerUnavailable:
+        case .applicationDidLaunch, .applicationWillTerminate, .privateSpaceLayerUnavailable,
+            .windowListUnavailable, .windowListUnanswered:
             .lifecycle
         case .menuBarItemInstalled, .quitRequestedFromMenu, .inventoryCopiedToPasteboard,
             .settingsOpenedFromMenu, .preferencesChanged, .loginItemChangeFailed,
@@ -103,6 +106,8 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
         case .accessibilityIntercepting: "the switcher is intercepting the shortcut"
         case .inventoryCopiedToPasteboard: "inventory summary copied to the pasteboard"
         case .privateSpaceLayerUnavailable: "private space layer unavailable, falling back to the public one"
+        case .windowListUnavailable: "this system names no window behind an element, the ribbon lists applications"
+        case .windowListUnanswered: "no application named a window, the ribbon lists applications"
         case .hotkeyTapStarted: "hotkey tap started"
         case .hotkeyTapStopped: "hotkey tap stopped"
         case .hotkeyTapUnavailable: "hotkey tap unavailable, accessibility is not granted"

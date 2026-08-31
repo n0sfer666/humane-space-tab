@@ -59,10 +59,11 @@ struct SourceGuardTests {
         #expect(guardian.scan(file: "AXWindowTitles.swift", contents: contents).map(\.symbol) == ["kCGWindowName"])
     }
 
-    @Test("dlopen is allowed only in the SkyLight shim")
+    @Test("dlopen is allowed only in the files that resolve a private symbol")
     func dlopenAllowlist() {
         let contents = "let handle = dlopen(path, RTLD_LAZY)"
         #expect(guardian.scan(file: "SkyLightShim.swift", contents: contents).isEmpty)
+        #expect(guardian.scan(file: "AXWindowIDShim.swift", contents: contents).isEmpty)
         #expect(guardian.scan(file: "Switcher.swift", contents: contents).map(\.symbol) == ["dlopen"])
     }
 

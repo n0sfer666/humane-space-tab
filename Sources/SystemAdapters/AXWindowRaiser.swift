@@ -10,7 +10,12 @@ public struct AXWindowRaiser: WindowRaiser {
     public init() {}
 
     public func raise(_ window: WindowIdentifier, of process: ProcessIdentifier) -> Bool {
-        guard let element = AXWindowElements.elements(of: process, windows: [window])[window] else {
+        let elements = AXWindowElements.elements(
+            of: process,
+            wanted: [window],
+            timeout: AXWindowElements.raiseTimeout
+        )
+        guard let element = elements[window] else {
             return false
         }
         unminimise(element)

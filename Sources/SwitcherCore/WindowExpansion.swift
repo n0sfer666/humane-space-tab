@@ -17,7 +17,7 @@ public enum WindowExpansion {
 
     /// The windows this Space can show: the ones it holds, plus the ones no Space claims —
     /// minimised and hidden windows are placed by neither layer of S03.
-    private static func listed(
+    public static func listed(
         _ application: SwitchableApplication,
         onCurrentSpace: Set<WindowIdentifier>
     ) -> [ApplicationWindow] {

@@ -18,4 +18,14 @@ public struct SwitchableApplication: Sendable, Equatable {
         self.isActive = isActive
         self.windows = windows
     }
+
+    public func with(windows: [ApplicationWindow]) -> SwitchableApplication {
+        SwitchableApplication(
+            pid: pid,
+            bundleIdentifier: bundleIdentifier,
+            name: name,
+            isActive: isActive,
+            windows: windows
+        )
+    }
 }
