@@ -1,6 +1,10 @@
 # Using Humane Space Tab
 
-[Русская версия](guide.ru.md)
+**English** · [Русский](guide.ru.md) · [Deutsch](guide.de.md) · [Français](guide.fr.md) ·
+[Español](guide.es.md) · [Português (Brasil)](guide.pt-BR.md) · [Italiano](guide.it.md) ·
+[Nederlands](guide.nl.md) · [Polski](guide.pl.md) · [Türkçe](guide.tr.md) ·
+[Українська](guide.uk.md) · [日本語](guide.ja.md) · [한국어](guide.ko.md) ·
+[简体中文](guide.zh-Hans.md) · [繁體中文](guide.zh-Hant.md)
 
 The app has no window of its own to work in: it lives in the menu bar, and everything it
 does happens while you hold a shortcut.
@@ -97,6 +101,30 @@ honour — a combination without a modifier, one that already contains **⇧** (
 reverse direction), **Escape**, `⌘Q` and `⌘W` — and says which of those it was. The
 shortcut is drawn with the keys of your current input source, so a Russian layout shows
 `⌘Ё` where an English one shows `` ⌘` ``.
+
+## Appearance
+
+The second tab of **Settings…** is the ribbon's looks, kept in profiles. **Default** is the
+built-in one and cannot be edited: **Duplicate** makes a copy that can, and **Name** gives
+it one of your own. Five profiles beyond the built-in one is the ceiling; deleting the
+active one leaves **Default** active.
+
+| Setting | What it is |
+|---|---|
+| **Icon size** | how large an icon is drawn at most — a crowded ribbon still shrinks below it to fit the screen. |
+| **Icon opacity** | how strongly the icons are drawn. 100 % is as strong as they go; under it the selection still stands out, because the preset dims everything that is not selected. |
+| **Ribbon padding** | the room between the icons and the panel's edge, as a share of the icon. |
+| **Space between icons** | the room between two icons, in the same share. |
+| **Corner radius** | how round the panel's corners are. |
+| **Frame around the icon**, **Frame padding** | an outline drawn around an icon, and how far from it. |
+| **Background** | **Glass** is the system's own material; **Shade** darkens it, and at `0` the ribbon is bare glass with the desktop showing through. **Transparent** and **Background colour** carry no material and are set by **Opacity** alone. |
+| **Carousel** | with **Turn the row under the selection** off the row holds still and shrinks to fit; on, **Slots** is how many icons it turns in — 5 to 12. |
+| **Selection** | how the selected icon is told apart: like the system switcher, grown, standing alone, or framed. |
+
+Every number is a slider and a field showing the same value, and the ranges answer to each
+other: widening the gaps is what leaves the margin less room to grow into. **Show a
+sample…** draws the ribbon with as many placeholder applications as you pick, for four
+seconds, without disturbing the Space you are on.
 
 ## The menu bar
 

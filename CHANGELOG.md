@@ -6,7 +6,7 @@ the switcher's visible behaviour is still being decided, so a minor version may 
 
 ## [Unreleased]
 
-## [0.1.0] — unreleased
+## [0.1.0] — 2026-09-01
 
 The first packaged build: `Cmd+Tab` switches between the applications of the current
 Space, and nothing else.
@@ -32,6 +32,17 @@ Space, and nothing else.
   when the grant is missing, and starts working within seconds of it being given. A tap
   that macOS has silenced through a stale Input Monitoring entry is reported as its own
   state, with the pane that undoes it one click away.
+- **Appearance profiles.** A second settings tab gives the ribbon's looks to the user —
+  icon size and opacity, the space around the icons, a frame, one of three backgrounds,
+  the carousel and how the selection is told apart — kept in named profiles beside the
+  built-in one. Every number is a slider with a field, bounded against the other numbers
+  so no combination produces a ribbon that does not fit. A sheet draws a sample ribbon
+  with up to a hundred entries without touching the Space you are on.
+- **The empty Space.** A Space with nothing open answers with a ribbon saying so, instead
+  of handing the keystroke back to the system switcher.
+- **Fifteen languages.** The interface follows the system language and can be set by hand
+  in General: English, Russian, German, French, Spanish, Portuguese (Brazil), Italian,
+  Dutch, Polish, Turkish, Ukrainian, Japanese, Korean and both Chinese scripts.
 - **A drawn bundle icon**, every size rendered from one script.
 - **Packaging and release.** One script builds, checks and packs a universal, hardened,
   ad-hoc-signed bundle; the release workflow only calls it and attaches provenance.
