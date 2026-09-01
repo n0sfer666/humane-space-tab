@@ -37,6 +37,16 @@ struct SwitcherCoordinatorTests {
         )
     }
 
+    @Test("an empty Space opens a session of its own instead of releasing the key")
+    func emptySpaceOpens() {
+        let activator = ActivationSpy()
+        let coordinator = coordinator([], activator: activator)
+        #expect(coordinator.handle(.activate(.forward, .applications)) == .opened)
+        #expect(coordinator.session?.isEmpty == true)
+        #expect(coordinator.handle(.commit) == .cancelled)
+        #expect(activator.raised.isEmpty)
+    }
+
     @Test("a session opens over the snapshot ordered by recent use")
     func opensOverOrderedSnapshot() {
         let coordinator = coordinator([1, 2, 3], order: MRUOrder(seed: [3, 2, 1].map(ProcessIdentifier.init)))

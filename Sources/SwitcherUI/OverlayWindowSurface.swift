@@ -95,7 +95,10 @@ public final class OverlayWindowSurface: OverlaySurface {
     /// computed once and reused while the tap callback is on the critical path.
     private func layout(for count: Int, in area: CGRect) -> OverlayLayout {
         if let placement, placement.matches(count: count, area: area.size) { return placement.layout }
-        let layout = OverlayLayout.compute(count: count, screen: area.size, metrics: metrics)
+        let layout =
+            count == 0
+            ? OverlayPlaceholder.layout(metrics)
+            : OverlayLayout.compute(count: count, screen: area.size, metrics: metrics)
         placement = Placement(count: count, area: area.size, layout: layout)
         return layout
     }

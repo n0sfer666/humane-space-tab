@@ -5,16 +5,23 @@ public struct SwitcherSession: Equatable, Sendable {
     public let scope: SwitcherScope
     public private(set) var selection: Int
 
+    /// A Space with nothing open on it still gets an answer (S18), so an application
+    /// session opens on an empty list and says so. A window session does not: one window is
+    /// no choice at all, and S12 gives the key back instead.
     init?(entries: [SwitcherEntry], direction: SelectionDirection, scope: SwitcherScope = .applications) {
-        guard !entries.isEmpty else { return nil }
+        guard !entries.isEmpty || scope == .applications else { return nil }
         self.entries = entries
         self.scope = scope
         selection = 0
         step(direction)
     }
 
-    public var selected: SwitcherEntry {
-        entries[selection]
+    public var isEmpty: Bool {
+        entries.isEmpty
+    }
+
+    public var selected: SwitcherEntry? {
+        entries.indices.contains(selection) ? entries[selection] : nil
     }
 
     mutating func select(_ index: Int) {
@@ -23,6 +30,7 @@ public struct SwitcherSession: Equatable, Sendable {
 
     mutating func step(_ direction: SelectionDirection) {
         let count = entries.count
+        guard count > 0 else { return }
         selection = (selection + direction.offset + count) % count
     }
 }
