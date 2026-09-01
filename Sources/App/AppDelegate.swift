@@ -59,6 +59,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         log.record(.applicationDidLaunch)
+        Localised.language = preferences.current.language
+        preferences.observe { [weak self] preferences in self?.apply(preferences.language) }
         preferences.observe { [presenter, surface] preferences in
             presenter.delay = preferences.revealDelay
             surface.screen = preferences.overlayScreen
@@ -122,6 +124,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// Rebuilding goes through the permission centre because it owns the tap's lifecycle:
     /// while a shortcut is being recorded the tap is stood down, and the one that comes back
     /// afterwards is already built from the shortcut stored here.
+    /// Nothing built in the old language can be relabelled in place, so the menu and the
+    /// settings window are made again — the window reopens where it was, so the choice can
+    /// be seen taking effect (S19).
+    private func apply(_ language: InterfaceLanguage) {
+        guard language != Localised.language else { return }
+        Localised.language = language
+        menuBar?.relabel()
+        guard let open = settings, open.isOpen else { return }
+        open.close()
+        settings = nil
+        openSettings()
+    }
+
     private func apply(_ shortcuts: ShortcutSet) {
         guard shortcuts != appliedShortcuts else { return }
         appliedShortcuts = shortcuts

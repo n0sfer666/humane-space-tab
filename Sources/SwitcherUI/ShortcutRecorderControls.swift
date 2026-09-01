@@ -6,8 +6,8 @@ import AppKit
 @MainActor
 final class ShortcutRecorderControls: NSView {
     private let field = NSButton(title: "", target: nil, action: nil)
-    private let restore = NSButton(title: "Restore default", target: nil, action: nil)
-    private let grant = NSButton(title: "Grant Accessibility…", target: nil, action: nil)
+    private let restore = NSButton(title: Localised.text(.shortcutRestore), target: nil, action: nil)
+    private let grant = NSButton(title: Localised.text(.shortcutGrant), target: nil, action: nil)
     private let reason = NSTextField(wrappingLabelWithString: "")
     private let onField: @MainActor () -> Void
     private let onRestore: @MainActor () -> Void

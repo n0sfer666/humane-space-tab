@@ -12,11 +12,4 @@ public enum LoginItemStatus: Sendable {
         }
     }
 
-    public var message: String? {
-        switch self {
-        case .enabled, .notRegistered: nil
-        case .requiresApproval:
-            "Waiting for approval in System Settings › General › Login Items."
-        }
-    }
 }

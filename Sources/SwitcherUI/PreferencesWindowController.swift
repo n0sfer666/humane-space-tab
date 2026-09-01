@@ -31,7 +31,7 @@ public final class PreferencesWindowController {
         )
         window = NSWindow(contentViewController: tabs)
         window.styleMask = [.titled, .closable]
-        window.title = "Humane Space Tab Settings"
+        window.title = Localised.text(.settingsTitle)
         window.isReleasedWhenClosed = false
         window.center()
     }
@@ -42,4 +42,12 @@ public final class PreferencesWindowController {
         NSApp.activate()
         window.makeKeyAndOrderFront(nil)
     }
+
+    /// A window built in one language cannot be relabelled item by item, so a change of
+    /// language throws it away and the next one is built afresh (S19).
+    public func close() {
+        window.close()
+    }
+
+    public var isOpen: Bool { window.isVisible }
 }

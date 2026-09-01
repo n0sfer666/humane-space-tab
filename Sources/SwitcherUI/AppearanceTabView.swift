@@ -16,7 +16,7 @@ final class AppearanceTabView: NSView {
     init(center: AppearanceCenter) {
         self.center = center
         super.init(frame: .zero)
-        let sample = NSButton(title: "Show a sample…", target: nil, action: nil)
+        let sample = NSButton(title: Localised.text(.appearanceSample), target: nil, action: nil)
         sample.bezelStyle = .rounded
         sample.target = self
         sample.action = #selector(showSample)

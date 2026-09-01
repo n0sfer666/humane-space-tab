@@ -21,7 +21,7 @@ final class AppearanceBackgroundView: NSView {
         styles.action = #selector(pickedStyle)
         SettingsGrid.install(
             SettingsGrid.make([
-                [SettingsGrid.label("Background"), styles],
+                [SettingsGrid.label(Localised.text(.appearanceBackground)), styles],
                 [levelTitle, level],
             ]),
             in: self

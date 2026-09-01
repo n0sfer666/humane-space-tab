@@ -1,0 +1,87 @@
+"app.name" = "Humane Space Tab";
+
+"menu.grantAccessibility" = "Ouvrir Accessibilité…";
+"menu.openInputMonitoring" = "Ouvrir Surveillance de la saisie…";
+"menu.settings" = "Réglages…";
+"menu.copyInventory" = "Copier la liste des apps et des fenêtres";
+"menu.quit" = "Quitter Humane Space Tab";
+
+"permission.blocked" = "L’Accessibilité est désactivée, donc Cmd+Tab reste à macOS.";
+"permission.refused" = "macOS a refusé la capture du clavier. Seul un redémarrage de l’app y remédie.";
+"permission.deaf" = "macOS retient les frappes. Retirez cette app de Surveillance de la saisie.";
+"permission.observing" = "Le sélecteur voit Cmd+Tab mais ne peut pas le reprendre.";
+
+"settings.title" = "Réglages de Humane Space Tab";
+"settings.tab.general" = "Général";
+"settings.tab.appearance" = "Apparence";
+
+"general.applications" = "Apps";
+"general.frontWindows" = "Fenêtres de l’app au premier plan";
+"general.screen" = "Afficher le bandeau sur";
+"general.revealDelay" = "Délai avant affichage";
+"general.openAtLogin" = "Ouvrir à l’ouverture de session";
+"general.privateLayer" = "Utiliser la couche privée des bureaux";
+"general.privateLayerNote" = "La couche privée sait à quel bureau appartient une fenêtre réduite, mais elle n’est pas documentée. Désactivée, l’app ne voit que les fenêtres à l’écran : c’est documenté, mais les fenêtres réduites lui échappent.";
+"general.windowSwitching" = "Passer d’une fenêtre à l’autre plutôt que d’une app à l’autre";
+"general.languageSystem" = "Système";
+"general.language" = "Langue";
+"general.loginItemPending" = "En attente d’autorisation dans Réglages Système › Général › Ouverture.";
+"general.loginItemRefused" = "macOS a refusé : %@";
+"screen.focused" = "L’écran qui a le focus clavier";
+"screen.pointer" = "L’écran où se trouve le pointeur";
+
+"shortcut.recording" = "Tapez un raccourci…";
+"shortcut.cancelHint" = "Appuyez sur Échap pour annuler.";
+"shortcut.permission" = "L’Accessibilité est nécessaire pour enregistrer un raccourci.";
+"shortcut.grant" = "Ouvrir Accessibilité…";
+"shortcut.restore" = "Rétablir la valeur par défaut";
+"shortcut.unnamedKey" = "Touche %lld";
+"reject.noModifier" = "Ajoutez ⌘, ⌥ ou ⌃ — le bandeau reste ouvert tant qu’un modificateur est maintenu.";
+"reject.containsShift" = "Maj est réservée : elle inverse le sens du raccourci choisi.";
+"reject.escape" = "Échap ferme le sélecteur et force à quitter une app bloquée. Choisissez une autre touche.";
+"reject.reserved" = "Ce raccourci quitte ou ferme une app. Choisissez-en un autre.";
+"reject.modifierKey" = "Cette touche ne fait que modifier une autre. Choisissez la touche à frapper en la maintenant.";
+"reject.taken" = "C’est déjà l’autre raccourci. Choisissez-en un différent.";
+
+"appearance.profile" = "Profil";
+"appearance.builtIn" = "Par défaut";
+"appearance.name" = "Nom";
+"appearance.namePlaceholder" = "Nom du profil";
+"appearance.duplicate" = "Dupliquer";
+"appearance.delete" = "Supprimer";
+"appearance.full" = "Les %lld profils sont utilisés. Supprimez-en un pour en créer un autre.";
+"appearance.iconSize" = "Taille des icônes";
+"appearance.ribbonPadding" = "Marge du bandeau";
+"appearance.gap" = "Espace entre les icônes";
+"appearance.cornerRadius" = "Rayon des coins";
+"appearance.frameWidth" = "Cadre autour de l’icône";
+"appearance.framePadding" = "Marge du cadre";
+"appearance.background" = "Fond";
+"appearance.carousel" = "Carrousel";
+"appearance.carouselTurns" = "Faire tourner la rangée sous la sélection";
+"appearance.slots" = "Emplacements";
+"appearance.selection" = "Sélection";
+"appearance.sample" = "Afficher un aperçu…";
+
+"background.glass" = "Verre";
+"background.transparent" = "Transparent";
+"background.solid" = "Couleur de fond des fenêtres";
+"background.shade" = "Assombrissement";
+"background.opacity" = "Opacité";
+
+"selection.native" = "Comme le sélecteur du système";
+"selection.enlarged" = "La sélection grandit";
+"selection.spotlight" = "La sélection se détache";
+"selection.framed" = "La sélection est encadrée";
+
+"unit.points" = "pt";
+"unit.percent" = "%";
+"unit.slots" = "emplacements";
+"unit.milliseconds" = "%lld ms";
+
+"preview.count" = "Apps sur le bureau";
+"preview.show" = "Afficher";
+"preview.done" = "Terminé";
+"preview.entry" = "App %lld";
+
+"ribbon.empty" = "Rien d’ouvert sur ce bureau";

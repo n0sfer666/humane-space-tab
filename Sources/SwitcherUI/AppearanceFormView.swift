@@ -10,8 +10,8 @@ final class AppearanceFormView: NSView, NSTextFieldDelegate {
     private let center: AppearanceCenter
     private let profiles = NSPopUpButton()
     private let name = NSTextField(string: "")
-    private let duplicate = NSButton(title: "Duplicate", target: nil, action: nil)
-    private let remove = NSButton(title: "Delete", target: nil, action: nil)
+    private let duplicate = NSButton(title: Localised.text(.appearanceDuplicate), target: nil, action: nil)
+    private let remove = NSButton(title: Localised.text(.appearanceDelete), target: nil, action: nil)
     private let note = NSTextField(wrappingLabelWithString: "")
 
     init(center: AppearanceCenter) {
@@ -31,7 +31,7 @@ final class AppearanceFormView: NSView, NSTextFieldDelegate {
         name.delegate = self
         name.target = self
         name.action = #selector(renamed)
-        name.placeholderString = "Profile name"
+        name.placeholderString = Localised.text(.appearanceNamePlaceholder)
         name.widthAnchor.constraint(equalToConstant: 200).isActive = true
         duplicate.target = self
         duplicate.action = #selector(duplicated)
@@ -44,9 +44,9 @@ final class AppearanceFormView: NSView, NSTextFieldDelegate {
 
     private func show(_ book: AppearanceBook) {
         profiles.removeAllItems()
-        profiles.addItems(withTitles: book.all.map(\.name))
+        profiles.addItems(withTitles: book.all.map(Self.title))
         profiles.selectItem(at: book.all.firstIndex { $0.id == book.activeID } ?? 0)
-        name.stringValue = book.active.name
+        name.stringValue = Self.title(book.active)
         name.isEnabled = book.isEditable
         remove.isEnabled = book.isEditable
         duplicate.isEnabled = book.hasRoom
@@ -118,8 +118,8 @@ final class AppearanceFormView: NSView, NSTextFieldDelegate {
         let buttons = NSStackView(views: [duplicate, remove])
         buttons.spacing = 8
         let grid = NSGridView(views: [
-            [Self.label("Profile"), profiles],
-            [Self.label("Name"), name],
+            [Self.label(Localised.text(.appearanceProfile)), profiles],
+            [Self.label(Localised.text(.appearanceName)), name],
             [NSGridCell.emptyContentView, buttons],
             [NSGridCell.emptyContentView, note],
         ])
@@ -152,7 +152,13 @@ final class AppearanceFormView: NSView, NSTextFieldDelegate {
         let left = AppearanceBook.limit - book.profiles.count
         return left > 0
             ? "\(left) more profile\(left == 1 ? "" : "s") can be kept."
-            : "All \(AppearanceBook.limit) profiles are in use. Delete one to make another."
+            : Localised.text(.appearanceFull, AppearanceBook.limit)
+    }
+
+    /// The built-in profile is the one name the user did not write, so it is the one name
+    /// the interface translates.
+    private static func title(_ profile: AppearanceProfile) -> String {
+        profile.id == AppearanceBook.builtIn.id ? Localised.text(.appearanceBuiltIn) : profile.name
     }
 
     private static func label(_ title: String) -> NSTextField {

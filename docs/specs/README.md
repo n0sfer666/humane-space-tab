@@ -31,7 +31,7 @@ New specs start from [`TEMPLATE.md`](TEMPLATE.md).
 | S16 | [Windows of one application](S16-windows-of-one-application.md) | Cycling windows instead of applications, behind S08's preference | agreed |
 | S17 | [Appearance & profiles](S17-appearance-profiles.md) | The ribbon's looks, bounded and named: metrics, background, carousel, presets, profiles | agreed |
 | S18 | [The empty Space](S18-empty-space.md) | What the ribbon says on a Space with nothing open, instead of macOS's own switcher | agreed |
-| S19 | Languages | The interface in the language the system is set to, translated from a glossary rather than word by word | planned |
+| S19 | [Languages](S19-languages.md) | The interface in the language the system is set to, translated from a glossary rather than word by word | agreed |
 | S20+ | Beyond the ribbon | Mission Control, App Exposé, hide/minimise — one spec per gesture | planned |
 
 S00–S06 are close to pure logic and are covered by automated tests. S07 onwards

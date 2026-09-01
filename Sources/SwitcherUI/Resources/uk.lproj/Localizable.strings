@@ -1,0 +1,87 @@
+"app.name" = "Humane Space Tab";
+
+"menu.grantAccessibility" = "Відкрити Універсальний доступ…";
+"menu.openInputMonitoring" = "Відкрити Моніторинг введення…";
+"menu.settings" = "Параметри…";
+"menu.copyInventory" = "Скопіювати список програм і вікон";
+"menu.quit" = "Завершити Humane Space Tab";
+
+"permission.blocked" = "Універсальний доступ вимкнено, тож Cmd+Tab лишається за macOS.";
+"permission.refused" = "macOS відмовила в перехопленні клавіатури. Допомагає лише перезапуск програми.";
+"permission.deaf" = "macOS не передає натискання клавіш. Приберіть цю програму з Моніторингу введення.";
+"permission.observing" = "Перемикач бачить Cmd+Tab, але не може його перехопити.";
+
+"settings.title" = "Параметри Humane Space Tab";
+"settings.tab.general" = "Основні";
+"settings.tab.appearance" = "Вигляд";
+
+"general.applications" = "Програми";
+"general.frontWindows" = "Вікна активної програми";
+"general.screen" = "Показувати стрічку на";
+"general.revealDelay" = "Затримка перед показом";
+"general.openAtLogin" = "Запускати під час входу";
+"general.privateLayer" = "Використовувати закритий шар робочих столів";
+"general.privateLayerNote" = "Закритий шар знає, якому робочому столу належить згорнуте вікно, але він недокументований. Якщо вимкнути, програма бачить лише вікна на екрані: це задокументовано, проте згорнуті вікна лишаються невидимими.";
+"general.windowSwitching" = "Перемикати вікна, а не програми";
+"general.languageSystem" = "Системна";
+"general.language" = "Мова";
+"general.loginItemPending" = "Очікує підтвердження в Системних параметрах › Основні › Об’єкти входу.";
+"general.loginItemRefused" = "macOS відмовила: %@";
+"screen.focused" = "Екрані з фокусом клавіатури";
+"screen.pointer" = "Екрані з вказівником";
+
+"shortcut.recording" = "Натисніть сполучення…";
+"shortcut.cancelHint" = "Escape — скасувати.";
+"shortcut.permission" = "Щоб записати сполучення, потрібен Універсальний доступ.";
+"shortcut.grant" = "Відкрити Універсальний доступ…";
+"shortcut.restore" = "Повернути стандартне";
+"shortcut.unnamedKey" = "Клавіша %lld";
+"reject.noModifier" = "Додайте ⌘, ⌥ або ⌃ — стрічка тримається, доки натиснуто модифікатор.";
+"reject.containsShift" = "Shift зайнято: він обертає напрямок будь-якого вибраного сполучення.";
+"reject.escape" = "Escape закриває перемикач і примусово завершує завислу програму. Виберіть іншу клавішу.";
+"reject.reserved" = "Це сполучення завершує або закриває програму. Виберіть інше.";
+"reject.modifierKey" = "Ця клавіша лише змінює іншу. Виберіть клавішу, яку натискатимете разом із нею.";
+"reject.taken" = "Це сполучення вже належить другому перемикачу. Виберіть інше.";
+
+"appearance.profile" = "Профіль";
+"appearance.builtIn" = "Стандартний";
+"appearance.name" = "Назва";
+"appearance.namePlaceholder" = "Назва профілю";
+"appearance.duplicate" = "Дублювати";
+"appearance.delete" = "Вилучити";
+"appearance.full" = "Усі профілі зайнято: їх %lld. Вилучіть один, щоб створити новий.";
+"appearance.iconSize" = "Розмір іконки";
+"appearance.ribbonPadding" = "Поля стрічки";
+"appearance.gap" = "Проміжок між іконками";
+"appearance.cornerRadius" = "Заокруглення кутів";
+"appearance.frameWidth" = "Рамка навколо іконки";
+"appearance.framePadding" = "Відступ рамки";
+"appearance.background" = "Тло";
+"appearance.carousel" = "Карусель";
+"appearance.carouselTurns" = "Прокручувати ряд під вибором";
+"appearance.slots" = "Комірки";
+"appearance.selection" = "Вибір";
+"appearance.sample" = "Показати приклад…";
+
+"background.glass" = "Скло";
+"background.transparent" = "Прозоре";
+"background.solid" = "Колір тла вікна";
+"background.shade" = "Затемнення";
+"background.opacity" = "Непрозорість";
+
+"selection.native" = "Як у системному перемикачі";
+"selection.enlarged" = "Вибране збільшується";
+"selection.spotlight" = "Вибране виходить наперед";
+"selection.framed" = "Вибране в рамці";
+
+"unit.points" = "пт";
+"unit.percent" = "%";
+"unit.slots" = "комірок";
+"unit.milliseconds" = "%lld мс";
+
+"preview.count" = "Програм на робочому столі";
+"preview.show" = "Показати";
+"preview.done" = "Готово";
+"preview.entry" = "Програма %lld";
+
+"ribbon.empty" = "На цьому робочому столі нічого не відкрито";

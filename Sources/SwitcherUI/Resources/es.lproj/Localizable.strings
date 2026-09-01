@@ -1,0 +1,87 @@
+"app.name" = "Humane Space Tab";
+
+"menu.grantAccessibility" = "Abrir Accesibilidad…";
+"menu.openInputMonitoring" = "Abrir Monitorización de entrada…";
+"menu.settings" = "Ajustes…";
+"menu.copyInventory" = "Copiar la lista de apps y ventanas";
+"menu.quit" = "Salir de Humane Space Tab";
+
+"permission.blocked" = "La Accesibilidad está desactivada, así que Cmd+Tab sigue siendo de macOS.";
+"permission.refused" = "macOS rechazó la captura del teclado. Lo único que lo arregla es salir y volver a abrir la app.";
+"permission.deaf" = "macOS está reteniendo las pulsaciones. Quita esta app de Monitorización de entrada.";
+"permission.observing" = "El selector ve Cmd+Tab, pero no puede tomarlo.";
+
+"settings.title" = "Ajustes de Humane Space Tab";
+"settings.tab.general" = "General";
+"settings.tab.appearance" = "Aspecto";
+
+"general.applications" = "Apps";
+"general.frontWindows" = "Ventanas de la app en primer plano";
+"general.screen" = "Mostrar la franja en";
+"general.revealDelay" = "Retardo antes de mostrarla";
+"general.openAtLogin" = "Abrir al iniciar sesión";
+"general.privateLayer" = "Usar la capa privada de escritorios";
+"general.privateLayerNote" = "La capa privada sabe a qué escritorio pertenece una ventana minimizada, pero no está documentada. Desactivada, la app solo usa las ventanas en pantalla: eso sí está documentado, pero no ve las minimizadas.";
+"general.windowSwitching" = "Cambiar entre ventanas, no entre apps";
+"general.languageSystem" = "Sistema";
+"general.language" = "Idioma";
+"general.loginItemPending" = "Esperando aprobación en Ajustes del Sistema › General › Ítems de inicio.";
+"general.loginItemRefused" = "macOS lo rechazó: %@";
+"screen.focused" = "La pantalla con el foco del teclado";
+"screen.pointer" = "La pantalla donde está el puntero";
+
+"shortcut.recording" = "Pulsa una combinación…";
+"shortcut.cancelHint" = "Pulsa Esc para cancelar.";
+"shortcut.permission" = "Se necesita Accesibilidad para grabar una combinación.";
+"shortcut.grant" = "Abrir Accesibilidad…";
+"shortcut.restore" = "Restaurar el valor por omisión";
+"shortcut.unnamedKey" = "Tecla %lld";
+"reject.noModifier" = "Añade ⌘, ⌥ o ⌃: la franja sigue abierta mientras se mantenga un modificador.";
+"reject.containsShift" = "Mayúsculas está reservada: invierte el sentido de la combinación que elijas.";
+"reject.escape" = "Esc cierra el selector y fuerza la salida de una app colgada. Elige otra tecla.";
+"reject.reserved" = "Esa combinación cierra o hace salir una app. Elige otra.";
+"reject.modifierKey" = "Esa tecla solo modifica a otra. Elige la tecla que pulsarás mientras la mantienes.";
+"reject.taken" = "Esa ya es la otra combinación. Elige una distinta.";
+
+"appearance.profile" = "Perfil";
+"appearance.builtIn" = "Por omisión";
+"appearance.name" = "Nombre";
+"appearance.namePlaceholder" = "Nombre del perfil";
+"appearance.duplicate" = "Duplicar";
+"appearance.delete" = "Eliminar";
+"appearance.full" = "Los %lld perfiles están en uso. Elimina uno para crear otro.";
+"appearance.iconSize" = "Tamaño de los iconos";
+"appearance.ribbonPadding" = "Margen de la franja";
+"appearance.gap" = "Espacio entre iconos";
+"appearance.cornerRadius" = "Radio de las esquinas";
+"appearance.frameWidth" = "Marco alrededor del icono";
+"appearance.framePadding" = "Margen del marco";
+"appearance.background" = "Fondo";
+"appearance.carousel" = "Carrusel";
+"appearance.carouselTurns" = "Girar la fila bajo la selección";
+"appearance.slots" = "Huecos";
+"appearance.selection" = "Selección";
+"appearance.sample" = "Ver un ejemplo…";
+
+"background.glass" = "Cristal";
+"background.transparent" = "Transparente";
+"background.solid" = "Color de fondo de ventana";
+"background.shade" = "Oscurecimiento";
+"background.opacity" = "Opacidad";
+
+"selection.native" = "Como el selector del sistema";
+"selection.enlarged" = "La selección crece";
+"selection.spotlight" = "La selección destaca sola";
+"selection.framed" = "La selección va enmarcada";
+
+"unit.points" = "pt";
+"unit.percent" = "%";
+"unit.slots" = "huecos";
+"unit.milliseconds" = "%lld ms";
+
+"preview.count" = "Apps en el escritorio";
+"preview.show" = "Mostrar";
+"preview.done" = "OK";
+"preview.entry" = "App %lld";
+
+"ribbon.empty" = "No hay nada abierto en este escritorio";

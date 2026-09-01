@@ -9,7 +9,11 @@ import SwitcherCore
 final class AppearanceBehaviourView: NSView {
     private let center: AppearanceCenter
     private let presets = NSPopUpButton(frame: .zero, pullsDown: false)
-    private let turning = NSButton(checkboxWithTitle: "Turn the row under the selection", target: nil, action: nil)
+    private let turning = NSButton(
+        checkboxWithTitle: Localised.text(.appearanceCarouselTurns),
+        target: nil,
+        action: nil
+    )
     private lazy var slots = MeasureRow(unit: .slots) { [weak self] value in
         self?.changed(slots: value)
     }
@@ -24,9 +28,9 @@ final class AppearanceBehaviourView: NSView {
         turning.action = #selector(toggledCarousel)
         SettingsGrid.install(
             SettingsGrid.make([
-                [SettingsGrid.label("Selection"), presets],
-                [SettingsGrid.label("Carousel"), turning],
-                [SettingsGrid.label("Slots"), slots],
+                [SettingsGrid.label(Localised.text(.appearanceSelection)), presets],
+                [SettingsGrid.label(Localised.text(.appearanceCarousel)), turning],
+                [SettingsGrid.label(Localised.text(.appearanceSlots)), slots],
             ]),
             in: self
         )
@@ -102,10 +106,10 @@ final class AppearanceBehaviourView: NSView {
 
     private static func title(_ preset: SelectionPreset) -> String {
         switch preset {
-        case .native: "Like the system switcher"
-        case .enlarged: "The selection grows"
-        case .spotlight: "The selection stands alone"
-        case .framed: "The selection is framed"
+        case .native: Localised.text(.selectionNative)
+        case .enlarged: Localised.text(.selectionEnlarged)
+        case .spotlight: Localised.text(.selectionSpotlight)
+        case .framed: Localised.text(.selectionFramed)
         }
     }
 }

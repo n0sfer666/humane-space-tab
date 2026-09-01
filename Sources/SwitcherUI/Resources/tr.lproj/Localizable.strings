@@ -1,0 +1,87 @@
+"app.name" = "Humane Space Tab";
+
+"menu.grantAccessibility" = "Erişilebilirlik’i aç…";
+"menu.openInputMonitoring" = "Girdi İzleme’yi aç…";
+"menu.settings" = "Ayarlar…";
+"menu.copyInventory" = "Uygulama ve pencere listesini kopyala";
+"menu.quit" = "Humane Space Tab’den çık";
+
+"permission.blocked" = "Erişilebilirlik kapalı, bu yüzden Cmd+Tab hâlâ macOS’un.";
+"permission.refused" = "macOS klavye dinlemesini reddetti. Tek çözüm uygulamadan çıkıp yeniden açmak.";
+"permission.deaf" = "macOS tuş vuruşlarını tutuyor. Bu uygulamayı Girdi İzleme listesinden çıkar.";
+"permission.observing" = "Değiştirici Cmd+Tab’i görüyor ama devralamıyor.";
+
+"settings.title" = "Humane Space Tab Ayarları";
+"settings.tab.general" = "Genel";
+"settings.tab.appearance" = "Görünüm";
+
+"general.applications" = "Uygulamalar";
+"general.frontWindows" = "Öndeki uygulamanın pencereleri";
+"general.screen" = "Şeridi şurada göster";
+"general.revealDelay" = "Görünmeden önceki gecikme";
+"general.openAtLogin" = "Girişte aç";
+"general.privateLayer" = "Masaüstlerinin özel katmanını kullan";
+"general.privateLayerNote" = "Özel katman, simge durumundaki bir pencerenin hangi masaüstüne ait olduğunu bilir ama belgelenmemiştir. Kapalıyken uygulama yalnızca ekrandaki pencereleri kullanır: bu belgelenmiştir, ancak simge durumundaki pencereleri görmez.";
+"general.windowSwitching" = "Uygulamalar yerine pencereler arasında geç";
+"general.languageSystem" = "Sistem";
+"general.language" = "Dil";
+"general.loginItemPending" = "Sistem Ayarları › Genel › Giriş Öğeleri’nde onay bekliyor.";
+"general.loginItemRefused" = "macOS reddetti: %@";
+"screen.focused" = "Klavye odağının olduğu ekran";
+"screen.pointer" = "İmlecin olduğu ekran";
+
+"shortcut.recording" = "Bir kısayola bas…";
+"shortcut.cancelHint" = "Vazgeçmek için Esc’e bas.";
+"shortcut.permission" = "Kısayol kaydetmek için Erişilebilirlik gerekir.";
+"shortcut.grant" = "Erişilebilirlik’i aç…";
+"shortcut.restore" = "Varsayılana döndür";
+"shortcut.unnamedKey" = "%lld tuşu";
+"reject.noModifier" = "⌘, ⌥ ya da ⌃ ekle — şerit, değiştirici tuş basılı tutuldukça açık kalır.";
+"reject.containsShift" = "Shift ayrılmıştır: seçtiğin kısayolun yönünü ters çevirir.";
+"reject.escape" = "Esc değiştiriciyi kapatır ve takılan uygulamayı zorla kapattırır. Başka bir tuş seç.";
+"reject.reserved" = "Bu kısayol bir uygulamadan çıkar ya da onu kapatır. Başka birini seç.";
+"reject.modifierKey" = "Bu tuş yalnızca başka bir tuşu değiştirir. Onu basılı tutarken vuracağın tuşu seç.";
+"reject.taken" = "Bu zaten öteki kısayol. Farklı birini seç.";
+
+"appearance.profile" = "Profil";
+"appearance.builtIn" = "Varsayılan";
+"appearance.name" = "Ad";
+"appearance.namePlaceholder" = "Profil adı";
+"appearance.duplicate" = "Çoğalt";
+"appearance.delete" = "Sil";
+"appearance.full" = "%lld profilin hepsi kullanımda. Yenisini yapmak için birini sil.";
+"appearance.iconSize" = "Simge boyutu";
+"appearance.ribbonPadding" = "Şerit kenar boşluğu";
+"appearance.gap" = "Simgeler arası boşluk";
+"appearance.cornerRadius" = "Köşe yarıçapı";
+"appearance.frameWidth" = "Simgenin çevresindeki çerçeve";
+"appearance.framePadding" = "Çerçeve boşluğu";
+"appearance.background" = "Arka plan";
+"appearance.carousel" = "Karusel";
+"appearance.carouselTurns" = "Sırayı seçimin altında döndür";
+"appearance.slots" = "Yuvalar";
+"appearance.selection" = "Seçim";
+"appearance.sample" = "Bir örnek göster…";
+
+"background.glass" = "Cam";
+"background.transparent" = "Saydam";
+"background.solid" = "Pencere arka plan rengi";
+"background.shade" = "Koyuluk";
+"background.opacity" = "Matlık";
+
+"selection.native" = "Sistem değiştiricisindeki gibi";
+"selection.enlarged" = "Seçim büyür";
+"selection.spotlight" = "Seçim tek başına öne çıkar";
+"selection.framed" = "Seçim çerçevelenir";
+
+"unit.points" = "pt";
+"unit.percent" = "%";
+"unit.slots" = "yuva";
+"unit.milliseconds" = "%lld ms";
+
+"preview.count" = "Masaüstündeki uygulama sayısı";
+"preview.show" = "Göster";
+"preview.done" = "Tamam";
+"preview.entry" = "Uygulama %lld";
+
+"ribbon.empty" = "Bu masaüstünde açık bir şey yok";

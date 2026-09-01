@@ -16,18 +16,20 @@ enum BackgroundChoice: Int, CaseIterable {
         }
     }
 
+    @MainActor
     var title: String {
         switch self {
-        case .glass: "Glass"
-        case .transparent: "Transparent"
-        case .solid: "Background colour"
+        case .glass: Localised.text(.backgroundGlass)
+        case .transparent: Localised.text(.backgroundTransparent)
+        case .solid: Localised.text(.backgroundSolid)
         }
     }
 
+    @MainActor
     var levelTitle: String {
         switch self {
-        case .glass: "Shade"
-        case .transparent, .solid: "Opacity"
+        case .glass: Localised.text(.backgroundShade)
+        case .transparent, .solid: Localised.text(.backgroundOpacity)
         }
     }
 

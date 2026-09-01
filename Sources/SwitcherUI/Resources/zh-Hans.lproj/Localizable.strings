@@ -1,0 +1,87 @@
+"app.name" = "Humane Space Tab";
+
+"menu.grantAccessibility" = "打开“辅助功能”…";
+"menu.openInputMonitoring" = "打开“输入监控”…";
+"menu.settings" = "设置…";
+"menu.copyInventory" = "拷贝 App 与窗口列表";
+"menu.quit" = "退出 Humane Space Tab";
+
+"permission.blocked" = "“辅助功能”已关闭，因此 Cmd+Tab 仍归 macOS 所有。";
+"permission.refused" = "macOS 拒绝了键盘拦截。只能退出并重新打开 App。";
+"permission.deaf" = "macOS 扣下了按键。请将此 App 从“输入监控”中移除。";
+"permission.observing" = "切换器能看到 Cmd+Tab，但无法接管它。";
+
+"settings.title" = "Humane Space Tab 设置";
+"settings.tab.general" = "通用";
+"settings.tab.appearance" = "外观";
+
+"general.applications" = "App";
+"general.frontWindows" = "最前面 App 的窗口";
+"general.screen" = "在此屏幕显示切换条";
+"general.revealDelay" = "显示前的延迟";
+"general.openAtLogin" = "登录时打开";
+"general.privateLayer" = "使用桌面的私有图层";
+"general.privateLayerNote" = "私有图层知道最小化的窗口属于哪个桌面，但它没有公开文档。关闭后，App 只使用屏幕上的窗口：这是有文档的做法，但看不到最小化的窗口。";
+"general.windowSwitching" = "在窗口之间切换，而不是在 App 之间";
+"general.languageSystem" = "跟随系统";
+"general.language" = "语言";
+"general.loginItemPending" = "正在等待“系统设置 › 通用 › 登录项”中的批准。";
+"general.loginItemRefused" = "macOS 拒绝了：%@";
+"screen.focused" = "拥有键盘焦点的屏幕";
+"screen.pointer" = "指针所在的屏幕";
+
+"shortcut.recording" = "请按下快捷键…";
+"shortcut.cancelHint" = "按 Esc 取消。";
+"shortcut.permission" = "录制快捷键需要“辅助功能”。";
+"shortcut.grant" = "打开“辅助功能”…";
+"shortcut.restore" = "恢复默认值";
+"shortcut.unnamedKey" = "按键 %lld";
+"reject.noModifier" = "请加上 ⌘、⌥ 或 ⌃ —— 按住修饰键期间切换条才保持打开。";
+"reject.containsShift" = "Shift 已被保留：它会把所选快捷键的方向反过来。";
+"reject.escape" = "Esc 会关闭切换器并强制退出卡住的 App。请另选一个键。";
+"reject.reserved" = "该快捷键会退出或关闭 App。请另选一个。";
+"reject.modifierKey" = "该键只能修饰其他键。请选择按住它时要敲的键。";
+"reject.taken" = "这已经是另一个快捷键了。请另选一个。";
+
+"appearance.profile" = "配置";
+"appearance.builtIn" = "默认";
+"appearance.name" = "名称";
+"appearance.namePlaceholder" = "配置名称";
+"appearance.duplicate" = "复制";
+"appearance.delete" = "删除";
+"appearance.full" = "%lld 个配置已全部占用。删除一个才能再建。";
+"appearance.iconSize" = "图标大小";
+"appearance.ribbonPadding" = "切换条边距";
+"appearance.gap" = "图标之间的间距";
+"appearance.cornerRadius" = "圆角半径";
+"appearance.frameWidth" = "图标外框";
+"appearance.framePadding" = "外框边距";
+"appearance.background" = "背景";
+"appearance.carousel" = "轮播";
+"appearance.carouselTurns" = "让整排在选中项下方转动";
+"appearance.slots" = "格数";
+"appearance.selection" = "选中项";
+"appearance.sample" = "查看示例…";
+
+"background.glass" = "玻璃";
+"background.transparent" = "透明";
+"background.solid" = "窗口背景色";
+"background.shade" = "暗度";
+"background.opacity" = "不透明度";
+
+"selection.native" = "与系统切换器相同";
+"selection.enlarged" = "选中项放大";
+"selection.spotlight" = "选中项独自突出";
+"selection.framed" = "选中项加框";
+
+"unit.points" = "pt";
+"unit.percent" = "%";
+"unit.slots" = "格";
+"unit.milliseconds" = "%lld 毫秒";
+
+"preview.count" = "桌面上的 App 数量";
+"preview.show" = "显示";
+"preview.done" = "完成";
+"preview.entry" = "App %lld";
+
+"ribbon.empty" = "此桌面上没有打开的 App";

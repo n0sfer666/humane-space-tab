@@ -7,10 +7,4 @@ public enum OverlayScreenChoice: String, CaseIterable, Sendable {
         self = stored.flatMap(OverlayScreenChoice.init(rawValue:)) ?? .focused
     }
 
-    public var label: String {
-        switch self {
-        case .focused: "Screen with keyboard focus"
-        case .pointer: "Screen with the pointer"
-        }
-    }
 }

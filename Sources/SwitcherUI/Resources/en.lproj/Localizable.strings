@@ -1,0 +1,87 @@
+"app.name" = "Humane Space Tab";
+
+"menu.grantAccessibility" = "Grant Accessibility…";
+"menu.openInputMonitoring" = "Open Input Monitoring…";
+"menu.settings" = "Settings…";
+"menu.copyInventory" = "Copy Inventory";
+"menu.quit" = "Quit Humane Space Tab";
+
+"permission.blocked" = "Accessibility is off, so Cmd+Tab still belongs to macOS.";
+"permission.refused" = "macOS refused the keyboard tap. Quitting and reopening the app is the only cure.";
+"permission.deaf" = "macOS is withholding key presses. Remove this app from Input Monitoring.";
+"permission.observing" = "The switcher can see Cmd+Tab but not take it over.";
+
+"settings.title" = "Humane Space Tab Settings";
+"settings.tab.general" = "General";
+"settings.tab.appearance" = "Appearance";
+
+"general.applications" = "Applications";
+"general.frontWindows" = "Windows of the front app";
+"general.screen" = "Show the ribbon on";
+"general.revealDelay" = "Reveal delay";
+"general.openAtLogin" = "Open at login";
+"general.privateLayer" = "Use the private Space layer";
+"general.privateLayerNote" = "The private layer knows which Space a minimised window belongs to, but it is undocumented. Off, the app uses on-screen windows only, which is documented and blind to minimised ones.";
+"general.windowSwitching" = "Switch between windows, not applications";
+"general.languageSystem" = "System";
+"general.language" = "Language";
+"general.loginItemPending" = "Waiting for approval in System Settings › General › Login Items.";
+"general.loginItemRefused" = "macOS refused: %@";
+"screen.focused" = "Screen with keyboard focus";
+"screen.pointer" = "Screen with the pointer";
+
+"shortcut.recording" = "Type a shortcut…";
+"shortcut.cancelHint" = "Press Escape to cancel.";
+"shortcut.permission" = "Accessibility is required to record a shortcut.";
+"shortcut.grant" = "Grant Accessibility…";
+"shortcut.restore" = "Restore default";
+"shortcut.unnamedKey" = "Key %lld";
+"reject.noModifier" = "Add ⌘, ⌥ or ⌃ — the switcher stays open while a modifier is held.";
+"reject.containsShift" = "Shift is reserved: it reverses the direction of whatever you choose.";
+"reject.escape" = "Escape closes the switcher and force-quits a stuck app. Pick another key.";
+"reject.reserved" = "That shortcut quits or closes an app. Pick another one.";
+"reject.modifierKey" = "That key only ever modifies another one. Pick a key to tap while holding it.";
+"reject.taken" = "That is already the other shortcut. Pick a different one.";
+
+"appearance.profile" = "Profile";
+"appearance.builtIn" = "Default";
+"appearance.name" = "Name";
+"appearance.namePlaceholder" = "Profile name";
+"appearance.duplicate" = "Duplicate";
+"appearance.delete" = "Delete";
+"appearance.full" = "All %lld profiles are in use. Delete one to make another.";
+"appearance.iconSize" = "Icon size";
+"appearance.ribbonPadding" = "Ribbon padding";
+"appearance.gap" = "Space between icons";
+"appearance.cornerRadius" = "Corner radius";
+"appearance.frameWidth" = "Frame around the icon";
+"appearance.framePadding" = "Frame padding";
+"appearance.background" = "Background";
+"appearance.carousel" = "Carousel";
+"appearance.carouselTurns" = "Turn the row under the selection";
+"appearance.slots" = "Slots";
+"appearance.selection" = "Selection";
+"appearance.sample" = "Show a sample…";
+
+"background.glass" = "Glass";
+"background.transparent" = "Transparent";
+"background.solid" = "Background colour";
+"background.shade" = "Shade";
+"background.opacity" = "Opacity";
+
+"selection.native" = "Like the system switcher";
+"selection.enlarged" = "The selection grows";
+"selection.spotlight" = "The selection stands alone";
+"selection.framed" = "The selection is framed";
+
+"unit.points" = "pt";
+"unit.percent" = "%";
+"unit.slots" = "slots";
+"unit.milliseconds" = "%lld ms";
+
+"preview.count" = "Applications on the Space";
+"preview.show" = "Show";
+"preview.done" = "Done";
+"preview.entry" = "Application %lld";
+
+"ribbon.empty" = "Nothing open on this Space";

@@ -1,0 +1,87 @@
+"app.name" = "Humane Space Tab";
+
+"menu.grantAccessibility" = "Открыть Универсальный доступ…";
+"menu.openInputMonitoring" = "Открыть Мониторинг ввода…";
+"menu.settings" = "Настройки…";
+"menu.copyInventory" = "Скопировать список приложений и окон";
+"menu.quit" = "Завершить Humane Space Tab";
+
+"permission.blocked" = "Универсальный доступ выключен, поэтому Cmd+Tab остаётся за macOS.";
+"permission.refused" = "macOS отказала в перехвате клавиатуры. Помогает только перезапуск приложения.";
+"permission.deaf" = "macOS не передаёт нажатия клавиш. Уберите приложение из списка «Мониторинг ввода».";
+"permission.observing" = "Переключатель видит Cmd+Tab, но не может его перехватить.";
+
+"settings.title" = "Настройки Humane Space Tab";
+"settings.tab.general" = "Основные";
+"settings.tab.appearance" = "Оформление";
+
+"general.applications" = "Приложения";
+"general.frontWindows" = "Окна активного приложения";
+"general.screen" = "Показывать ленту на";
+"general.revealDelay" = "Задержка перед показом";
+"general.openAtLogin" = "Запускать при входе";
+"general.privateLayer" = "Использовать закрытый слой рабочих столов";
+"general.privateLayerNote" = "Закрытый слой знает, какому рабочему столу принадлежит свёрнутое окно, но он недокументирован. Если выключить, приложение видит только окна на экране: это документировано, но свёрнутые окна остаются невидимыми.";
+"general.windowSwitching" = "Переключать окна, а не приложения";
+"general.languageSystem" = "Системный";
+"general.language" = "Язык";
+"general.loginItemPending" = "Ожидает подтверждения в Системных настройках › Основные › Объекты входа.";
+"general.loginItemRefused" = "macOS отказала: %@";
+"screen.focused" = "Экране с фокусом клавиатуры";
+"screen.pointer" = "Экране с указателем";
+
+"shortcut.recording" = "Нажмите сочетание…";
+"shortcut.cancelHint" = "Escape — отменить.";
+"shortcut.permission" = "Для записи сочетания нужен Универсальный доступ.";
+"shortcut.grant" = "Открыть Универсальный доступ…";
+"shortcut.restore" = "Вернуть стандартное";
+"shortcut.unnamedKey" = "Клавиша %lld";
+"reject.noModifier" = "Добавьте ⌘, ⌥ или ⌃ — лента держится, пока зажат модификатор.";
+"reject.containsShift" = "Shift занят: он разворачивает направление любого выбранного сочетания.";
+"reject.escape" = "Escape закрывает переключатель и завершает зависшее приложение. Выберите другую клавишу.";
+"reject.reserved" = "Это сочетание завершает или закрывает приложение. Выберите другое.";
+"reject.modifierKey" = "Эта клавиша только изменяет другие. Выберите клавишу, которую будете нажимать вместе с ней.";
+"reject.taken" = "Это сочетание уже занято вторым переключателем. Выберите другое.";
+
+"appearance.profile" = "Профиль";
+"appearance.builtIn" = "Стандартный";
+"appearance.name" = "Имя";
+"appearance.namePlaceholder" = "Имя профиля";
+"appearance.duplicate" = "Дублировать";
+"appearance.delete" = "Удалить";
+"appearance.full" = "Все профили заняты: их %lld. Удалите один, чтобы создать новый.";
+"appearance.iconSize" = "Размер иконки";
+"appearance.ribbonPadding" = "Поля ленты";
+"appearance.gap" = "Промежуток между иконками";
+"appearance.cornerRadius" = "Скругление углов";
+"appearance.frameWidth" = "Рамка вокруг иконки";
+"appearance.framePadding" = "Отступ рамки";
+"appearance.background" = "Фон";
+"appearance.carousel" = "Карусель";
+"appearance.carouselTurns" = "Прокручивать ряд под выбором";
+"appearance.slots" = "Ячейки";
+"appearance.selection" = "Выбор";
+"appearance.sample" = "Показать пример…";
+
+"background.glass" = "Стекло";
+"background.transparent" = "Прозрачный";
+"background.solid" = "Цвет фона окна";
+"background.shade" = "Затемнение";
+"background.opacity" = "Непрозрачность";
+
+"selection.native" = "Как в системном переключателе";
+"selection.enlarged" = "Выбранное увеличивается";
+"selection.spotlight" = "Выбранное выходит вперёд";
+"selection.framed" = "Выбранное в рамке";
+
+"unit.points" = "пт";
+"unit.percent" = "%";
+"unit.slots" = "ячеек";
+"unit.milliseconds" = "%lld мс";
+
+"preview.count" = "Приложений на рабочем столе";
+"preview.show" = "Показать";
+"preview.done" = "Готово";
+"preview.entry" = "Приложение %lld";
+
+"ribbon.empty" = "На этом рабочем столе ничего не открыто";

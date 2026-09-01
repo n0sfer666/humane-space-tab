@@ -4,21 +4,18 @@ import Testing
 
 @Suite("Login item status")
 struct LoginItemStatusTests {
-    @Test("a registered item reads as on and says nothing")
+    @Test("a registered item reads as on")
     func enabled() {
         #expect(LoginItemStatus.enabled.isOn)
-        #expect(LoginItemStatus.enabled.message == nil)
     }
 
-    @Test("an unregistered item reads as off and says nothing")
+    @Test("an unregistered item reads as off")
     func notRegistered() {
         #expect(LoginItemStatus.notRegistered.isOn == false)
-        #expect(LoginItemStatus.notRegistered.message == nil)
     }
 
-    @Test("an item waiting for approval reads as on and says where to approve it")
+    @Test("an item waiting for approval still reads as on")
     func requiresApproval() {
         #expect(LoginItemStatus.requiresApproval.isOn)
-        #expect(LoginItemStatus.requiresApproval.message?.contains("Login Items") == true)
     }
 }

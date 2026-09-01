@@ -9,6 +9,7 @@ public struct Preferences: Equatable, Sendable {
     public let switchesWindows: Bool
     public let shortcut: Shortcut
     public let windowShortcut: Shortcut
+    public let language: InterfaceLanguage
 
     /// The delay is normalised rather than validated: the store is a file the user can
     /// edit by hand, and nonsense there must produce a working app, not a wedged one. It
@@ -21,7 +22,8 @@ public struct Preferences: Equatable, Sendable {
         usesPrivateSpaceLayer: Bool = false,
         switchesWindows: Bool = false,
         shortcut: Shortcut = .commandTab,
-        windowShortcut: Shortcut = .commandGrave
+        windowShortcut: Shortcut = .commandGrave,
+        language: InterfaceLanguage = .system
     ) {
         self.revealDelay = Self.normalised(revealDelay)
         self.overlayScreen = overlayScreen
@@ -29,6 +31,7 @@ public struct Preferences: Equatable, Sendable {
         self.switchesWindows = switchesWindows
         self.shortcut = ShortcutRule.normalised(shortcut)
         self.windowShortcut = ShortcutRule.normalised(windowShortcut, fallback: .commandGrave)
+        self.language = language
     }
 
     /// A pair that collides is left as it is rather than rewritten: the interpreter already

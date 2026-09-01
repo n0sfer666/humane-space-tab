@@ -26,7 +26,8 @@ public struct UserDefaultsPreferencesStore: PreferencesStore {
                 keyCode: PreferencesKey.windowShortcutKeyCode,
                 modifiers: PreferencesKey.windowShortcutModifiers,
                 standard: Preferences.standard.windowShortcut
-            )
+            ),
+            language: InterfaceLanguage(stored: defaults.string(forKey: PreferencesKey.interfaceLanguage))
         )
     }
 
@@ -42,6 +43,7 @@ public struct UserDefaultsPreferencesStore: PreferencesStore {
             Int(preferences.windowShortcut.modifiers.rawValue),
             forKey: PreferencesKey.windowShortcutModifiers
         )
+        defaults.set(preferences.language.rawValue, forKey: PreferencesKey.interfaceLanguage)
     }
 
     /// Either key missing means the user never chose; a stored pair that is out of range
