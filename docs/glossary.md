@@ -60,6 +60,27 @@ and have the user find it.
 | zh-Hans | 辅助功能 | 输入监控 | 系统设置 | 通用 | 登录项 |
 | zh-Hant | 輔助使用 | 輸入監控 | 系統設定 | 一般 | 登入項目 |
 
+The first launch needs two more of its names — the pane that holds the refusal, and the
+button that lifts it.
+
+| Language | Privacy & Security | Open Anyway |
+|---|---|---|
+| en | Privacy & Security | Open Anyway |
+| ru | Конфиденциальность и безопасность | Всё равно открыть |
+| de | Datenschutz & Sicherheit | Trotzdem öffnen |
+| fr | Confidentialité et sécurité | Ouvrir quand même |
+| es | Privacidad y seguridad | Abrir igualmente |
+| pt-BR | Privacidade e Segurança | Abrir Assim Mesmo |
+| it | Privacy e sicurezza | Apri comunque |
+| nl | Privacy en beveiliging | Toch openen |
+| pl | Prywatność i ochrona | Otwórz mimo to |
+| tr | Gizlilik ve Güvenlik | Yine de Aç |
+| uk | Конфіденційність і безпека | Все одно відкрити |
+| ja | プライバシーとセキュリティ | このまま開く |
+| ko | 개인정보 보호 및 보안 | 그래도 열기 |
+| zh-Hans | 隐私与安全性 | 仍要打开 |
+| zh-Hant | 隱私權與安全性 | 仍要打開 |
+
 The wording is macOS 15–26. If a later version renames a pane, this table is the record of
 what was matched, so the change is an edit rather than a rediscovery.
 
