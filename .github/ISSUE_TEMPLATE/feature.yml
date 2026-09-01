@@ -1,0 +1,43 @@
+name: Feature request
+description: A gesture, a setting or a behaviour the switcher should have
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The project's aim is that the grouping and switching gestures of macOS respect the
+        Space you are on. Ideas that pull in that direction have the shortest road in.
+
+        Two things are settled and will not change: the app asks for **Accessibility and
+        nothing else** (so no window previews, which would need Screen Recording), and it
+        has no network access, no AppleEvents and no plugins. A request that needs one of
+        those is a request for a different app.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is awkward today
+      description: The situation you are in when you want this, not the feature itself.
+      placeholder: >
+        I keep four Spaces. Hiding an application hides it everywhere, so a Space I
+        cleaned up gets cluttered again the moment I switch back.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you would like it to do
+      description: >
+        Down to the gesture, if you have one in mind: what you press, what appears, what
+        happens when you let go.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What you do instead right now
+      description: Another app, a Shortcut, a habit — and where it falls short.
+    validations:
+      required: false

@@ -1,0 +1,93 @@
+name: Bug report
+description: Something the switcher does wrong, or does not do at all
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Much of this app is only visible on a live desktop, so the details below are
+        usually the difference between a fix and a guess.
+
+        If the finding is a security one — anything that lets the app see or do more than
+        it promises — do not file it here. Use
+        [Report a vulnerability](../security/advisories/new) instead.
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what the app did instead.
+      placeholder: |
+        Held Cmd and tapped Tab on the second Space. The ribbon listed applications
+        from the first Space as well.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Down to the number of Spaces and windows, if that matters.
+      placeholder: |
+        1. Two Spaces, Safari on the first, Terminal on the second.
+        2. Switch to the second Space.
+        3. Hold Cmd, tap Tab.
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      description: >
+        From the release you installed, or
+        `defaults read /Applications/Humane\ Space\ Tab.app/Contents/Info
+        CFBundleShortVersionString`.
+      placeholder: "0.1.0"
+    validations:
+      required: true
+
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version
+      description: Apple menu → About This Mac, or `sw_vers -productVersion`.
+      placeholder: "26.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: accessibility
+    attributes:
+      label: Accessibility
+      description: >
+        System Settings → Privacy & Security → Accessibility. The app cannot switch
+        anything without it, and the grant is lost on every update.
+      options:
+        - Granted, and the menu bar icon shows no warning
+        - Granted, but the menu bar icon still warns
+        - Not granted
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: settings
+    attributes:
+      label: Settings that are not the defaults
+      description: >
+        Shortcuts you recorded, the screen the ribbon opens on, the reveal delay, window
+        switching, the private Space layer.
+    validations:
+      required: false
+
+  - type: textarea
+    id: log
+    attributes:
+      label: Log
+      description: >
+        `log show --predicate 'subsystem == "io.github.n0sfer666.humane-space-tab"'
+        --last 10m` — it records what the app did, never what you typed.
+      render: text
+    validations:
+      required: false
