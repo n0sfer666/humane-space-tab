@@ -31,6 +31,8 @@ log="$derived/xcodebuild.log"
 dist="dist"
 name="HumaneSpaceTab-$version.zip"
 zip="$dist/$name"
+image="HumaneSpaceTab-$version.dmg"
+dmg="$dist/$image"
 required_archs=(arm64 x86_64)
 
 fail() {
@@ -111,8 +113,11 @@ codesign --verify --strict --deep "$app"
 
 echo "==> packing"
 mkdir -p "$dist"
-rm -f "$zip" "$zip.sha256"
+rm -f "$zip" "$zip.sha256" "$dmg" "$dmg.sha256"
 ditto -c -k --keepParent "$app" "$zip"
+"$root/scripts/dmg.sh" "$app" "$dmg"
 
 (cd "$dist" && shasum -a 256 "$name" | tee "$name.sha256")
+(cd "$dist" && shasum -a 256 "$image" | tee "$image.sha256")
 echo "==> $zip"
+echo "==> $dmg"

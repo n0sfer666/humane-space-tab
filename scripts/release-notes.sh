@@ -16,13 +16,17 @@ fi
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 sidecar="$root/dist/HumaneSpaceTab-$version.zip.sha256"
+image_sidecar="$root/dist/HumaneSpaceTab-$version.dmg.sha256"
 
-if [[ ! -f "$sidecar" ]]; then
-    echo "error: $sidecar is missing — run scripts/package.sh first" >&2
-    exit 1
-fi
+for file in "$sidecar" "$image_sidecar"; do
+    if [[ ! -f "$file" ]]; then
+        echo "error: $file is missing — run scripts/package.sh first" >&2
+        exit 1
+    fi
+done
 
 read -r sum _ <"$sidecar"
+read -r image_sum _ <"$image_sidecar"
 
 cat <<NOTES
 \`Cmd+Tab\` between the applications of the current Space, and nothing else.
@@ -39,24 +43,36 @@ menu bar icon's menu.
 
 ## Install
 
-1. Download \`HumaneSpaceTab-$version.zip\` and unpack it.
-2. Move **Humane Space Tab.app** to \`/Applications\`.
-3. Launch it. macOS will refuse the first time: open **System Settings → Privacy &
-   Security**, scroll to the bottom and press **Open Anyway**, then launch it again.
-4. The menu bar icon shows a warning until Accessibility is granted. Use
-   **Grant Accessibility…** from its menu — the switcher starts working within a couple
-   of seconds, without a relaunch.
+\`\`\`
+brew install --cask n0sfer/tap/humane-space-tab
+\`\`\`
+
+Or by hand: download \`HumaneSpaceTab-$version.dmg\`, open it and drag the app onto the
+Applications shortcut. (\`HumaneSpaceTab-$version.zip\` holds the same bundle, unpacked
+by Finder.)
+
+Either way, two steps macOS keeps for itself:
+
+1. **The first launch is refused.** Open **System Settings → Privacy & Security**, scroll
+   to the bottom and press **Open Anyway**, then launch the app again.
+2. **Accessibility.** The menu bar icon shows a warning until the grant is there — use
+   **Grant Accessibility…** from its menu. The switcher starts working within a couple of
+   seconds, without a relaunch.
 
 ## Verify the download
 
 \`\`\`
+shasum -a 256 HumaneSpaceTab-$version.dmg
+# $image_sum
+
 shasum -a 256 HumaneSpaceTab-$version.zip
 # $sum
 
-gh attestation verify HumaneSpaceTab-$version.zip --repo $repo
+gh attestation verify HumaneSpaceTab-$version.dmg --repo $repo
 \`\`\`
 
-The attestation ties this artefact to the workflow run and the commit that built it.
+The attestation covers both artefacts, and ties each to the workflow run and the commit
+that built it.
 
 ## What ad-hoc signing costs you
 
