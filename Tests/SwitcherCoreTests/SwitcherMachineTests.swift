@@ -68,13 +68,6 @@ struct SwitcherMachineTests {
         #expect(machine.session?.selection == 0)
     }
 
-    @Test("opening over an empty list opens nothing")
-    func emptyListIsIgnored() {
-        var machine = SwitcherMachine()
-        #expect(machine.open([], .forward) == .ignored)
-        #expect(machine.session == nil)
-    }
-
     @Test("opening a session while one is open leaves it untouched")
     func doubleOpenIsIgnored() {
         var machine = opened(3)

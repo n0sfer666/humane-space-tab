@@ -42,9 +42,12 @@ public struct SwitcherMachine: Sendable {
         return .cancelled
     }
 
+    /// An empty session has nothing to raise, so its commit is a close and not an
+    /// activation (S18).
     public mutating func commit() -> SwitcherEffect {
         guard let current = session else { return .ignored }
         session = nil
-        return .committed(current.selected.target)
+        guard let target = current.selected?.target else { return .cancelled }
+        return .committed(target)
     }
 }

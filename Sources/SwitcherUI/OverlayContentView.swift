@@ -98,6 +98,7 @@ final class OverlayContentView: NSView {
     }
 
     override func draw(_ dirtyRect: NSRect) {
+        guard !model.entries.isEmpty else { return OverlayPlaceholder.draw(metrics, in: bounds) }
         let place = CarouselWindow.place(
             of: model.selection,
             count: model.entries.count,
