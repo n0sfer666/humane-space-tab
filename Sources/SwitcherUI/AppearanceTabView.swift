@@ -12,6 +12,8 @@ final class AppearanceTabView: NSView {
             AppearanceFormView(center: center),
             Self.rule(),
             AppearanceMetricsView(center: center),
+            Self.rule(),
+            AppearanceBackgroundView(center: center),
         ])
         stack.orientation = .vertical
         stack.alignment = .leading
