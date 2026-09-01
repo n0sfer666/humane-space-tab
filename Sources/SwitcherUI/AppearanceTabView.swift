@@ -8,14 +8,21 @@ import SwitcherCore
 /// pushing the window off the display.
 @MainActor
 final class AppearanceTabView: NSView {
+    private let center: AppearanceCenter
     /// Past this the window would be taller than the room a 13-inch display leaves under
     /// the menu bar, and the settings would open half off the screen.
     private static let tallest: CGFloat = 560
 
     init(center: AppearanceCenter) {
+        self.center = center
         super.init(frame: .zero)
+        let sample = NSButton(title: "Show a sample…", target: nil, action: nil)
+        sample.bezelStyle = .rounded
+        sample.target = self
+        sample.action = #selector(showSample)
         let stack = NSStackView(views: [
             AppearanceFormView(center: center),
+            sample,
             Self.rule(),
             AppearanceMetricsView(center: center),
             Self.rule(),
@@ -32,6 +39,12 @@ final class AppearanceTabView: NSView {
 
     @available(*, unavailable)
     required init?(coder: NSCoder) { nil }
+
+    @objc
+    private func showSample() {
+        guard let host = window?.contentViewController else { return }
+        host.presentAsSheet(RibbonPreviewSheet(center: center))
+    }
 
     private func install(_ stack: NSStackView) {
         let scroll = SettingsScroll.make(stack, tallest: Self.tallest)

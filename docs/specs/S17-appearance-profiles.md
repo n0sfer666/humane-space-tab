@@ -121,18 +121,18 @@ Five stages, each verified on the machine before the next: **1** the tab and pro
 
 ## Definition of Done
 
-- [ ] The settings window has General and Appearance tabs, and General behaves exactly as before.
-- [ ] A look is stored per profile: the built-in one plus at most five, each with a name the user can change.
-- [ ] The built-in profile cannot be edited, renamed or deleted, and duplicating it produces an editable copy.
-- [ ] Deleting the active profile leaves the built-in one active, and the ribbon keeps working.
-- [ ] Profiles survive a relaunch, and a store edited into nonsense by hand yields the built-in profile rather than a broken window.
-- [ ] Every number has a slider and a field showing the same value, and neither can leave the range the other settings allow.
-- [ ] No combination of settings gives a ribbon more spacing than icons, or a frame outside the panel.
-- [ ] Each background style offers only what it can carry, and the ribbon draws in that style.
-- [ ] The carousel can be switched off, and with it off the row holds still and shrinks to fit.
+- [x] The settings window has General and Appearance tabs, and General behaves exactly as before.
+- [x] A look is stored per profile: the built-in one plus at most five, each with a name the user can change.
+- [x] The built-in profile cannot be edited, renamed or deleted, and duplicating it produces an editable copy.
+- [x] Deleting the active profile leaves the built-in one active, and the ribbon keeps working.
+- [x] Profiles survive a relaunch, and a store edited into nonsense by hand yields the built-in profile rather than a broken window.
+- [x] Every number has a slider and a field showing the same value, and neither can leave the range the other settings allow.
+- [x] No combination of settings gives a ribbon more spacing than icons, or a frame outside the panel.
+- [x] Each background style offers only what it can carry, and the ribbon draws in that style.
+- [x] The carousel can be switched off, and with it off the row holds still and shrinks to fit.
 - [ ] Each selection preset is visible in the ribbon, and `native` matches what macOS draws.
-- [ ] The preview shows 1, 2, 3, 5, 10, 20, 50 and 100 entries, advancing the selection once a second for four seconds.
-- [ ] Changing a setting is used by the next session without a relaunch.
+- [x] The preview shows 1, 2, 3, 5, 10, 20, 50 and 100 entries, advancing the selection once a second for four seconds.
+- [x] Changing a setting is used by the next session without a relaunch.
 
 ## Test cases
 
