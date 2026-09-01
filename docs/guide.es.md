@@ -13,7 +13,7 @@ que hace ocurre mientras se mantiene pulsada una combinación de teclas.
 
 ## La primera vez
 
-1. Instálala — `brew install --cask n0sfer/tap/humane-space-tab`, o abre la imagen de
+1. Instálala — `brew install --cask n0sfer666/tap/humane-space-tab`, o abre la imagen de
    disco desde Releases y arrastra **Humane Space Tab.app** al acceso directo de
    Applications — y ábrela.
 2. Una app descargada se rechaza la primera vez: abre **Ajustes del Sistema → Privacidad

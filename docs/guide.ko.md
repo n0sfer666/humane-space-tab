@@ -13,7 +13,7 @@
 
 ## 처음 실행할 때
 
-1. 설치합니다 — `brew install --cask n0sfer/tap/humane-space-tab`, 또는 Releases에서
+1. 설치합니다 — `brew install --cask n0sfer666/tap/humane-space-tab`, 또는 Releases에서
    디스크 이미지를 열어 **Humane Space Tab.app**을 Applications 단축 아이콘으로 끌어다
    놓고 실행합니다.
 2. 내려받은 앱은 처음에는 열리지 않습니다. **시스템 설정 → 개인정보 보호 및 보안**을

@@ -19,7 +19,7 @@ Space-aware behaviour to the other grouping, hiding and revealing gestures of ma
 ## Install
 
 ```sh
-brew install --cask n0sfer/tap/humane-space-tab
+brew install --cask n0sfer666/tap/humane-space-tab
 ```
 
 Without Homebrew: download `HumaneSpaceTab-<version>.dmg` from
@@ -44,7 +44,7 @@ Requirements: macOS 15 Sequoia or later, Apple Silicon or Intel.
 
 ```sh
 shasum -a 256 HumaneSpaceTab-<version>.dmg          # compare with the release notes
-gh attestation verify HumaneSpaceTab-<version>.dmg --repo n0sfer/humane-space-tab
+gh attestation verify HumaneSpaceTab-<version>.dmg --repo n0sfer666/humane-space-tab
 ```
 
 The attestation ties the artefact to the workflow run and the commit that built it.

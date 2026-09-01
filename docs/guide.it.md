@@ -13,7 +13,7 @@ quello che fa avviene mentre tieni premuta una combinazione di tasti.
 
 ## Il primo avvio
 
-1. Installala — `brew install --cask n0sfer/tap/humane-space-tab`, oppure apri
+1. Installala — `brew install --cask n0sfer666/tap/humane-space-tab`, oppure apri
    l’immagine disco dai Releases e trascina **Humane Space Tab.app** sull’alias di
    Applications — e aprila.
 2. Un’app scaricata viene rifiutata la prima volta: apri **Impostazioni di Sistema →

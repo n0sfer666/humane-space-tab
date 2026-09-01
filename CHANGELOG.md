@@ -55,5 +55,5 @@ Space, and nothing else.
   Monitoring. Window titles are read only while window switching is on, and only to be
   drawn.
 
-[Unreleased]: https://github.com/n0sfer/humane-space-tab/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/n0sfer/humane-space-tab/releases/tag/v0.1.0
+[Unreleased]: https://github.com/n0sfer666/humane-space-tab/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/n0sfer666/humane-space-tab/releases/tag/v0.1.0

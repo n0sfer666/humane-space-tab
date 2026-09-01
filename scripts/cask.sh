@@ -2,7 +2,7 @@
 set -euo pipefail
 
 version="${1:-}"
-repo="${2:-n0sfer/humane-space-tab}"
+repo="${2:-n0sfer666/humane-space-tab}"
 
 if [[ -z "$version" ]]; then
     echo "usage: scripts/cask.sh <version> [owner/repo]" >&2

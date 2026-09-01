@@ -1,12 +1,12 @@
 blank_issues_enabled: false
 contact_links:
   - name: Something is not working, but it might be macOS
-    url: https://github.com/n0sfer/humane-space-tab/blob/main/docs/guide.md#when-something-is-wrong
+    url: https://github.com/n0sfer666/humane-space-tab/blob/main/docs/guide.md#when-something-is-wrong
     about: >
       A missing menu bar icon, key presses macOS withholds, a grant that belongs to the
       previous build — the guide covers these and how to undo them.
   - name: Security vulnerability
-    url: https://github.com/n0sfer/humane-space-tab/security/advisories/new
+    url: https://github.com/n0sfer666/humane-space-tab/security/advisories/new
     about: >
       The app holds Accessibility. Report anything that abuses it privately, not as a
       public issue.

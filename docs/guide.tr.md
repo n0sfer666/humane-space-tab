@@ -13,7 +13,7 @@ sen bir kısayolu basılı tuttuğun sürece olur.
 
 ## İlk çalıştırma
 
-1. Kur — `brew install --cask n0sfer/tap/humane-space-tab` ya da Releases’ten disk
+1. Kur — `brew install --cask n0sfer666/tap/humane-space-tab` ya da Releases’ten disk
    kalıbını aç ve **Humane Space Tab.app**’i Applications kısayoluna sürükle — sonra
    başlat.
 2. İnternetten indirilen bir uygulama ilk seferde reddedilir: **Sistem Ayarları →

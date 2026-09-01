@@ -13,7 +13,7 @@ acontece enquanto um atalho está pressionado.
 
 ## Primeira execução
 
-1. Instale — `brew install --cask n0sfer/tap/humane-space-tab`, ou abra a imagem de disco
+1. Instale — `brew install --cask n0sfer666/tap/humane-space-tab`, ou abra a imagem de disco
    em Releases e arraste o **Humane Space Tab.app** para o atalho de Applications — e
    abra o app.
 2. Um app baixado é recusado na primeira vez: abra **Ajustes do Sistema → Privacidade e

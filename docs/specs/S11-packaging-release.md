@@ -174,7 +174,7 @@ were attested.
    grant has to be given again — the ad-hoc signing consequence, observed rather than
    assumed.
 5. `lipo -archs` on the unpacked binary → expected: `x86_64 arm64`.
-6. After the first tag: `gh attestation verify dist/HumaneSpaceTab-0.1.0.zip --repo n0sfer/humane-space-tab`
+6. After the first tag: `gh attestation verify dist/HumaneSpaceTab-0.1.0.zip --repo n0sfer666/humane-space-tab`
    → expected: verification succeeds.
 
 ## Risks and open questions
