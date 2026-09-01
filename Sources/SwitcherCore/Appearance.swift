@@ -22,7 +22,7 @@ public struct Appearance: Equatable, Sendable, Codable {
         gapShare: Double = 0.30,
         cornerRadius: Double = 26,
         frame: FrameStyle = .standard,
-        background: BackgroundStyle = .glass(scrim: 0),
+        background: BackgroundStyle = .standard,
         carousel: CarouselSetting = .standard,
         selection: SelectionPreset = .standard
     ) {
