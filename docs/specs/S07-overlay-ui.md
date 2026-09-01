@@ -39,8 +39,13 @@ about it needs a declarative framework.
 | `hidesOnDeactivate` | `false` | we are never active to begin with |
 | `backgroundColor` | `.clear`, with the system's own panel material behind it and a 26 pt corner radius | native look, no custom chrome |
 
-The panel is created once at launch and reused: a session updates its contents and
-orders it front. Icons come from `NSRunningApplication.icon` — no permission, and no
+Every session builds its own panel and takes it down again when the session ends. A
+window keeps the Spaces the window server gave it when it registered, and one kept alive
+for hours was measured belonging to two of four Spaces: the gesture worked, the log said
+the session opened, and nothing appeared on the other two. Building the window when the
+ribbon is needed settles its membership on the Space it is needed on. It costs an
+`NSPanel` and its backdrop per session — paid after the reveal delay, off the tap
+callback — and the content view, with its icons and tracking, is carried over. Icons come from `NSRunningApplication.icon` — no permission, and no
 cache of our own: measured over six applications, the first read costs 28 ms and every
 later one 1.2 ms, because AppKit already caches the image. What we do instead is warm
 it: launch reads the icons of the seeded applications, and opening a session warms the
@@ -209,6 +214,7 @@ saw the two `flagsChanged` events and no `Tab` at all.
 - [ ] The panel is never wider than 96 % of the screen, never wraps, and its geometry matches the measured system switcher within a couple of points while both show the same row.
 - [ ] From five applications the ribbon turns under a stationary selection, never showing an application twice; below five it holds still; past ten it stops growing, with the selection in the fifth slot.
 - [ ] A session that stops receiving events hides itself instead of stranding the panel.
+- [ ] The ribbon appears on every Space of a long-running app, not only the ones its window happened to join.
 - [ ] Interception never swallows a modifier change, and never swallows a key-up whose key-down went through.
 - [ ] Layout and carousel arithmetic is pure and unit-tested: fits, shrinks, freezes, wraps.
 - [ ] The name of the selected application is centred on its icon wherever the icon sits in the ribbon, and moves inwards only when it would otherwise leave the panel.
@@ -289,6 +295,10 @@ saw the two `flagsChanged` events and no `Tab` at all.
 8c. Switch on window titles (S16) and select a window with a very long title → expected:
    the name is cut in the middle, with the start of the title and the application's name
    at the end both still readable.
+8d. Leave the app running for a day, then switch on each of several Spaces in turn →
+   expected: the ribbon appears on all of them. Its window is not the one it was
+   yesterday: `log show --predicate 'subsystem == "io.github.n0sfer666.humane-space-tab"'`
+   still shows the session opening, and the ribbon is there to see it by.
 9. Put the ribbon over a busy window, over a flat white window and over a plain wallpaper →
    expected: on macOS 26 the panel is visibly frosted glass in every case — never an
    invisible rectangle; below 26 it is the HUD blur.
