@@ -10,6 +10,7 @@ public final class PreferencesWindowController {
     /// centre: a value echoed back mid-drag would fight the slider.
     public init(
         center: PreferencesCenter,
+        appearance: AppearanceCenter,
         loginItem: LoginItem,
         naming: any KeyNaming,
         recording: any ShortcutRecorderSource,
@@ -24,16 +25,14 @@ public final class PreferencesWindowController {
         ) { [center] in
             center.update($0)
         }
-        window = NSWindow(
-            contentRect: CGRect(x: 0, y: 0, width: 420, height: 240),
-            styleMask: [.titled, .closable],
-            backing: .buffered,
-            defer: false
+        let tabs = SettingsTabsController(
+            general: form,
+            appearance: AppearanceFormView(center: appearance)
         )
+        window = NSWindow(contentViewController: tabs)
+        window.styleMask = [.titled, .closable]
         window.title = "Humane Space Tab Settings"
         window.isReleasedWhenClosed = false
-        window.contentView = form
-        window.setContentSize(form.fittingSize)
         window.center()
     }
 

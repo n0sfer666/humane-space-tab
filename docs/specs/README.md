@@ -29,7 +29,10 @@ New specs start from [`TEMPLATE.md`](TEMPLATE.md).
 | S14 | [Overlay mouse interaction](S14-overlay-mouse.md) | Hover, click and scroll selection, and the panel changes they need | agreed |
 | S15 | [The deaf tap](S15-deaf-tap.md) | Noticing a tap that receives no key events, and naming the cure | agreed |
 | S16 | [Windows of one application](S16-windows-of-one-application.md) | Cycling windows instead of applications, behind S08's preference | agreed |
-| S17+ | Beyond the ribbon | Mission Control, App Exposé, hide/minimise — one spec per gesture | planned |
+| S17 | [Appearance & profiles](S17-appearance-profiles.md) | The ribbon's looks, bounded and named: metrics, background, carousel, presets, profiles | agreed |
+| S18 | The empty Space | What the ribbon says on a Space with nothing open, instead of macOS's own switcher | planned |
+| S19 | Languages | The interface in the language the system is set to, translated from a glossary rather than word by word | planned |
+| S20+ | Beyond the ribbon | Mission Control, App Exposé, hide/minimise — one spec per gesture | planned |
 
 S00–S06 are close to pure logic and are covered by automated tests. S07 onwards
 needs verification on a real machine; each such spec carries a manual runbook.
