@@ -31,21 +31,40 @@ struct OverlayAppearanceTests {
         let frame = FrameStyle(width: 2, paddingShare: 0.1, radius: 8)
         let metrics = OverlayMetrics(appearance: Appearance(frame: frame))
         #expect(metrics.frame == frame)
-        #expect(OverlayIconFrame.wears(frame, selection: .enlarged, selected: false))
-        #expect(OverlayIconFrame.wears(frame, selection: .enlarged, selected: true))
+        #expect(OverlayIconFrame.drawn(frame, selection: .enlarged, selected: false) == frame)
+        #expect(OverlayIconFrame.drawn(frame, selection: .enlarged, selected: true) == frame)
     }
 
     @Test("the framed preset frames the selection and nothing else")
     func framesTheSelection() {
         let frame = FrameStyle(width: 2, paddingShare: 0.1, radius: 8)
-        #expect(OverlayIconFrame.wears(frame, selection: .framed, selected: true))
-        #expect(!OverlayIconFrame.wears(frame, selection: .framed, selected: false))
+        #expect(OverlayIconFrame.drawn(frame, selection: .framed, selected: true) == frame)
+        #expect(OverlayIconFrame.drawn(frame, selection: .framed, selected: false) == nil)
     }
 
     @Test("no width, no frame")
     func widthOfZeroDrawsNothing() {
         let bare = FrameStyle(width: 0, paddingShare: 0.2, radius: 8)
-        #expect(!OverlayIconFrame.wears(bare, selection: .enlarged, selected: true))
+        #expect(OverlayIconFrame.drawn(bare, selection: .enlarged, selected: true) == nil)
+        #expect(OverlayIconFrame.drawn(bare, selection: .framed, selected: true)?.width == FrameStyle.hairline)
+    }
+
+    @Test("with the carousel off the whole row is drawn, shrunk to fit")
+    func stillRowShowsEverything() {
+        let still = Appearance(carousel: CarouselSetting(isEnabled: false))
+        let metrics = OverlayMetrics(appearance: still)
+        #expect(metrics.visible(count: 20) == 20)
+        let layout = OverlayLayout.compute(count: 20, screen: CGSize(width: 1440, height: 900), metrics: metrics)
+        #expect(layout.slots.count == 20)
+        #expect(layout.size.width <= 1440)
+    }
+
+    @Test("only the native preset puts a plate behind the selection")
+    func highlightsOnlyWhereAsked() {
+        #expect(SelectionPreset.native.highlightsSelection)
+        for preset in SelectionPreset.allCases where preset != .native {
+            #expect(!preset.highlightsSelection)
+        }
     }
 
     @Test("what ships is what the ribbon drew before there were profiles")

@@ -33,7 +33,11 @@ final class OverlayContentView: NSView {
     }
 
     func render(_ model: OverlayModel, layout: OverlayLayout) {
-        let shown = CarouselWindow.indices(count: model.entries.count, selection: model.selection)
+        let shown = CarouselWindow.indices(
+            count: model.entries.count,
+            selection: model.selection,
+            carousel: metrics.carousel
+        )
         let travelled =
             self.layout == layout && self.model.entries == model.entries
             ? CarouselShift.between(self.shown, shown) : 0
@@ -94,7 +98,11 @@ final class OverlayContentView: NSView {
     }
 
     override func draw(_ dirtyRect: NSRect) {
-        let place = CarouselWindow.place(of: model.selection, count: model.entries.count)
+        let place = CarouselWindow.place(
+            of: model.selection,
+            count: model.entries.count,
+            carousel: metrics.carousel
+        )
         for (slot, entry) in shown.enumerated() where layout.slots.indices.contains(slot) {
             draw(model.entries[entry], in: layout.slots[slot], selected: slot == place)
         }
@@ -105,8 +113,8 @@ final class OverlayContentView: NSView {
     /// it.
     private func draw(_ entry: SwitcherEntry, in slot: CGRect, selected: Bool) {
         let icon = CGRect(x: slot.minX, y: slot.minY, width: layout.iconSide, height: layout.iconSide)
-        let grown = metrics.growth(icon: layout.iconSide)
-        let drawn = selected ? icon.insetBy(dx: -grown, dy: -grown) : icon
+        let drawn = metrics.drawn(icon: icon, selected: selected)
+        OverlaySelectionHighlight.draw(behind: drawn, metrics: metrics, selected: selected)
         OverlayIconFrame.draw(
             around: drawn,
             style: metrics.frame,

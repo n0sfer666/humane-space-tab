@@ -20,6 +20,7 @@ public struct OverlayMetrics: Sendable, Equatable {
     /// The outline drawn around an icon, and how the selected one is told apart (S17).
     public let frame: FrameStyle
     public let selection: SelectionPreset
+    public let carousel: CarouselSetting
 
     public init(
         largestIcon: CGFloat = 100,
@@ -34,7 +35,8 @@ public struct OverlayMetrics: Sendable, Equatable {
         widestShare: CGFloat = 0.96,
         cornerRadius: CGFloat = 26,
         frame: FrameStyle = .standard,
-        selection: SelectionPreset = .standard
+        selection: SelectionPreset = .standard,
+        carousel: CarouselSetting = .standard
     ) {
         self.largestIcon = largestIcon
         self.tiniestIcon = tiniestIcon
@@ -49,6 +51,7 @@ public struct OverlayMetrics: Sendable, Equatable {
         self.cornerRadius = cornerRadius
         self.frame = frame
         self.selection = selection
+        self.carousel = carousel
     }
 
     /// The numbers a profile chose, in the shape the ribbon draws with. Everything the
@@ -63,11 +66,14 @@ public struct OverlayMetrics: Sendable, Equatable {
             dimmed: CGFloat(appearance.selection.dimmed),
             cornerRadius: CGFloat(appearance.cornerRadius),
             frame: appearance.frame,
-            selection: appearance.selection
+            selection: appearance.selection,
+            carousel: appearance.carousel
         )
     }
 
-    public func visible(count: Int) -> Int { min(count, CarouselWindow.span) }
+    public func visible(count: Int) -> Int {
+        carousel.isEnabled ? min(count, carousel.slots) : count
+    }
 
     public func gap(icon: CGFloat) -> CGFloat { (icon * gapShare).rounded() }
 
@@ -75,6 +81,14 @@ public struct OverlayMetrics: Sendable, Equatable {
 
     /// What the selected icon takes beyond its slot, on every side.
     public func growth(icon: CGFloat) -> CGFloat { (icon * (selectedScale - 1) / 2).rounded() }
+
+    /// Where an icon is actually drawn: the selection grows by the preset's scale, and in the
+    /// presets that shrink the rest, its neighbours give a little back.
+    public func drawn(icon: CGRect, selected: Bool) -> CGRect {
+        let scale = selected ? selectedScale : CGFloat(selection.unselectedScale)
+        let inset = (icon.width * (scale - 1) / 2).rounded()
+        return icon.insetBy(dx: -inset, dy: -inset)
+    }
 
     /// The name shrinks with the icon so a crowded ribbon stays legible without towering labels.
     public func labelSize(icon: CGFloat) -> CGFloat {
@@ -87,7 +101,18 @@ public struct OverlayMetrics: Sendable, Equatable {
     public func labelHeight(icon: CGFloat) -> CGFloat { (labelSize(icon: icon) * 1.35).rounded(.up) }
 
     public func slotHeight(icon: CGFloat) -> CGFloat {
-        icon + growth(icon: icon) + labelGap + labelHeight(icon: icon)
+        icon + reach(icon: icon) + labelGap + labelHeight(icon: icon)
+    }
+
+    /// How far the selection is drawn beyond its own icon — whichever is furthest of growing,
+    /// the plate behind it and the frame around it. The name is placed past this, so a
+    /// decoration and a label never sit on the same pixels.
+    public func reach(icon: CGFloat) -> CGFloat {
+        var reach = growth(icon: icon)
+        let width = selection.framesSelection && !frame.isDrawn ? FrameStyle.hairline : frame.width
+        if width > 0 { reach += CGFloat(frame.padding(icon: Double(icon)) + width).rounded(.up) }
+        if selection.highlightsSelection { reach = max(reach, (padding(icon: icon) / 2).rounded(.up)) }
+        return reach
     }
 
     /// The name sits under its icon in a box no wider than the text itself, so a name that
@@ -101,7 +126,7 @@ public struct OverlayMetrics: Sendable, Equatable {
         let width = min(text.rounded(.up), budget)
         return CGRect(
             x: min(max(slot.midX - width / 2, inset), max(panel - width - inset, inset)),
-            y: slot.minY + icon + growth(icon: icon) + labelGap,
+            y: slot.minY + icon + reach(icon: icon) + labelGap,
             width: width,
             height: labelHeight(icon: icon)
         )

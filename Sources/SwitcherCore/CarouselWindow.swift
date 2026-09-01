@@ -10,11 +10,11 @@ public enum CarouselWindow {
     /// The shortest list that turns.
     public static let turning = 5
 
-    public static func indices(count: Int, selection: Int) -> [Int] {
+    public static func indices(count: Int, selection: Int, carousel: CarouselSetting = .standard) -> [Int] {
         guard count > 0 else { return [] }
-        guard count >= turning else { return Array(0..<count) }
-        let place = place(of: selection, count: count)
-        return (0..<min(count, span)).map { step in
+        guard carousel.isEnabled, count >= turning else { return Array(0..<count) }
+        let place = place(of: selection, count: count, carousel: carousel)
+        return (0..<min(count, carousel.slots)).map { step in
             let index = (selection - place + step) % count
             return index < 0 ? index + count : index
         }
@@ -23,7 +23,14 @@ public enum CarouselWindow {
     /// Where in the ribbon the selection is drawn. A turning ribbon fills the room before the
     /// selection first, one entry at a time, and stops at four — the fifth slot, where the
     /// selection stays for every longer list.
-    public static func place(of selection: Int, count: Int) -> Int {
-        count < turning ? selection : min(count - before, before)
+    public static func place(of selection: Int, count: Int, carousel: CarouselSetting = .standard) -> Int {
+        guard carousel.isEnabled, count >= turning else { return selection }
+        let before = before(slots: carousel.slots)
+        return min(count - before, before)
     }
+
+    /// How much of a turning ribbon is drawn before the selection: the middle of the row,
+    /// leaning back by one when the number of slots is even, which is where the ribbon has
+    /// always kept it.
+    public static func before(slots: Int) -> Int { (slots - 1) / 2 }
 }

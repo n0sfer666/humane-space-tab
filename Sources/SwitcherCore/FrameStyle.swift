@@ -24,6 +24,10 @@ public struct FrameStyle: Equatable, Sendable, Codable {
         )
     }
 
+    /// The width a frame takes when a preset asks for one and the profile set none: the
+    /// framed preset has nothing else to show the selection with.
+    public static let hairline: Double = 2
+
     public var isDrawn: Bool { width > 0 }
 
     public func padding(icon: Double) -> Double { (icon * paddingShare).rounded() }
