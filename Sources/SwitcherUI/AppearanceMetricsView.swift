@@ -1,7 +1,7 @@
 import AppKit
 import SwitcherCore
 
-/// The sizes of the ribbon, six rows of the same shape. Every change is normalised against
+/// The sizes of the ribbon, seven rows of the same shape. Every change is normalised against
 /// the rest of the look before it is kept, and then every row is asked to redraw its range:
 /// this is where the interlocking becomes visible — widening the gaps is what takes the
 /// margin's room away, and the slider that lost it shows it at once.

@@ -51,6 +51,7 @@
 "appearance.delete" = "删除";
 "appearance.full" = "%lld 个配置已全部占用。删除一个才能再建。";
 "appearance.iconSize" = "图标大小";
+"appearance.iconOpacity" = "图标不透明度";
 "appearance.ribbonPadding" = "切换条边距";
 "appearance.gap" = "图标之间的间距";
 "appearance.cornerRadius" = "圆角半径";

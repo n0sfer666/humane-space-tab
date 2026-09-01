@@ -51,6 +51,7 @@
 "appearance.delete" = "삭제";
 "appearance.full" = "%lld개의 프로파일을 모두 사용 중입니다. 새로 만들려면 하나를 삭제하십시오.";
 "appearance.iconSize" = "아이콘 크기";
+"appearance.iconOpacity" = "아이콘 불투명도";
 "appearance.ribbonPadding" = "리본 여백";
 "appearance.gap" = "아이콘 사이 간격";
 "appearance.cornerRadius" = "모서리 반경";

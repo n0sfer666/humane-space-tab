@@ -94,4 +94,14 @@ struct OverlayAppearanceTests {
         #expect(surface.panel.frame.width < wide)
         surface.hide()
     }
+
+    @Test("the profile's opacity is the ceiling every icon is drawn against")
+    func iconOpacityCapsBothStates() {
+        let metrics = OverlayMetrics(appearance: Appearance(iconOpacity: 0.5, selection: .enlarged))
+        #expect(metrics.fraction(selected: true) == 0.5)
+        #expect(metrics.fraction(selected: false) == 0.5 * CGFloat(SelectionPreset.enlarged.dimmed))
+        let solid = OverlayMetrics(appearance: .standard)
+        #expect(solid.fraction(selected: true) == 1)
+        #expect(solid.fraction(selected: false) == CGFloat(SelectionPreset.standard.dimmed))
+    }
 }

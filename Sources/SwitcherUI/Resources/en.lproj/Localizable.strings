@@ -51,6 +51,7 @@
 "appearance.delete" = "Delete";
 "appearance.full" = "All %lld profiles are in use. Delete one to make another.";
 "appearance.iconSize" = "Icon size";
+"appearance.iconOpacity" = "Icon opacity";
 "appearance.ribbonPadding" = "Ribbon padding";
 "appearance.gap" = "Space between icons";
 "appearance.cornerRadius" = "Corner radius";

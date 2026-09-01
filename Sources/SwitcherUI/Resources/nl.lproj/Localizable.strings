@@ -51,6 +51,7 @@
 "appearance.delete" = "Verwijder";
 "appearance.full" = "Alle %lld profielen zijn in gebruik. Verwijder er een om een nieuw profiel te maken.";
 "appearance.iconSize" = "Symboolgrootte";
+"appearance.iconOpacity" = "Dekking van de symbolen";
 "appearance.ribbonPadding" = "Marge van de balk";
 "appearance.gap" = "Ruimte tussen de symbolen";
 "appearance.cornerRadius" = "Hoekronding";

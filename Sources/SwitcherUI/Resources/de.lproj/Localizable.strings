@@ -51,6 +51,7 @@
 "appearance.delete" = "Löschen";
 "appearance.full" = "Alle %lld Profile sind belegt. Lösche eines, um ein neues anzulegen.";
 "appearance.iconSize" = "Symbolgröße";
+"appearance.iconOpacity" = "Deckkraft der Symbole";
 "appearance.ribbonPadding" = "Rand der Leiste";
 "appearance.gap" = "Abstand zwischen Symbolen";
 "appearance.cornerRadius" = "Eckenradius";

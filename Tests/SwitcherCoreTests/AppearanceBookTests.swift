@@ -90,4 +90,21 @@ struct AppearanceBookTests {
         let data = try JSONEncoder().encode(book)
         #expect(try JSONDecoder().decode(AppearanceBook.self, from: data) == book)
     }
+
+    @Test("a look stored before a setting existed keeps the rest of itself")
+    func decodesWithoutANewerSetting() throws {
+        let stored = Data(
+            """
+            {"iconSize":72,"paddingShare":0.3,"gapShare":0.3,"cornerRadius":26,
+             "frame":{"width":0,"paddingShare":0.2,"radius":8},
+             "background":{"glass":{"scrim":0.15}},
+             "carousel":{"isEnabled":true,"slots":7},
+             "selection":"native"}
+            """.utf8
+        )
+        let appearance = try JSONDecoder().decode(Appearance.self, from: stored)
+        #expect(appearance.iconSize == 72)
+        #expect(appearance.selection == .native)
+        #expect(appearance.iconOpacity == Appearance.standard.iconOpacity)
+    }
 }

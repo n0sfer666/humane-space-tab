@@ -51,6 +51,7 @@
 "appearance.delete" = "刪除";
 "appearance.full" = "%lld 個設定檔已全部使用。刪除一個才能再建立。";
 "appearance.iconSize" = "圖像大小";
+"appearance.iconOpacity" = "圖像不透明度";
 "appearance.ribbonPadding" = "切換列邊界";
 "appearance.gap" = "圖像之間的間距";
 "appearance.cornerRadius" = "圓角半徑";
