@@ -12,7 +12,7 @@
 
 ## 第一次运行
 
-1. 安装 — `brew install --cask n0sfer/tap/humane-space-tab`，或者从 Releases 打开磁盘
+1. 安装 — `brew install --cask n0sfer666/tap/humane-space-tab`，或者从 Releases 打开磁盘
    映像，把 **Humane Space Tab.app** 拖到 Applications 的快捷方式上 — 然后打开它。
 2. 下载来的 App 第一次会被拒绝：打开**系统设置 → 隐私与安全性**，滚动到最下面，点按
    **仍要打开**，再打开一次。

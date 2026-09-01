@@ -13,7 +13,7 @@
 
 ## 最初の起動
 
-1. インストールします — `brew install --cask n0sfer/tap/humane-space-tab`、または
+1. インストールします — `brew install --cask n0sfer666/tap/humane-space-tab`、または
    Releases からディスクイメージを開き、**Humane Space Tab.app** を Applications の
    ショートカットにドラッグして、起動します。
 2. ダウンロードしたAppは初回は開けません。**システム設定 → プライバシーとセキュリティ**

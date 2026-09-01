@@ -13,7 +13,7 @@ hij doet gebeurt terwijl je een toetscombinatie ingedrukt houdt.
 
 ## De eerste keer
 
-1. Installeer hem — `brew install --cask n0sfer/tap/humane-space-tab`, of open het
+1. Installeer hem — `brew install --cask n0sfer666/tap/humane-space-tab`, of open het
    schijfkopiebestand uit Releases en sleep **Humane Space Tab.app** naar de snelkoppeling
    Applications — en start hem.
 2. Een gedownloade app wordt de eerste keer geweigerd: open **Systeeminstellingen →

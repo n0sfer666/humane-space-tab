@@ -20,7 +20,7 @@
 ## Установка
 
 ```sh
-brew install --cask n0sfer/tap/humane-space-tab
+brew install --cask n0sfer666/tap/humane-space-tab
 ```
 
 Без Homebrew: скачайте `HumaneSpaceTab-<версия>.dmg` со страницы
@@ -45,7 +45,7 @@ brew install --cask n0sfer/tap/humane-space-tab
 
 ```sh
 shasum -a 256 HumaneSpaceTab-<версия>.dmg          # сверьте с описанием релиза
-gh attestation verify HumaneSpaceTab-<версия>.dmg --repo n0sfer/humane-space-tab
+gh attestation verify HumaneSpaceTab-<версия>.dmg --repo n0sfer666/humane-space-tab
 ```
 
 Аттестация связывает артефакт с запуском workflow и коммитом, который его собрал.

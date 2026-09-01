@@ -13,7 +13,7 @@ alles, was sie tut, geschieht, während ein Tastenkürzel gedrückt gehalten wir
 
 ## Der erste Start
 
-1. Installieren — `brew install --cask n0sfer/tap/humane-space-tab`, oder das
+1. Installieren — `brew install --cask n0sfer666/tap/humane-space-tab`, oder das
    Image aus den Releases öffnen und **Humane Space Tab.app** auf das
    Applications-Symbol ziehen — und starten.
 2. Eine geladene App wird beim ersten Mal abgewiesen — **Systemeinstellungen →

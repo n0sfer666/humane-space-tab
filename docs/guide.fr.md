@@ -13,7 +13,7 @@ fait se passe pendant qu’un raccourci est maintenu.
 
 ## Premier lancement
 
-1. Installez-la — `brew install --cask n0sfer/tap/humane-space-tab`, ou ouvrez l’image
+1. Installez-la — `brew install --cask n0sfer666/tap/humane-space-tab`, ou ouvrez l’image
    disque depuis Releases et glissez **Humane Space Tab.app** sur le raccourci
    Applications — puis lancez-la.
 2. Une app téléchargée est refusée la première fois — ouvrez **Réglages Système →

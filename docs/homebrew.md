@@ -3,7 +3,7 @@
 ## Installing
 
 ```sh
-brew install --cask n0sfer/tap/humane-space-tab
+brew install --cask n0sfer666/tap/humane-space-tab
 ```
 
 Homebrew adds the tap on first use, downloads the release image, verifies its SHA-256
@@ -34,7 +34,7 @@ scripts/cask.sh 0.1.0 > humane-space-tab.rb
 ```
 
 It lives in a tap of its own — a repository named `homebrew-tap` under the same owner, so
-that `n0sfer/tap/humane-space-tab` resolves to `github.com/n0sfer/homebrew-tap`. Casks go
+that `n0sfer666/tap/humane-space-tab` resolves to `github.com/n0sfer666/homebrew-tap`. Casks go
 in `Casks/`, and nothing else is required of the repository.
 
 ### One-time setup
@@ -55,10 +55,10 @@ carries on — the release is published either way, and the cask can be updated 
 Homebrew only loads casks that live in a tap, so audit it through a scratch one:
 
 ```sh
-brew tap-new n0sfer/casktest --no-git
-cp humane-space-tab.rb "$(brew --repository)/Library/Taps/n0sfer/homebrew-casktest/Casks/"
-brew audit --cask n0sfer/casktest/humane-space-tab
-brew untap n0sfer/casktest
+brew tap-new n0sfer666/casktest --no-git
+cp humane-space-tab.rb "$(brew --repository)/Library/Taps/n0sfer666/homebrew-casktest/Casks/"
+brew audit --cask n0sfer666/casktest/humane-space-tab
+brew untap n0sfer666/casktest
 ```
 
 `brew audit` says nothing when it is happy.

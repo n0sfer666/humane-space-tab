@@ -13,7 +13,7 @@ co robi, dzieje się, dopóki trzymasz skrót klawiszowy.
 
 ## Pierwsze uruchomienie
 
-1. Zainstaluj — `brew install --cask n0sfer/tap/humane-space-tab` albo otwórz obraz dysku
+1. Zainstaluj — `brew install --cask n0sfer666/tap/humane-space-tab` albo otwórz obraz dysku
    z Releases i przeciągnij **Humane Space Tab.app** na skrót Applications — i uruchom.
 2. Pobrana aplikacja za pierwszym razem zostaje odrzucona: otwórz **Ustawienia systemowe →
    Prywatność i ochrona**, przewiń na sam dół, kliknij **Otwórz mimo to** i uruchom

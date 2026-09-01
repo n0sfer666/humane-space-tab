@@ -44,7 +44,7 @@ menu bar icon's menu.
 ## Install
 
 \`\`\`
-brew install --cask n0sfer/tap/humane-space-tab
+brew install --cask n0sfer666/tap/humane-space-tab
 \`\`\`
 
 Or by hand: download \`HumaneSpaceTab-$version.dmg\`, open it and drag the app onto the

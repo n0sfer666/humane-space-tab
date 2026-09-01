@@ -13,7 +13,7 @@ does happens while you hold a shortcut.
 
 ## First run
 
-1. Install it — `brew install --cask n0sfer/tap/humane-space-tab`, or open the disk
+1. Install it — `brew install --cask n0sfer666/tap/humane-space-tab`, or open the disk
    image from Releases and drag **Humane Space Tab.app** onto the Applications
    shortcut — and launch it.
 2. A downloaded build is refused the first time — open **System Settings → Privacy &

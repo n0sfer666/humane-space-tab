@@ -13,7 +13,7 @@
 
 ## Первый запуск
 
-1. Установите — `brew install --cask n0sfer/tap/humane-space-tab` или откройте образ
+1. Установите — `brew install --cask n0sfer666/tap/humane-space-tab` или откройте образ
    из Releases и перетащите **Humane Space Tab.app** на ярлык Applications — и
    запустите.
 2. Скачанную сборку macOS откажется открыть с первого раза — откройте **Системные
