@@ -124,6 +124,8 @@ final class AppearanceFormView: NSView, NSTextFieldDelegate {
             [NSGridCell.emptyContentView, note],
         ])
         grid.column(at: 0).xPlacement = .trailing
+        grid.column(at: 0).width = 150
+        grid.column(at: 1).xPlacement = .leading
         grid.rowSpacing = 12
         grid.columnSpacing = 12
         return grid
@@ -133,10 +135,10 @@ final class AppearanceFormView: NSView, NSTextFieldDelegate {
         grid.translatesAutoresizingMaskIntoConstraints = false
         addSubview(grid)
         NSLayoutConstraint.activate([
-            grid.topAnchor.constraint(equalTo: topAnchor, constant: 20),
-            grid.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            trailingAnchor.constraint(equalTo: grid.trailingAnchor, constant: 20),
-            bottomAnchor.constraint(equalTo: grid.bottomAnchor, constant: 20),
+            grid.topAnchor.constraint(equalTo: topAnchor),
+            grid.leadingAnchor.constraint(equalTo: leadingAnchor),
+            trailingAnchor.constraint(equalTo: grid.trailingAnchor),
+            bottomAnchor.constraint(equalTo: grid.bottomAnchor),
         ])
     }
 

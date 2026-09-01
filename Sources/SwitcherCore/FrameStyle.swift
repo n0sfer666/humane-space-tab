@@ -16,6 +16,14 @@ public struct FrameStyle: Equatable, Sendable, Codable {
         self.radius = radius
     }
 
+    public func with(width: Double? = nil, paddingShare: Double? = nil, radius: Double? = nil) -> FrameStyle {
+        FrameStyle(
+            width: width ?? self.width,
+            paddingShare: paddingShare ?? self.paddingShare,
+            radius: radius ?? self.radius
+        )
+    }
+
     public var isDrawn: Bool { width > 0 }
 
     public func padding(icon: Double) -> Double { (icon * paddingShare).rounded() }

@@ -5,7 +5,7 @@ import SystemPorts
 @MainActor
 final class OverlayContentView: NSView {
     private let icons: any ApplicationIconSource
-    private let metrics: OverlayMetrics
+    private var metrics: OverlayMetrics
     private var model = OverlayModel(entries: [], selection: 0)
     private var layout = OverlayLayout.empty
     private var shown: [Int] = []
@@ -25,6 +25,12 @@ final class OverlayContentView: NSView {
     required init?(coder: NSCoder) { nil }
 
     override var isFlipped: Bool { true }
+
+    func apply(_ metrics: OverlayMetrics) {
+        guard metrics != self.metrics else { return }
+        self.metrics = metrics
+        needsDisplay = true
+    }
 
     func render(_ model: OverlayModel, layout: OverlayLayout) {
         let shown = CarouselWindow.indices(count: model.entries.count, selection: model.selection)
@@ -100,9 +106,17 @@ final class OverlayContentView: NSView {
     private func draw(_ entry: SwitcherEntry, in slot: CGRect, selected: Bool) {
         let icon = CGRect(x: slot.minX, y: slot.minY, width: layout.iconSide, height: layout.iconSide)
         let grown = metrics.growth(icon: layout.iconSide)
+        let drawn = selected ? icon.insetBy(dx: -grown, dy: -grown) : icon
+        OverlayIconFrame.draw(
+            around: drawn,
+            style: metrics.frame,
+            icon: layout.iconSide,
+            selected: selected,
+            metrics: metrics
+        )
         icons.icon(for: entry.application.pid)?
             .draw(
-                in: selected ? icon.insetBy(dx: -grown, dy: -grown) : icon,
+                in: drawn,
                 from: .zero,
                 operation: .sourceOver,
                 fraction: selected ? 1 : metrics.dimmed,

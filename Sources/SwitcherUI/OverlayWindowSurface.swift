@@ -14,7 +14,19 @@ public final class OverlayWindowSurface: OverlaySurface {
         set { content.onGesture = newValue }
     }
 
-    private let metrics: OverlayMetrics
+    /// The look the active profile asks for (S17). A change lands on the next session
+    /// rather than mid-gesture: the panel is built when the ribbon is shown, and the
+    /// geometry it was placed with is thrown away here so it is computed afresh.
+    public var appearance: Appearance = .standard {
+        didSet {
+            guard appearance != oldValue else { return }
+            metrics = OverlayMetrics(appearance: appearance)
+            content.apply(metrics)
+            placement = nil
+        }
+    }
+
+    private var metrics: OverlayMetrics
     private let content: OverlayContentView
     private(set) var panel: NSPanel
     private var placement: Placement?
