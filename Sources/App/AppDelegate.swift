@@ -14,6 +14,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let surface: OverlayWindowSurface
     private let presenter: SessionPresenter
     private let preferences: PreferencesCenter
+    private let appearance: AppearanceCenter
     private let loginItem: LoginItem
     private let inputMonitoring: any InputMonitoringSettings
     private var settings: PreferencesWindowController?
@@ -29,6 +30,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             store.save(preferences)
             log.record(.preferencesChanged)
         }
+        let looks = UserDefaultsAppearanceStore()
+        appearance = AppearanceCenter(initial: looks.load()) { book in looks.save(book) }
         loginItem = LoginItem(service: SMAppServiceLoginItem(), log: log)
         inputMonitoring = SystemSettingsInputMonitoring()
         let inventory = InventoryAssembly.make(log: log)
@@ -133,6 +136,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func makeSettings() -> PreferencesWindowController {
         PreferencesWindowController(
             center: preferences,
+            appearance: appearance,
             loginItem: loginItem,
             naming: KeyboardLayoutNaming(),
             recording: recording(),

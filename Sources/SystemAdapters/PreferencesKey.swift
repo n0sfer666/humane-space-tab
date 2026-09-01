@@ -9,4 +9,7 @@ public enum PreferencesKey {
     public static let shortcutModifiers = "ShortcutModifiers"
     public static let windowShortcutKeyCode = "WindowShortcutKeyCode"
     public static let windowShortcutModifiers = "WindowShortcutModifiers"
+    /// The whole book of appearance profiles, as JSON: a profile is a tree, and one key
+    /// keeps a stored book internally consistent where a key per number could not.
+    public static let appearanceBook = "AppearanceBook"
 }
