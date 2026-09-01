@@ -27,7 +27,7 @@ public final class PreferencesWindowController {
         }
         let tabs = SettingsTabsController(
             general: form,
-            appearance: AppearanceFormView(center: appearance)
+            appearance: AppearanceTabView(center: appearance)
         )
         window = NSWindow(contentViewController: tabs)
         window.styleMask = [.titled, .closable]

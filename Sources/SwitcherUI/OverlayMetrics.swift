@@ -17,6 +17,9 @@ public struct OverlayMetrics: Sendable, Equatable {
     public let smallestLabel: CGFloat
     public let widestShare: CGFloat
     public let cornerRadius: CGFloat
+    /// The outline drawn around an icon, and how the selected one is told apart (S17).
+    public let frame: FrameStyle
+    public let selection: SelectionPreset
 
     public init(
         largestIcon: CGFloat = 100,
@@ -29,7 +32,9 @@ public struct OverlayMetrics: Sendable, Equatable {
         largestLabel: CGFloat = 13,
         smallestLabel: CGFloat = 11,
         widestShare: CGFloat = 0.96,
-        cornerRadius: CGFloat = 26
+        cornerRadius: CGFloat = 26,
+        frame: FrameStyle = .standard,
+        selection: SelectionPreset = .standard
     ) {
         self.largestIcon = largestIcon
         self.tiniestIcon = tiniestIcon
@@ -42,6 +47,24 @@ public struct OverlayMetrics: Sendable, Equatable {
         self.smallestLabel = smallestLabel
         self.widestShare = widestShare
         self.cornerRadius = cornerRadius
+        self.frame = frame
+        self.selection = selection
+    }
+
+    /// The numbers a profile chose, in the shape the ribbon draws with. Everything the
+    /// layout needs beyond them — how small an icon may be squeezed, how the label scales —
+    /// is not a setting and keeps the value it has always had.
+    public init(appearance: Appearance) {
+        self.init(
+            largestIcon: CGFloat(appearance.iconSize),
+            gapShare: CGFloat(appearance.gapShare),
+            paddingShare: CGFloat(appearance.paddingShare),
+            selectedScale: CGFloat(appearance.selection.selectedScale),
+            dimmed: CGFloat(appearance.selection.dimmed),
+            cornerRadius: CGFloat(appearance.cornerRadius),
+            frame: appearance.frame,
+            selection: appearance.selection
+        )
     }
 
     public func visible(count: Int) -> Int { min(count, CarouselWindow.span) }

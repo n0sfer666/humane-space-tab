@@ -63,6 +63,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             presenter.delay = preferences.revealDelay
             surface.screen = preferences.overlayScreen
         }
+        appearance.observe { [surface] book in surface.appearance = book.active.appearance }
         activations.observe { [runtime] process in runtime.recordActivation(of: process) }
         surface.onGesture = { [runtime] gesture in runtime.handle(gesture) }
         let hotkeys = makeHotkeys()
