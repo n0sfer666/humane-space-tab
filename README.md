@@ -16,6 +16,43 @@ Space-aware behaviour to the other grouping, hiding and revealing gestures of ma
 
 ![The ribbon](docs/images/ribbon.png)
 
+## Install
+
+```sh
+brew install --cask n0sfer/tap/humane-space-tab
+```
+
+Without Homebrew: download `HumaneSpaceTab-<version>.dmg` from
+[Releases](../../releases), open it and drag the app onto the Applications shortcut. The
+zip beside it holds the same bundle for anyone who prefers one.
+
+Either way macOS asks for two things, once:
+
+- **Allow the first launch.** It is refused, because the build carries no Apple Developer
+  ID. Open **System Settings → Privacy & Security**, scroll to the bottom, press **Open
+  Anyway**, and launch the app again. Do not strip the quarantine attribute by hand — that
+  habit disarms the check that protects you from everything else you download.
+- **Grant Accessibility.** The app asks as it launches, and its menu bar icon shows a
+  warning until the grant is there — **Grant Accessibility…** in that menu asks again.
+  Either way the switcher starts working within a couple of seconds, without a relaunch.
+  macOS ties the grant to the code signature, so it has to be given again after every
+  update.
+
+Upgrading and uninstalling: [docs/homebrew.md](docs/homebrew.md). A missing menu bar icon,
+key presses macOS withholds, a grant that belongs to the previous build —
+[when something is wrong](docs/guide.md#when-something-is-wrong) in the guide. What
+changed between releases is in [CHANGELOG.md](CHANGELOG.md).
+
+### Verify what you downloaded
+
+```sh
+shasum -a 256 HumaneSpaceTab-<version>.dmg          # compare with the release notes
+gh attestation verify HumaneSpaceTab-<version>.dmg --repo n0sfer/humane-space-tab
+```
+
+The attestation ties the artefact to the workflow run and the commit that built it.
+Homebrew checks the same SHA-256 on its own.
+
 ## Using it
 
 Hold **⌘** and tap **Tab**. A quick tap switches to the previous application without
@@ -30,14 +67,10 @@ launch at login are in **Settings…**, in the menu bar icon's menu.
 The full guide — every setting, the menu bar, and what to do when something is wrong — is
 [docs/guide.md](docs/guide.md) ([по-русски](docs/guide.ru.md)).
 
-## Goals
+## Requirements
 
-- **Native first** — Swift 6 + AppKit, no cross-platform runtime.
-- **Small footprint** — minimal bundle size and memory usage.
-- **UI/UX** — the switcher should feel like part of the system, not an add-on.
-- **Launch at login** — opt-in, via the system-supported mechanism.
-- **Security** — the app requires Accessibility to work; the design deliberately
-  minimises what it can do with it. See [Security](#security).
+- macOS 15 Sequoia or later
+- Apple Silicon or Intel
 
 ## Security
 
@@ -67,106 +100,38 @@ contents of every window on your screen. It never asks for Input Monitoring
 either; where a stale entry in that list makes macOS withhold key presses, the
 menu bar says so and offers the pane that can undo it.
 
-Builds are **ad-hoc signed** — there is no Apple Developer ID. Two consequences you
-should know about before installing: macOS will ask you to grant Accessibility
-again after every update, and a downloaded build must be allowed once through
-System Settings → Privacy & Security.
+Builds are **ad-hoc signed** — there is no Apple Developer ID. That is what the two
+one-time steps above are about, and why Accessibility has to be granted again after
+every update.
 
-The full threat model is [S00](docs/specs/S00-threat-model.md).
+The full threat model is [S00](docs/specs/S00-threat-model.md); how to report a
+vulnerability is [SECURITY.md](SECURITY.md).
 
-## Install
+## Goals
 
-Download the latest zip from [Releases](../../releases), unpack it and move
-**Humane Space Tab.app** to `/Applications`.
-
-The first launch is refused: macOS quarantines a downloaded build that carries no
-Developer ID. Open **System Settings → Privacy & Security**, scroll to the bottom and
-press **Open Anyway**, then launch the app again. Do not strip the quarantine attribute
-by hand — that habit disarms the check that protects you from everything else you
-download.
-
-The app asks for Accessibility as it launches, and its menu bar icon shows a warning
-until the grant is there — **Grant Accessibility…** in that menu asks again. Either way
-the switcher starts working within a couple of seconds, without a relaunch. macOS ties
-the grant to the code signature, so it has to be given again after every update.
-
-A menu bar with no free slot left of the notch drops the icon: macOS draws no status item
-it cannot fit, and nothing in the app can claim the space. Free a slot, or open the app
-again from Finder or Spotlight — a second launch opens Settings instead of a new copy.
-
-If the icon instead says macOS is withholding key presses, an old entry for the app is
-denying it in **System Settings → Privacy & Security → Input Monitoring**. Remove that
-entry with **−** — the app does not need the permission, only the absence of a refusal —
-and click back into the app; the tap is rebuilt without a relaunch.
-
-### Verify what you downloaded
-
-```sh
-shasum -a 256 HumaneSpaceTab-<version>.zip          # compare with the release notes
-gh attestation verify HumaneSpaceTab-<version>.zip --repo n0sfer/humane-space-tab
-```
-
-The attestation ties the artefact to the workflow run and the commit that built it.
-
-What changed between releases is in [CHANGELOG.md](CHANGELOG.md).
-
-## Requirements
-
-- macOS 15 Sequoia or later
-- Apple Silicon or Intel
+- **Native first** — Swift 6 + AppKit, no cross-platform runtime.
+- **Small footprint** — minimal bundle size and memory usage.
+- **UI/UX** — the switcher should feel like part of the system, not an add-on.
+- **Launch at login** — opt-in, via the system-supported mechanism.
+- **Security** — the app requires Accessibility to work; the design deliberately
+  minimises what it can do with it. See [Security](#security).
 
 ## Development
 
-- **Language:** Swift 6, AppKit
-- **Build:** Swift Package Manager for the logic modules, XcodeGen for the `.app` bundle
-- **Tests:** Swift Testing, test-driven — tests come first
-- **Branches:** `main` is the protected release branch, `dev` is where development happens
-- **Specs:** every feature is designed as a mini-spec in `docs/specs/` before it is built;
-  foundational decisions are recorded as ADRs in `docs/adr/`
-
-Requires Xcode 26 and `brew install xcodegen swiftlint`.
+Ports and adapters, one direction only: `SwitcherCore` (pure logic) → `SystemPorts` →
+`SystemAdapters` and `SwitcherUI` → `App`. Swift 6 and AppKit, Swift Package Manager for
+the modules and XcodeGen for the bundle, Swift Testing throughout, `dev` for work and
+`main` for releases, and a mini-spec in `docs/specs/` before a feature is built.
 
 ```sh
+brew install xcodegen swiftlint     # Xcode 26 is the other requirement
 swift test
-swiftlint lint --strict
-swift format lint --recursive --strict Sources Tests Package.swift
-xcodegen generate
-xcodebuild -project HumaneSpaceTab.xcodeproj -scheme HumaneSpaceTab \
-  -configuration Release -derivedDataPath .build/xcode build
+scripts/install.sh 0.1.0            # packages, installs into /Applications, relaunches
 ```
 
-The Xcode project is generated from `project.yml` and is never committed.
-
-The bundle icon is drawn, not stored: `scripts/make-icon.sh` renders every size from
-`scripts/icon.swift` and packs `Resources/AppIcon.icns`. Change the drawing, run the
-script, commit the `.icns` it produced — `scripts/package.sh` refuses a bundle without
-one.
-
-Packaging is one script — the release workflow only calls it, so it can be run and broken
-on a laptop instead of at production:
-
-```sh
-scripts/package.sh 0.1.0        # dist/HumaneSpaceTab-0.1.0.zip and its SHA-256
-```
-
-It refuses to produce anything that is missing an architecture, carries entitlements,
-lacks the hardened runtime, links a non-system library or fails signature verification —
-and it checks each slice of the universal binary separately, because `codesign` and
-`otool` report only the host slice by default. A `v*` tag runs the same
-script in CI and publishes a pre-release; the details are in
+What a change is expected to carry, and the rest of the commands, are in
+[CONTRIBUTING.md](CONTRIBUTING.md); packaging and what a `v*` tag does are in
 [S11](docs/specs/S11-packaging-release.md).
-
-Installing a build you made yourself is one script on top of it:
-
-```sh
-scripts/install.sh 0.1.0        # packages, replaces /Applications/Humane Space Tab.app, relaunches
-```
-
-It packages first, so it never installs a bundle that failed a check; it quits the
-running app, replaces the bundle, verifies the installed version and launches it. Expect
-the last lines to read `==> /Applications/Humane Space Tab.app is 0.1.0, running as pid …`
-followed by the reminder that Accessibility has to be granted again — every local build
-carries its own ad-hoc signature, and macOS ties the grant to the signature.
 
 ## Licence
 

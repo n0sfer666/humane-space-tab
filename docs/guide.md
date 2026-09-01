@@ -9,10 +9,11 @@ does happens while you hold a shortcut.
 
 ## First run
 
-1. Move **Humane Space Tab.app** to `/Applications` and launch it.
-2. A build downloaded from Releases is refused the first time — open **System Settings →
-   Privacy & Security**, scroll to the bottom and press **Open Anyway**, then launch it
-   again.
+1. Install it — `brew install --cask n0sfer/tap/humane-space-tab`, or open the disk
+   image from Releases and drag **Humane Space Tab.app** onto the Applications
+   shortcut — and launch it.
+2. A downloaded build is refused the first time — open **System Settings → Privacy &
+   Security**, scroll to the bottom and press **Open Anyway**, then launch it again.
 3. The app asks for **Accessibility** as it starts. Grant it in **System Settings →
    Privacy & Security → Accessibility**. The switcher starts working within a couple of
    seconds; no relaunch is needed.
