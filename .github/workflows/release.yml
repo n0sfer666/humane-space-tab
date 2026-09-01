@@ -58,6 +58,12 @@ jobs:
           BUILD: ${{ github.run_number }}
         run: scripts/package.sh "$VERSION" "$BUILD"
 
+      - name: Write the Homebrew cask
+        env:
+          VERSION: ${{ steps.version.outputs.value }}
+          REPO: ${{ github.repository }}
+        run: scripts/cask.sh "$VERSION" "$REPO" > dist/humane-space-tab.rb
+
       - name: Write the release notes
         env:
           VERSION: ${{ steps.version.outputs.value }}
@@ -73,7 +79,9 @@ jobs:
       - name: Attest the build provenance
         uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3
         with:
-          subject-path: dist/HumaneSpaceTab-${{ steps.version.outputs.value }}.zip
+          subject-path: |
+            dist/HumaneSpaceTab-${{ steps.version.outputs.value }}.zip
+            dist/HumaneSpaceTab-${{ steps.version.outputs.value }}.dmg
 
   release:
     name: Release
@@ -93,7 +101,10 @@ jobs:
       - name: Check the artefact survived the round trip
         env:
           VERSION: ${{ needs.package.outputs.version }}
-        run: cd dist && shasum -a 256 -c "HumaneSpaceTab-$VERSION.zip.sha256"
+        run: |
+          cd dist
+          shasum -a 256 -c "HumaneSpaceTab-$VERSION.zip.sha256"
+          shasum -a 256 -c "HumaneSpaceTab-$VERSION.dmg.sha256"
 
       - name: Publish the release
         env:
@@ -103,12 +114,38 @@ jobs:
           TAG: ${{ github.ref_name }}
         run: |
           zip="dist/HumaneSpaceTab-$VERSION.zip"
+          dmg="dist/HumaneSpaceTab-$VERSION.dmg"
           if gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1; then
             gh release edit "$TAG" --repo "$REPO" \
               --title "$VERSION" --notes-file dist/notes.md --prerelease
-            gh release upload "$TAG" --repo "$REPO" --clobber "$zip" "$zip.sha256"
+            gh release upload "$TAG" --repo "$REPO" --clobber \
+              "$dmg" "$dmg.sha256" "$zip" "$zip.sha256"
           else
             gh release create "$TAG" --repo "$REPO" \
               --title "$VERSION" --notes-file dist/notes.md --prerelease \
-              "$zip" "$zip.sha256"
+              "$dmg" "$dmg.sha256" "$zip" "$zip.sha256"
           fi
+
+      - name: Update the Homebrew tap
+        env:
+          TAP_TOKEN: ${{ secrets.TAP_TOKEN }}
+          TAP_REPO: ${{ vars.TAP_REPO || format('{0}/homebrew-tap', github.repository_owner) }}
+          VERSION: ${{ needs.package.outputs.version }}
+        run: |
+          if [[ -z "$TAP_TOKEN" ]]; then
+            echo "::notice::no TAP_TOKEN secret, so the cask stays where it is — docs/homebrew.md says how to set one up"
+            exit 0
+          fi
+          git clone --depth 1 "https://x-access-token:$TAP_TOKEN@github.com/$TAP_REPO.git" tap
+          mkdir -p tap/Casks
+          cp dist/humane-space-tab.rb tap/Casks/humane-space-tab.rb
+          cd tap
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Casks/humane-space-tab.rb
+          if git diff --cached --quiet; then
+            echo "the tap already carries $VERSION"
+            exit 0
+          fi
+          git commit -m "humane-space-tab $VERSION"
+          git push
