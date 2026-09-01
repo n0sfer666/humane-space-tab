@@ -10,9 +10,18 @@ final class MeasureRow: NSView, NSTextFieldDelegate {
         case points
         /// A share of the icon, written as the percentage a person would say out loud.
         case percent
+        /// A plain number of things — the slots a carousel turns in.
+        case slots
 
         var scale: Double { self == .percent ? 100 : 1 }
-        var suffix: String { self == .percent ? "%" : "pt" }
+
+        var suffix: String {
+            switch self {
+            case .points: "pt"
+            case .percent: "%"
+            case .slots: "slots"
+            }
+        }
     }
 
     private let unit: Unit
