@@ -20,7 +20,7 @@ final class MeasureRow: NSView, NSTextFieldDelegate {
             switch self {
             case .points: Localised.text(.unitPoints)
             case .percent: Localised.text(.unitPercent)
-            case .slots: "slots"
+            case .slots: Localised.text(.unitSlots)
             }
         }
     }
