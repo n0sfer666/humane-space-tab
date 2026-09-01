@@ -12,6 +12,8 @@ public struct OverlayMetrics: Sendable, Equatable {
     public let selectedScale: CGFloat
     /// What is left of an unselected icon, so the selected one is the one the eye lands on.
     public let dimmed: CGFloat
+    /// What is left of any icon, dimmed or not — the ceiling every icon is drawn against.
+    public let iconOpacity: CGFloat
     public let labelGap: CGFloat
     public let largestLabel: CGFloat
     public let smallestLabel: CGFloat
@@ -29,6 +31,7 @@ public struct OverlayMetrics: Sendable, Equatable {
         paddingShare: CGFloat = 0.30,
         selectedScale: CGFloat = 1.20,
         dimmed: CGFloat = 0.62,
+        iconOpacity: CGFloat = 1,
         labelGap: CGFloat = 2,
         largestLabel: CGFloat = 13,
         smallestLabel: CGFloat = 11,
@@ -44,6 +47,7 @@ public struct OverlayMetrics: Sendable, Equatable {
         self.paddingShare = paddingShare
         self.selectedScale = selectedScale
         self.dimmed = dimmed
+        self.iconOpacity = iconOpacity
         self.labelGap = labelGap
         self.largestLabel = largestLabel
         self.smallestLabel = smallestLabel
@@ -64,6 +68,7 @@ public struct OverlayMetrics: Sendable, Equatable {
             paddingShare: CGFloat(appearance.paddingShare),
             selectedScale: CGFloat(appearance.selection.selectedScale),
             dimmed: CGFloat(appearance.selection.dimmed),
+            iconOpacity: CGFloat(appearance.iconOpacity),
             cornerRadius: CGFloat(appearance.cornerRadius),
             frame: appearance.frame,
             selection: appearance.selection,
@@ -73,6 +78,12 @@ public struct OverlayMetrics: Sendable, Equatable {
 
     public func visible(count: Int) -> Int {
         carousel.isEnabled ? min(count, carousel.slots) : count
+    }
+
+    /// How strongly an icon is drawn: the ceiling the profile set, and under it what the
+    /// selection preset leaves of an icon that is not the one chosen.
+    public func fraction(selected: Bool) -> CGFloat {
+        iconOpacity * (selected ? 1 : dimmed)
     }
 
     public func gap(icon: CGFloat) -> CGFloat { (icon * gapShare).rounded() }

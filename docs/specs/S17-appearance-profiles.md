@@ -61,6 +61,9 @@ interlocking the feature is asked for:
 - **Frame padding** 0–40 % of the icon, and never more than the ribbon padding minus the
   frame's own width — a frame cannot reach outside the panel that draws it.
 - **Frame width** 0–4 pt, **corner radius** 0–40 pt.
+- **Icon opacity** 10–100 %. It is the ceiling every icon is drawn against; the selection
+  preset dims the unselected ones under it. 100 % is what the ribbon has always drawn, so
+  the setting only ever takes strength away — which is the one bound it needs.
 
 `AppearanceLimits` answers what a control may offer right now — `iconSize(_:screenWidth:)`,
 `paddingShare(_:)`, `gapShare(_:)`, `framePaddingShare(_:)` — and `normalise` brings a
@@ -74,7 +77,7 @@ Three styles, each with only what it can meaningfully carry:
 
 | Style | Adjustable | Notes |
 |---|---|---|
-| `glass` | scrim 0–40 % | the S07 material: Liquid Glass on macOS 26, HUD blur below |
+| `glass` | scrim 0–40 % | the S07 material: Liquid Glass on macOS 26, HUD blur below. At a scrim of nothing macOS 26 draws the clearest glass it has, so the desktop reads through the ribbon — a look that can be spoiled, deliberately reachable |
 | `transparent` | opacity 0–100 % | no material; the desktop shows through the panel |
 | `background` | opacity 0–100 % | a solid panel in the system's window background colour |
 
@@ -132,6 +135,8 @@ Five stages, each verified on the machine before the next: **1** the tab and pro
 - [x] The carousel can be switched off, and with it off the row holds still and shrinks to fit.
 - [ ] Each selection preset is visible in the ribbon, and `native` matches what macOS draws.
 - [x] The preview shows 1, 2, 3, 5, 10, 20, 50 and 100 entries, advancing the selection once a second for four seconds.
+- [ ] The icons can be faded and the ribbon still reads; at the bottom of the range they are barely there, and that is allowed.
+- [ ] A glass ribbon with no scrim is glass, not a plate: the desktop shows through it.
 - [x] Changing a setting is used by the next session without a relaunch.
 
 ## Test cases
@@ -151,6 +156,8 @@ Five stages, each verified on the machine before the next: **1** the tab and pro
 | 11 | Carousel off with twenty entries | one row, every entry present, icons shrunk |
 | 12 | Preview at 100 entries | the layout matches what a session with 100 entries would draw |
 | 13 | Preview run | four steps, one per second, then it ends by itself |
+| 14 | Icon opacity at half, `enlarged` selected | the selection is drawn at 0.5, the rest at 0.5 × the preset's dimming |
+| 15 | A look stored before icon opacity existed | decodes with the rest intact and the opacity at full |
 
 ## Manual runbook
 
@@ -164,6 +171,8 @@ Five stages, each verified on the machine before the next: **1** the tab and pro
 8. Open the preview, pick 100, press Show → expected: four seconds, the selection moving once a second, the ribbon drawn as the gesture would draw it.
 9. Add five profiles → expected: adding a sixth is refused, with the reason visible.
 10. Delete the active profile, then relaunch → expected: the built-in profile is active and the window opens on it.
+11. Drag **Icon opacity** to its minimum, then hold the shortcut → expected: the icons are faint but present, and the selection is still the strongest thing on the ribbon.
+12. On glass, drag the background slider to `0` → expected: the ribbon becomes clear glass — the desktop is legible through it — rather than the frosted plate it is at any value above zero.
 
 ## Risks and open questions
 

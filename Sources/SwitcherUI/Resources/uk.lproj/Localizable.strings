@@ -51,6 +51,7 @@
 "appearance.delete" = "Вилучити";
 "appearance.full" = "Усі профілі зайнято: їх %lld. Вилучіть один, щоб створити новий.";
 "appearance.iconSize" = "Розмір іконки";
+"appearance.iconOpacity" = "Непрозорість іконок";
 "appearance.ribbonPadding" = "Поля стрічки";
 "appearance.gap" = "Проміжок між іконками";
 "appearance.cornerRadius" = "Заокруглення кутів";

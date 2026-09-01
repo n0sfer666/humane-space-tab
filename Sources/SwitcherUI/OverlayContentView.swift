@@ -128,7 +128,7 @@ final class OverlayContentView: NSView {
                 in: drawn,
                 from: .zero,
                 operation: .sourceOver,
-                fraction: selected ? 1 : metrics.dimmed,
+                fraction: metrics.fraction(selected: selected),
                 respectFlipped: true,
                 hints: nil
             )

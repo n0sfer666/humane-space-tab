@@ -13,6 +13,9 @@ public enum AppearanceLimits {
     /// What the margin and the gaps may take together, per icon in the ribbon.
     public static let spacingShare: Double = 0.5
     public static let cornerRadiusRange: ClosedRange<Double> = 0...40
+    /// How faint the icons may be made. The top of the range is the strength the ribbon has
+    /// always drawn them at; below it a person is free to go until they can barely be seen.
+    public static let iconOpacityRange: ClosedRange<Double> = 0.1...1
     public static let smallestIcon: Double = 16
     public static let largestIcon: Double = 128
     public static let shareCeiling: Double = 1
@@ -52,6 +55,7 @@ public enum AppearanceLimits {
             paddingShare: clamp(appearance.paddingShare, into: 0...shareCeiling),
             gapShare: clamp(appearance.gapShare, into: 0...shareCeiling),
             cornerRadius: clamp(appearance.cornerRadius, into: cornerRadiusRange),
+            iconOpacity: clamp(appearance.iconOpacity, into: iconOpacityRange),
             frame: FrameStyle(
                 width: clamp(appearance.frame.width, into: FrameStyle.widthRange),
                 paddingShare: clamp(appearance.frame.paddingShare, into: 0...0.4),

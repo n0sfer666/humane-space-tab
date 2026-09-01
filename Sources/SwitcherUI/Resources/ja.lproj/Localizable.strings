@@ -51,6 +51,7 @@
 "appearance.delete" = "削除";
 "appearance.full" = "%lld個のプロファイルをすべて使用中です。新しく作るには1つ削除してください。";
 "appearance.iconSize" = "アイコンの大きさ";
+"appearance.iconOpacity" = "アイコンの不透明度";
 "appearance.ribbonPadding" = "リボンの余白";
 "appearance.gap" = "アイコンの間隔";
 "appearance.cornerRadius" = "角の丸み";

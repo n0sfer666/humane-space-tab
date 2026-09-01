@@ -55,6 +55,7 @@ public enum UIText: String, CaseIterable, Sendable {
     case appearanceDelete = "appearance.delete"
     case appearanceFull = "appearance.full"
     case appearanceIconSize = "appearance.iconSize"
+    case appearanceIconOpacity = "appearance.iconOpacity"
     case appearanceRibbonPadding = "appearance.ribbonPadding"
     case appearanceGap = "appearance.gap"
     case appearanceCornerRadius = "appearance.cornerRadius"

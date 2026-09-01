@@ -51,6 +51,7 @@
 "appearance.delete" = "Удалить";
 "appearance.full" = "Все профили заняты: их %lld. Удалите один, чтобы создать новый.";
 "appearance.iconSize" = "Размер иконки";
+"appearance.iconOpacity" = "Непрозрачность иконок";
 "appearance.ribbonPadding" = "Поля ленты";
 "appearance.gap" = "Промежуток между иконками";
 "appearance.cornerRadius" = "Скругление углов";

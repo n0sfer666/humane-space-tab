@@ -51,6 +51,7 @@
 "appearance.delete" = "Elimina";
 "appearance.full" = "Tutti e %lld i profili sono in uso. Eliminane uno per crearne un altro.";
 "appearance.iconSize" = "Dimensione delle icone";
+"appearance.iconOpacity" = "Opacità delle icone";
 "appearance.ribbonPadding" = "Margine della striscia";
 "appearance.gap" = "Spazio tra le icone";
 "appearance.cornerRadius" = "Raggio degli angoli";

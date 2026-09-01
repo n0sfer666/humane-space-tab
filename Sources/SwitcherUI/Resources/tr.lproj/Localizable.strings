@@ -51,6 +51,7 @@
 "appearance.delete" = "Sil";
 "appearance.full" = "%lld profilin hepsi kullanımda. Yenisini yapmak için birini sil.";
 "appearance.iconSize" = "Simge boyutu";
+"appearance.iconOpacity" = "Simge opaklığı";
 "appearance.ribbonPadding" = "Şerit kenar boşluğu";
 "appearance.gap" = "Simgeler arası boşluk";
 "appearance.cornerRadius" = "Köşe yarıçapı";

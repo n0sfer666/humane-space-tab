@@ -51,6 +51,7 @@
 "appearance.delete" = "Eliminar";
 "appearance.full" = "Los %lld perfiles están en uso. Elimina uno para crear otro.";
 "appearance.iconSize" = "Tamaño de los iconos";
+"appearance.iconOpacity" = "Opacidad de los iconos";
 "appearance.ribbonPadding" = "Margen de la franja";
 "appearance.gap" = "Espacio entre iconos";
 "appearance.cornerRadius" = "Radio de las esquinas";

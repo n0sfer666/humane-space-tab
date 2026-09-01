@@ -51,6 +51,7 @@
 "appearance.delete" = "Usuń";
 "appearance.full" = "Wszystkie %lld profile są zajęte. Usuń jeden, aby utworzyć następny.";
 "appearance.iconSize" = "Wielkość ikon";
+"appearance.iconOpacity" = "Krycie ikon";
 "appearance.ribbonPadding" = "Margines paska";
 "appearance.gap" = "Odstęp między ikonami";
 "appearance.cornerRadius" = "Zaokrąglenie rogów";

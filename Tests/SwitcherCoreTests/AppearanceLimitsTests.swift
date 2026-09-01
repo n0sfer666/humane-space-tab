@@ -94,4 +94,15 @@ struct AppearanceLimitsTests {
         #expect(CarouselSetting(slots: 99).slots == CarouselSetting.slotRange.upperBound)
         #expect(CarouselSetting.standard.slots == CarouselWindow.span)
     }
+
+    @Test("the icons can be faded but not made invisible")
+    func iconOpacityIsBounded() {
+        #expect(AppearanceLimits.normalise(Appearance(iconOpacity: 4)).iconOpacity == 1)
+        #expect(
+            AppearanceLimits.normalise(Appearance(iconOpacity: 0)).iconOpacity
+                == AppearanceLimits.iconOpacityRange.lowerBound
+        )
+        #expect(AppearanceLimits.normalise(Appearance(iconOpacity: 0.5)).iconOpacity == 0.5)
+        #expect(Appearance.standard.iconOpacity == AppearanceLimits.iconOpacityRange.upperBound)
+    }
 }

@@ -25,11 +25,17 @@ enum OverlayBackdrop {
         }
     }
 
+    /// The scrim is also how frosted the glass is. Above nothing it is the material the
+    /// system frosts its own panels with; at nothing at all it is the clearest glass macOS
+    /// offers, and the desktop reads straight through the ribbon. That is a look a person can
+    /// spoil, and being able to reach it is the point — the slider does not stop short of it.
+    ///
+    /// Below macOS 26 there is no second material to switch to, so there the scrim only lifts.
     private static func blurred(cornerRadius: CGFloat, scrim: Double, content: NSView) -> NSView {
         if #available(macOS 26.0, *) {
             let glass = NSGlassEffectView()
             glass.cornerRadius = cornerRadius
-            glass.style = .regular
+            glass.style = scrim > 0 ? .regular : .clear
             glass.contentView = scrimmed(content, cornerRadius: cornerRadius, scrim: scrim)
             return glass
         }
