@@ -1,0 +1,87 @@
+"app.name" = "Humane Space Tab";
+
+"menu.grantAccessibility" = "Otwórz Dostępność…";
+"menu.openInputMonitoring" = "Otwórz Monitorowanie wprowadzania…";
+"menu.settings" = "Ustawienia…";
+"menu.copyInventory" = "Kopiuj listę aplikacji i okien";
+"menu.quit" = "Zakończ Humane Space Tab";
+
+"permission.blocked" = "Dostępność jest wyłączona, więc Cmd+Tab nadal należy do macOS.";
+"permission.refused" = "macOS odmówił przechwycenia klawiatury. Pomaga tylko zakończenie i ponowne otwarcie aplikacji.";
+"permission.deaf" = "macOS wstrzymuje naciśnięcia klawiszy. Usuń tę aplikację z Monitorowania wprowadzania.";
+"permission.observing" = "Przełącznik widzi Cmd+Tab, ale nie może go przejąć.";
+
+"settings.title" = "Ustawienia Humane Space Tab";
+"settings.tab.general" = "Ogólne";
+"settings.tab.appearance" = "Wygląd";
+
+"general.applications" = "Aplikacje";
+"general.frontWindows" = "Okna aktywnej aplikacji";
+"general.screen" = "Pokazuj pasek na";
+"general.revealDelay" = "Opóźnienie przed pokazaniem";
+"general.openAtLogin" = "Otwieraj przy logowaniu";
+"general.privateLayer" = "Używaj prywatnej warstwy pulpitów";
+"general.privateLayerNote" = "Prywatna warstwa wie, do którego pulpitu należy zminimalizowane okno, ale nie jest udokumentowana. Wyłączona, aplikacja korzysta tylko z okien na ekranie: to jest udokumentowane, lecz zminimalizowanych okien nie widzi.";
+"general.windowSwitching" = "Przełączaj okna zamiast aplikacji";
+"general.languageSystem" = "Systemowy";
+"general.language" = "Język";
+"general.loginItemPending" = "Czeka na zatwierdzenie w Ustawieniach systemowych › Ogólne › Elementy logowania.";
+"general.loginItemRefused" = "macOS odmówił: %@";
+"screen.focused" = "Ekranie z fokusem klawiatury";
+"screen.pointer" = "Ekranie ze wskaźnikiem";
+
+"shortcut.recording" = "Naciśnij skrót…";
+"shortcut.cancelHint" = "Naciśnij Esc, aby anulować.";
+"shortcut.permission" = "Do nagrania skrótu potrzebna jest Dostępność.";
+"shortcut.grant" = "Otwórz Dostępność…";
+"shortcut.restore" = "Przywróć domyślny";
+"shortcut.unnamedKey" = "Klawisz %lld";
+"reject.noModifier" = "Dodaj ⌘, ⌥ lub ⌃ — pasek pozostaje otwarty, dopóki trzymasz modyfikator.";
+"reject.containsShift" = "Shift jest zarezerwowany: odwraca kierunek wybranego skrótu.";
+"reject.escape" = "Esc zamyka przełącznik i wymusza zakończenie zawieszonej aplikacji. Wybierz inny klawisz.";
+"reject.reserved" = "Ten skrót kończy lub zamyka aplikację. Wybierz inny.";
+"reject.modifierKey" = "Ten klawisz tylko modyfikuje inny. Wybierz klawisz, który naciśniesz, trzymając go.";
+"reject.taken" = "To już jest drugi skrót. Wybierz inny.";
+
+"appearance.profile" = "Profil";
+"appearance.builtIn" = "Domyślny";
+"appearance.name" = "Nazwa";
+"appearance.namePlaceholder" = "Nazwa profilu";
+"appearance.duplicate" = "Powiel";
+"appearance.delete" = "Usuń";
+"appearance.full" = "Wszystkie %lld profile są zajęte. Usuń jeden, aby utworzyć następny.";
+"appearance.iconSize" = "Wielkość ikon";
+"appearance.ribbonPadding" = "Margines paska";
+"appearance.gap" = "Odstęp między ikonami";
+"appearance.cornerRadius" = "Zaokrąglenie rogów";
+"appearance.frameWidth" = "Ramka wokół ikony";
+"appearance.framePadding" = "Margines ramki";
+"appearance.background" = "Tło";
+"appearance.carousel" = "Karuzela";
+"appearance.carouselTurns" = "Obracaj rząd pod zaznaczeniem";
+"appearance.slots" = "Miejsca";
+"appearance.selection" = "Zaznaczenie";
+"appearance.sample" = "Pokaż przykład…";
+
+"background.glass" = "Szkło";
+"background.transparent" = "Przezroczyste";
+"background.solid" = "Kolor tła okna";
+"background.shade" = "Przyciemnienie";
+"background.opacity" = "Krycie";
+
+"selection.native" = "Jak w przełączniku systemowym";
+"selection.enlarged" = "Zaznaczenie rośnie";
+"selection.spotlight" = "Zaznaczenie zostaje samo";
+"selection.framed" = "Zaznaczenie w ramce";
+
+"unit.points" = "pt";
+"unit.percent" = "%";
+"unit.slots" = "miejsc";
+"unit.milliseconds" = "%lld ms";
+
+"preview.count" = "Aplikacji na pulpicie";
+"preview.show" = "Pokaż";
+"preview.done" = "Gotowe";
+"preview.entry" = "Aplikacja %lld";
+
+"ribbon.empty" = "Na tym pulpicie nic nie jest otwarte";

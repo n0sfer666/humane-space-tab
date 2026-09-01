@@ -8,8 +8,8 @@ final class SettingsTabsController: NSTabViewController {
     init(general: NSView, appearance: NSView) {
         super.init(nibName: nil, bundle: nil)
         tabStyle = .toolbar
-        add(general, title: "General", symbol: "gearshape")
-        add(appearance, title: "Appearance", symbol: "paintpalette")
+        add(general, title: Localised.text(.settingsGeneral), symbol: "gearshape")
+        add(appearance, title: Localised.text(.settingsAppearance), symbol: "paintpalette")
     }
 
     @available(*, unavailable)

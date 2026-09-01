@@ -15,10 +15,11 @@ final class MeasureRow: NSView, NSTextFieldDelegate {
 
         var scale: Double { self == .percent ? 100 : 1 }
 
+        @MainActor
         var suffix: String {
             switch self {
-            case .points: "pt"
-            case .percent: "%"
+            case .points: Localised.text(.unitPoints)
+            case .percent: Localised.text(.unitPercent)
             case .slots: "slots"
             }
         }

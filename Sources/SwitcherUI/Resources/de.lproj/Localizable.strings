@@ -1,0 +1,87 @@
+"app.name" = "Humane Space Tab";
+
+"menu.grantAccessibility" = "Bedienungshilfen öffnen…";
+"menu.openInputMonitoring" = "Eingabeüberwachung öffnen…";
+"menu.settings" = "Einstellungen…";
+"menu.copyInventory" = "Liste der Apps und Fenster kopieren";
+"menu.quit" = "Humane Space Tab beenden";
+
+"permission.blocked" = "Die Bedienungshilfen sind aus, deshalb gehört Cmd+Tab weiterhin macOS.";
+"permission.refused" = "macOS hat den Tastatur-Tap abgelehnt. Nur Beenden und erneutes Öffnen der App hilft.";
+"permission.deaf" = "macOS hält Tastendrücke zurück. Entferne diese App aus der Eingabeüberwachung.";
+"permission.observing" = "Der Umschalter sieht Cmd+Tab, kann es aber nicht übernehmen.";
+
+"settings.title" = "Humane Space Tab – Einstellungen";
+"settings.tab.general" = "Allgemein";
+"settings.tab.appearance" = "Erscheinungsbild";
+
+"general.applications" = "Apps";
+"general.frontWindows" = "Fenster der vordersten App";
+"general.screen" = "Leiste zeigen auf";
+"general.revealDelay" = "Verzögerung bis zur Anzeige";
+"general.openAtLogin" = "Beim Anmelden öffnen";
+"general.privateLayer" = "Private Schreibtisch-Ebene verwenden";
+"general.privateLayerNote" = "Die private Ebene weiß, zu welchem Schreibtisch ein minimiertes Fenster gehört, ist aber undokumentiert. Aus verwendet die App nur Fenster auf dem Bildschirm – das ist dokumentiert, übersieht aber minimierte Fenster.";
+"general.windowSwitching" = "Zwischen Fenstern wechseln statt zwischen Apps";
+"general.languageSystem" = "System";
+"general.language" = "Sprache";
+"general.loginItemPending" = "Wartet auf Bestätigung unter Systemeinstellungen › Allgemein › Anmeldeobjekte.";
+"general.loginItemRefused" = "macOS hat abgelehnt: %@";
+"screen.focused" = "dem Bildschirm mit dem Tastaturfokus";
+"screen.pointer" = "dem Bildschirm mit dem Zeiger";
+
+"shortcut.recording" = "Kurzbefehl drücken…";
+"shortcut.cancelHint" = "Mit Escape abbrechen.";
+"shortcut.permission" = "Zum Aufzeichnen eines Kurzbefehls sind die Bedienungshilfen nötig.";
+"shortcut.grant" = "Bedienungshilfen öffnen…";
+"shortcut.restore" = "Standard wiederherstellen";
+"shortcut.unnamedKey" = "Taste %lld";
+"reject.noModifier" = "Füge ⌘, ⌥ oder ⌃ hinzu – die Leiste bleibt offen, solange eine Sondertaste gehalten wird.";
+"reject.containsShift" = "Umschalt ist belegt: Es kehrt die Richtung des gewählten Kurzbefehls um.";
+"reject.escape" = "Escape schließt den Umschalter und beendet hängende Apps. Wähle eine andere Taste.";
+"reject.reserved" = "Dieser Kurzbefehl beendet oder schließt eine App. Wähle einen anderen.";
+"reject.modifierKey" = "Diese Taste verändert immer nur eine andere. Wähle eine Taste, die du dabei drückst.";
+"reject.taken" = "Das ist bereits der andere Kurzbefehl. Wähle einen anderen.";
+
+"appearance.profile" = "Profil";
+"appearance.builtIn" = "Standard";
+"appearance.name" = "Name";
+"appearance.namePlaceholder" = "Profilname";
+"appearance.duplicate" = "Duplizieren";
+"appearance.delete" = "Löschen";
+"appearance.full" = "Alle %lld Profile sind belegt. Lösche eines, um ein neues anzulegen.";
+"appearance.iconSize" = "Symbolgröße";
+"appearance.ribbonPadding" = "Rand der Leiste";
+"appearance.gap" = "Abstand zwischen Symbolen";
+"appearance.cornerRadius" = "Eckenradius";
+"appearance.frameWidth" = "Rahmen um das Symbol";
+"appearance.framePadding" = "Abstand des Rahmens";
+"appearance.background" = "Hintergrund";
+"appearance.carousel" = "Karussell";
+"appearance.carouselTurns" = "Reihe unter der Auswahl drehen";
+"appearance.slots" = "Plätze";
+"appearance.selection" = "Auswahl";
+"appearance.sample" = "Beispiel zeigen…";
+
+"background.glass" = "Glas";
+"background.transparent" = "Transparent";
+"background.solid" = "Fensterhintergrund";
+"background.shade" = "Abdunklung";
+"background.opacity" = "Deckkraft";
+
+"selection.native" = "Wie im System-Umschalter";
+"selection.enlarged" = "Die Auswahl wächst";
+"selection.spotlight" = "Die Auswahl steht allein";
+"selection.framed" = "Die Auswahl bekommt einen Rahmen";
+
+"unit.points" = "pt";
+"unit.percent" = "%";
+"unit.slots" = "Plätze";
+"unit.milliseconds" = "%lld ms";
+
+"preview.count" = "Apps auf dem Schreibtisch";
+"preview.show" = "Zeigen";
+"preview.done" = "Fertig";
+"preview.entry" = "App %lld";
+
+"ribbon.empty" = "Auf diesem Schreibtisch ist nichts geöffnet";

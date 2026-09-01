@@ -14,7 +14,7 @@ struct ShortcutFormatter {
     }
 
     private func key(_ key: KeyCode) -> String {
-        key.glyph ?? naming.name(for: key) ?? "Key \(key.rawValue)"
+        key.glyph ?? naming.name(for: key) ?? Localised.text(.shortcutUnnamedKey, Int(key.rawValue))
     }
 
     /// The system prints modifiers in this order regardless of how they were pressed, and

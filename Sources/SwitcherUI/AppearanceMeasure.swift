@@ -12,14 +12,17 @@ enum AppearanceMeasure: CaseIterable {
     case frameWidth
     case framePadding
 
-    var label: String {
+    @MainActor
+    var label: String { Localised.text(key) }
+
+    private var key: UIText {
         switch self {
-        case .iconSize: "Icon size"
-        case .ribbonPadding: "Ribbon padding"
-        case .gap: "Space between icons"
-        case .cornerRadius: "Corner radius"
-        case .frameWidth: "Frame around the icon"
-        case .framePadding: "Frame padding"
+        case .iconSize: .appearanceIconSize
+        case .ribbonPadding: .appearanceRibbonPadding
+        case .gap: .appearanceGap
+        case .cornerRadius: .appearanceCornerRadius
+        case .frameWidth: .appearanceFrameWidth
+        case .framePadding: .appearanceFramePadding
         }
     }
 

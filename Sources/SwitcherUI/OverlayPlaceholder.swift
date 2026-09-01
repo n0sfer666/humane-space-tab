@@ -5,7 +5,7 @@ import AppKit
 /// switcher the key would otherwise reach.
 @MainActor
 enum OverlayPlaceholder {
-    static let sentence = "Nothing open on this Space"
+    static var sentence: String { Localised.text(.ribbonEmpty) }
 
     static func layout(_ metrics: OverlayMetrics) -> OverlayLayout {
         let padding = metrics.padding(icon: metrics.largestIcon)

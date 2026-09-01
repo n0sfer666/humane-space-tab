@@ -10,7 +10,8 @@ enum MenuBarIcon {
         state.needsAttention ? "exclamationmark.triangle" : "arrow.left.arrow.right"
     }
 
+    @MainActor
     static func image(for state: PermissionState) -> NSImage? {
-        NSImage(systemSymbolName: symbol(for: state), accessibilityDescription: "Humane Space Tab")
+        NSImage(systemSymbolName: symbol(for: state), accessibilityDescription: Localised.text(.appName))
     }
 }

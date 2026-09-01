@@ -1,0 +1,87 @@
+"app.name" = "Humane Space Tab";
+
+"menu.grantAccessibility" = "アクセシビリティを開く…";
+"menu.openInputMonitoring" = "入力監視を開く…";
+"menu.settings" = "設定…";
+"menu.copyInventory" = "Appとウインドウの一覧をコピー";
+"menu.quit" = "Humane Space Tabを終了";
+
+"permission.blocked" = "アクセシビリティがオフのため、Cmd+TabはまだmacOSのものです。";
+"permission.refused" = "macOSがキーボードの横取りを拒否しました。Appを終了して開き直すほかありません。";
+"permission.deaf" = "macOSがキー入力を渡していません。このAppを入力監視から外してください。";
+"permission.observing" = "スイッチャーはCmd+Tabを見ていますが、横取りはできません。";
+
+"settings.title" = "Humane Space Tabの設定";
+"settings.tab.general" = "一般";
+"settings.tab.appearance" = "外観";
+
+"general.applications" = "App";
+"general.frontWindows" = "最前面のAppのウインドウ";
+"general.screen" = "リボンを表示する画面";
+"general.revealDelay" = "表示までの待ち時間";
+"general.openAtLogin" = "ログイン時に開く";
+"general.privateLayer" = "操作スペースの非公開レイヤーを使う";
+"general.privateLayerNote" = "非公開レイヤーは、しまったウインドウがどの操作スペースのものかを知っていますが、仕様は公開されていません。オフにすると画面上のウインドウだけを使います。こちらは公開された方法ですが、しまったウインドウは見えません。";
+"general.windowSwitching" = "Appではなくウインドウを切り替える";
+"general.languageSystem" = "システム";
+"general.language" = "言語";
+"general.loginItemPending" = "システム設定 › 一般 › ログイン項目での承認を待っています。";
+"general.loginItemRefused" = "macOSが拒否しました: %@";
+"screen.focused" = "キーボードフォーカスのある画面";
+"screen.pointer" = "ポインタのある画面";
+
+"shortcut.recording" = "ショートカットを押してください…";
+"shortcut.cancelHint" = "Escキーで取り消します。";
+"shortcut.permission" = "ショートカットの記録にはアクセシビリティが必要です。";
+"shortcut.grant" = "アクセシビリティを開く…";
+"shortcut.restore" = "デフォルトに戻す";
+"shortcut.unnamedKey" = "キー %lld";
+"reject.noModifier" = "⌘、⌥、⌃のいずれかを加えてください。修飾キーを押している間だけリボンは開いたままになります。";
+"reject.containsShift" = "Shiftは予約済みです。選んだショートカットの向きを逆にします。";
+"reject.escape" = "Escはスイッチャーを閉じ、応答しないAppを強制終了します。別のキーを選んでください。";
+"reject.reserved" = "そのショートカットはAppを終了または閉じます。別のものを選んでください。";
+"reject.modifierKey" = "そのキーは他のキーを修飾するだけです。押しながら叩くキーを選んでください。";
+"reject.taken" = "それはもう一方のショートカットです。別のものを選んでください。";
+
+"appearance.profile" = "プロファイル";
+"appearance.builtIn" = "デフォルト";
+"appearance.name" = "名前";
+"appearance.namePlaceholder" = "プロファイル名";
+"appearance.duplicate" = "複製";
+"appearance.delete" = "削除";
+"appearance.full" = "%lld個のプロファイルをすべて使用中です。新しく作るには1つ削除してください。";
+"appearance.iconSize" = "アイコンの大きさ";
+"appearance.ribbonPadding" = "リボンの余白";
+"appearance.gap" = "アイコンの間隔";
+"appearance.cornerRadius" = "角の丸み";
+"appearance.frameWidth" = "アイコンの枠";
+"appearance.framePadding" = "枠の余白";
+"appearance.background" = "背景";
+"appearance.carousel" = "カルーセル";
+"appearance.carouselTurns" = "選択中の下で列を回す";
+"appearance.slots" = "枠の数";
+"appearance.selection" = "選択";
+"appearance.sample" = "サンプルを表示…";
+
+"background.glass" = "ガラス";
+"background.transparent" = "透明";
+"background.solid" = "ウインドウの背景色";
+"background.shade" = "暗さ";
+"background.opacity" = "不透明度";
+
+"selection.native" = "システムのスイッチャーと同じ";
+"selection.enlarged" = "選択中が大きくなる";
+"selection.spotlight" = "選択中だけが際立つ";
+"selection.framed" = "選択中を枠で囲む";
+
+"unit.points" = "pt";
+"unit.percent" = "%";
+"unit.slots" = "個";
+"unit.milliseconds" = "%lld ms";
+
+"preview.count" = "操作スペース上のAppの数";
+"preview.show" = "表示";
+"preview.done" = "完了";
+"preview.entry" = "App %lld";
+
+"ribbon.empty" = "この操作スペースには何も開いていません";

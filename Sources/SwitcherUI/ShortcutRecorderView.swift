@@ -151,12 +151,12 @@ final class ShortcutRecorderView: NSView {
 
     private func show() {
         controls?.show(
-            isRecording ? "Type a shortcut…" : formatter.label(for: shortcut),
+            isRecording ? Localised.text(.shortcutRecording) : formatter.label(for: shortcut),
             restoreEnabled: !isRecording && shortcut != standard
         )
         if !isRecording { controls?.message = "" }
     }
 
-    private static let hint = "Press Escape to cancel."
-    private static let permissionMessage = "Accessibility is required to record a shortcut."
+    private static var hint: String { Localised.text(.shortcutCancelHint) }
+    private static var permissionMessage: String { Localised.text(.shortcutPermission) }
 }

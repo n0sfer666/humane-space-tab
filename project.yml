@@ -33,6 +33,23 @@ targets:
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         CFBundleDisplayName: Humane Space Tab
         CFBundleIconFile: AppIcon
+        CFBundleDevelopmentRegion: en
+        CFBundleLocalizations:
+          - en
+          - ru
+          - de
+          - fr
+          - es
+          - pt-BR
+          - it
+          - nl
+          - pl
+          - tr
+          - uk
+          - ja
+          - ko
+          - zh-Hans
+          - zh-Hant
         LSApplicationCategoryType: public.app-category.utilities
         LSUIElement: true
         LSMinimumSystemVersion: "15.0"

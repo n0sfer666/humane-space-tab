@@ -1,0 +1,87 @@
+"app.name" = "Humane Space Tab";
+
+"menu.grantAccessibility" = "Open Toegankelijkheid…";
+"menu.openInputMonitoring" = "Open Invoerbewaking…";
+"menu.settings" = "Instellingen…";
+"menu.copyInventory" = "Kopieer de lijst met apps en vensters";
+"menu.quit" = "Stop Humane Space Tab";
+
+"permission.blocked" = "Toegankelijkheid staat uit, dus Cmd+Tab blijft van macOS.";
+"permission.refused" = "macOS weigerde de toetsenbordtap. Alleen stoppen en opnieuw openen helpt.";
+"permission.deaf" = "macOS houdt toetsaanslagen tegen. Verwijder deze app uit Invoerbewaking.";
+"permission.observing" = "De wisselaar ziet Cmd+Tab wel, maar kan het niet overnemen.";
+
+"settings.title" = "Instellingen van Humane Space Tab";
+"settings.tab.general" = "Algemeen";
+"settings.tab.appearance" = "Weergave";
+
+"general.applications" = "Apps";
+"general.frontWindows" = "Vensters van de voorste app";
+"general.screen" = "Toon de balk op";
+"general.revealDelay" = "Wachttijd voor de balk verschijnt";
+"general.openAtLogin" = "Open bij inloggen";
+"general.privateLayer" = "Gebruik de privélaag van de bureaubladen";
+"general.privateLayerNote" = "De privélaag weet bij welk bureaublad een geminimaliseerd venster hoort, maar is niet gedocumenteerd. Uit gebruikt de app alleen vensters op het scherm: dat is gedocumenteerd, maar geminimaliseerde vensters blijven onzichtbaar.";
+"general.windowSwitching" = "Wissel tussen vensters in plaats van apps";
+"general.languageSystem" = "Systeem";
+"general.language" = "Taal";
+"general.loginItemPending" = "Wacht op goedkeuring in Systeeminstellingen › Algemeen › Inloggen.";
+"general.loginItemRefused" = "macOS weigerde: %@";
+"screen.focused" = "Scherm met de toetsenbordfocus";
+"screen.pointer" = "Scherm met de aanwijzer";
+
+"shortcut.recording" = "Typ een toetscombinatie…";
+"shortcut.cancelHint" = "Druk op Esc om te annuleren.";
+"shortcut.permission" = "Toegankelijkheid is nodig om een toetscombinatie op te nemen.";
+"shortcut.grant" = "Open Toegankelijkheid…";
+"shortcut.restore" = "Herstel standaardwaarde";
+"shortcut.unnamedKey" = "Toets %lld";
+"reject.noModifier" = "Voeg ⌘, ⌥ of ⌃ toe — de balk blijft open zolang je een modificatietoets vasthoudt.";
+"reject.containsShift" = "Shift is gereserveerd: die keert de richting van je keuze om.";
+"reject.escape" = "Esc sluit de wisselaar en forceert het stoppen van een vastgelopen app. Kies een andere toets.";
+"reject.reserved" = "Die combinatie stopt of sluit een app. Kies een andere.";
+"reject.modifierKey" = "Die toets wijzigt alleen een andere toets. Kies een toets die je erbij indrukt.";
+"reject.taken" = "Dat is al de andere combinatie. Kies een andere.";
+
+"appearance.profile" = "Profiel";
+"appearance.builtIn" = "Standaard";
+"appearance.name" = "Naam";
+"appearance.namePlaceholder" = "Profielnaam";
+"appearance.duplicate" = "Dupliceer";
+"appearance.delete" = "Verwijder";
+"appearance.full" = "Alle %lld profielen zijn in gebruik. Verwijder er een om een nieuw profiel te maken.";
+"appearance.iconSize" = "Symboolgrootte";
+"appearance.ribbonPadding" = "Marge van de balk";
+"appearance.gap" = "Ruimte tussen de symbolen";
+"appearance.cornerRadius" = "Hoekronding";
+"appearance.frameWidth" = "Kader om het symbool";
+"appearance.framePadding" = "Marge van het kader";
+"appearance.background" = "Achtergrond";
+"appearance.carousel" = "Carrousel";
+"appearance.carouselTurns" = "Draai de rij onder de selectie door";
+"appearance.slots" = "Plaatsen";
+"appearance.selection" = "Selectie";
+"appearance.sample" = "Toon een voorbeeld…";
+
+"background.glass" = "Glas";
+"background.transparent" = "Transparant";
+"background.solid" = "Vensterachtergrondkleur";
+"background.shade" = "Verduistering";
+"background.opacity" = "Dekking";
+
+"selection.native" = "Als de wisselaar van het systeem";
+"selection.enlarged" = "De selectie wordt groter";
+"selection.spotlight" = "De selectie staat alleen";
+"selection.framed" = "De selectie krijgt een kader";
+
+"unit.points" = "pt";
+"unit.percent" = "%";
+"unit.slots" = "plaatsen";
+"unit.milliseconds" = "%lld ms";
+
+"preview.count" = "Apps op het bureaublad";
+"preview.show" = "Toon";
+"preview.done" = "Gereed";
+"preview.entry" = "App %lld";
+
+"ribbon.empty" = "Niets geopend op dit bureaublad";

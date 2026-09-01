@@ -28,7 +28,7 @@ public final class LoginItem {
             }
             failure = nil
         } catch {
-            failure = "macOS refused: \(error.localizedDescription)"
+            failure = Localised.text(.loginItemRefused, error.localizedDescription)
             log.record(.loginItemChangeFailed)
         }
     }

@@ -47,6 +47,9 @@ distance for the eye and the list has no ends — past the last application come
 Below five, every icon keeps its place and only the selection moves. The panel stops
 growing at ten slots.
 
+On a Space with nothing open the ribbon still answers, saying that there is nothing there,
+rather than handing the keystroke back to the system switcher.
+
 ## Switching between the windows of one application
 
 Hold **⌘** and tap **`** (the key above Tab). The ribbon lists the windows of the
@@ -78,10 +81,16 @@ Open them from the menu bar icon → **Settings…**.
 | **Applications** | the shortcut that opens the ribbon. Click the field, type the combination, or press **Restore default** for `⌘Tab`. |
 | **Windows of the front app** | the second shortcut, `` ⌘` `` by default. |
 | **Show the ribbon on** | the screen with keyboard focus, or the screen the pointer is on. |
+| **Language** | the language of the interface. **System** follows macOS; the languages the app carries are listed in their own names. Choosing one redraws the window at once. |
 | **Reveal delay** | how long the shortcut must be held before the ribbon appears — 0 to 500 ms. At `0` it appears at once. |
 | **Open at login** | registers the app with macOS as a login item. |
 | **Switch between windows, not applications** | makes `⌘Tab` list windows, the way Windows and Linux do. Off by default: two documents of one editor are then two entries. |
 | **Use the private Space layer** | the private layer knows which Space a minimised window belongs to, but it is undocumented. Off, the app uses on-screen windows only. |
+
+The app carries fifteen languages — English, Russian, German, French, Spanish,
+Portuguese (Brazil), Italian, Dutch, Polish, Turkish, Ukrainian, Japanese, Korean and both
+Chinese scripts — and answers in English for anything else. Labels are quoted in English
+throughout this guide.
 
 A shortcut needs a modifier to hold, and the recorder refuses what the design cannot
 honour — a combination without a modifier, one that already contains **⇧** (that is the

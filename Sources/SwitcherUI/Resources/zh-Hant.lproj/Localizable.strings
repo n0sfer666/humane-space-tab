@@ -1,0 +1,87 @@
+"app.name" = "Humane Space Tab";
+
+"menu.grantAccessibility" = "打開「輔助使用」…";
+"menu.openInputMonitoring" = "打開「輸入監控」…";
+"menu.settings" = "設定…";
+"menu.copyInventory" = "拷貝 App 與視窗列表";
+"menu.quit" = "結束 Humane Space Tab";
+
+"permission.blocked" = "「輔助使用」已關閉，因此 Cmd+Tab 仍歸 macOS 所有。";
+"permission.refused" = "macOS 拒絕了鍵盤攔截。只能結束後重新打開 App。";
+"permission.deaf" = "macOS 扣住了按鍵。請將此 App 從「輸入監控」中移除。";
+"permission.observing" = "切換器看得到 Cmd+Tab，卻無法接手。";
+
+"settings.title" = "Humane Space Tab 設定";
+"settings.tab.general" = "一般";
+"settings.tab.appearance" = "外觀";
+
+"general.applications" = "App";
+"general.frontWindows" = "最前方 App 的視窗";
+"general.screen" = "在此螢幕顯示切換列";
+"general.revealDelay" = "顯示前的延遲";
+"general.openAtLogin" = "登入時打開";
+"general.privateLayer" = "使用桌面的私有圖層";
+"general.privateLayerNote" = "私有圖層知道縮到最小的視窗屬於哪個桌面，但沒有公開文件。關閉後，App 只會使用螢幕上的視窗：這是有文件的做法，卻看不到縮到最小的視窗。";
+"general.windowSwitching" = "在視窗之間切換，而不是在 App 之間";
+"general.languageSystem" = "跟隨系統";
+"general.language" = "語言";
+"general.loginItemPending" = "正在等待「系統設定 › 一般 › 登入項目」中的核准。";
+"general.loginItemRefused" = "macOS 拒絕了：%@";
+"screen.focused" = "具有鍵盤焦點的螢幕";
+"screen.pointer" = "指標所在的螢幕";
+
+"shortcut.recording" = "請按下快速鍵…";
+"shortcut.cancelHint" = "按 Esc 取消。";
+"shortcut.permission" = "錄製快速鍵需要「輔助使用」。";
+"shortcut.grant" = "打開「輔助使用」…";
+"shortcut.restore" = "回復預設值";
+"shortcut.unnamedKey" = "按鍵 %lld";
+"reject.noModifier" = "請加上 ⌘、⌥ 或 ⌃ —— 按住輔助鍵時切換列才會保持打開。";
+"reject.containsShift" = "Shift 已保留：它會把所選快速鍵的方向反過來。";
+"reject.escape" = "Esc 會關閉切換器並強制結束卡住的 App。請另選一個按鍵。";
+"reject.reserved" = "該快速鍵會結束或關閉 App。請另選一個。";
+"reject.modifierKey" = "該按鍵只能輔助其他按鍵。請選擇按住它時要敲的按鍵。";
+"reject.taken" = "這已經是另一個快速鍵了。請另選一個。";
+
+"appearance.profile" = "設定檔";
+"appearance.builtIn" = "預設";
+"appearance.name" = "名稱";
+"appearance.namePlaceholder" = "設定檔名稱";
+"appearance.duplicate" = "拷貝";
+"appearance.delete" = "刪除";
+"appearance.full" = "%lld 個設定檔已全部使用。刪除一個才能再建立。";
+"appearance.iconSize" = "圖像大小";
+"appearance.ribbonPadding" = "切換列邊界";
+"appearance.gap" = "圖像之間的間距";
+"appearance.cornerRadius" = "圓角半徑";
+"appearance.frameWidth" = "圖像外框";
+"appearance.framePadding" = "外框邊界";
+"appearance.background" = "背景";
+"appearance.carousel" = "輪播";
+"appearance.carouselTurns" = "讓整排在所選項目下方轉動";
+"appearance.slots" = "格數";
+"appearance.selection" = "所選項目";
+"appearance.sample" = "查看範例…";
+
+"background.glass" = "玻璃";
+"background.transparent" = "透明";
+"background.solid" = "視窗背景顏色";
+"background.shade" = "暗度";
+"background.opacity" = "不透明度";
+
+"selection.native" = "與系統切換器相同";
+"selection.enlarged" = "所選項目放大";
+"selection.spotlight" = "所選項目獨自突顯";
+"selection.framed" = "所選項目加上外框";
+
+"unit.points" = "pt";
+"unit.percent" = "%";
+"unit.slots" = "格";
+"unit.milliseconds" = "%lld 毫秒";
+
+"preview.count" = "桌面上的 App 數量";
+"preview.show" = "顯示";
+"preview.done" = "完成";
+"preview.entry" = "App %lld";
+
+"ribbon.empty" = "此桌面上沒有打開的 App";

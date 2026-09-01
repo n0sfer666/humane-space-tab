@@ -11,6 +11,7 @@ public final class MenuBarController {
     private let openInputMonitoring: @MainActor () -> Void
     private let copyInventory: @MainActor () -> Void
     private let quit: @MainActor () -> Void
+    private var state: PermissionState = .intercepting
 
     public init(
         log: any LogSink,
@@ -35,10 +36,18 @@ public final class MenuBarController {
     /// The icon carries the state, because a menu bar app that quietly does nothing looks
     /// exactly like one that works.
     public func show(_ state: PermissionState) {
+        self.state = state
         let image = MenuBarIcon.image(for: state)
         statusItem.button?.image = image
         statusItem.button?.title = image == nil ? MenuBarIcon.fallback : ""
         statusItem.menu.map { menu in Self.showPermission(state, in: menu, target: self) }
+    }
+
+    /// The menu is built with the words of one language, so a change of language rebuilds
+    /// it rather than editing the titles in place (S19).
+    public func relabel() {
+        statusItem.menu = Self.makeMenu(target: self)
+        show(state)
     }
 
     var itemTitles: [String] {
@@ -47,21 +56,27 @@ public final class MenuBarController {
 
     private static func showPermission(_ state: PermissionState, in menu: NSMenu, target: MenuBarController) {
         for item in menu.items where item.tag == permissionTag { menu.removeItem(item) }
-        guard let detail = state.detail else { return }
+        guard let key = PermissionMessage.key(for: state) else { return }
+        let detail = Localised.text(key)
         let explanation = NSMenuItem(title: detail, action: nil, keyEquivalent: "")
         explanation.isEnabled = false
         explanation.tag = permissionTag
         menu.insertItem(explanation, at: 0)
         var next = 1
         if state.offersGrant {
-            let grant = item(title: "Grant Accessibility…", action: #selector(grantSelected), key: "", target: target)
+            let grant = item(
+                title: Localised.text(.menuGrantAccessibility),
+                action: #selector(grantSelected),
+                key: "",
+                target: target
+            )
             grant.tag = permissionTag
             menu.insertItem(grant, at: next)
             next += 1
         }
         if state.offersInputMonitoring {
             let pane = item(
-                title: "Open Input Monitoring…",
+                title: Localised.text(.menuOpenInputMonitoring),
                 action: #selector(inputMonitoringSelected),
                 key: "",
                 target: target
@@ -79,10 +94,17 @@ public final class MenuBarController {
 
     private static func makeMenu(target: MenuBarController) -> NSMenu {
         let menu = NSMenu()
-        menu.addItem(item(title: "Settings…", action: #selector(settingsSelected), key: ",", target: target))
-        menu.addItem(item(title: "Copy Inventory", action: #selector(copyInventorySelected), key: "c", target: target))
+        menu.addItem(
+            item(title: Localised.text(.menuSettings), action: #selector(settingsSelected), key: ",", target: target))
+        menu.addItem(
+            item(
+                title: Localised.text(.menuCopyInventory),
+                action: #selector(copyInventorySelected),
+                key: "c",
+                target: target
+            ))
         menu.addItem(.separator())
-        menu.addItem(item(title: "Quit Humane Space Tab", action: #selector(quitSelected), key: "q", target: target))
+        menu.addItem(item(title: Localised.text(.menuQuit), action: #selector(quitSelected), key: "q", target: target))
         return menu
     }
 

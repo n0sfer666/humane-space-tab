@@ -7,7 +7,7 @@ enum RibbonPreviewLayout {
     static let stage = CGSize(width: 760, height: 260)
 
     static func make(counts: NSPopUpButton, start: NSButton, preview: NSView, done: NSButton) -> NSView {
-        let question = NSStackView(views: [NSTextField(labelWithString: "Applications on the Space"), counts, start])
+        let question = NSStackView(views: [NSTextField(labelWithString: Localised.text(.previewCount)), counts, start])
         question.spacing = 10
         let footer = NSStackView(views: [NSView(), done])
         footer.distribution = .fill

@@ -1,0 +1,87 @@
+"app.name" = "Humane Space Tab";
+
+"menu.grantAccessibility" = "Abrir Acessibilidade…";
+"menu.openInputMonitoring" = "Abrir Monitoramento de Entrada…";
+"menu.settings" = "Ajustes…";
+"menu.copyInventory" = "Copiar a lista de apps e janelas";
+"menu.quit" = "Encerrar o Humane Space Tab";
+
+"permission.blocked" = "A Acessibilidade está desativada, então o Cmd+Tab continua sendo do macOS.";
+"permission.refused" = "O macOS recusou a captura do teclado. Só encerrar e abrir o app de novo resolve.";
+"permission.deaf" = "O macOS está retendo as teclas. Remova este app do Monitoramento de Entrada.";
+"permission.observing" = "O alternador enxerga o Cmd+Tab, mas não consegue assumi-lo.";
+
+"settings.title" = "Ajustes do Humane Space Tab";
+"settings.tab.general" = "Geral";
+"settings.tab.appearance" = "Aparência";
+
+"general.applications" = "Apps";
+"general.frontWindows" = "Janelas do app em primeiro plano";
+"general.screen" = "Mostrar a faixa em";
+"general.revealDelay" = "Espera antes de aparecer";
+"general.openAtLogin" = "Abrir ao iniciar a sessão";
+"general.privateLayer" = "Usar a camada privada das áreas de trabalho";
+"general.privateLayerNote" = "A camada privada sabe a qual área de trabalho pertence uma janela minimizada, mas não é documentada. Desligada, o app usa só as janelas na tela: isso é documentado, porém não enxerga as minimizadas.";
+"general.windowSwitching" = "Alternar entre janelas, e não entre apps";
+"general.languageSystem" = "Sistema";
+"general.language" = "Idioma";
+"general.loginItemPending" = "Aguardando aprovação em Ajustes do Sistema › Geral › Itens de Início.";
+"general.loginItemRefused" = "O macOS recusou: %@";
+"screen.focused" = "Tela com o foco do teclado";
+"screen.pointer" = "Tela onde está o cursor";
+
+"shortcut.recording" = "Digite um atalho…";
+"shortcut.cancelHint" = "Pressione Esc para cancelar.";
+"shortcut.permission" = "É preciso Acessibilidade para gravar um atalho.";
+"shortcut.grant" = "Abrir Acessibilidade…";
+"shortcut.restore" = "Restaurar o padrão";
+"shortcut.unnamedKey" = "Tecla %lld";
+"reject.noModifier" = "Acrescente ⌘, ⌥ ou ⌃ — a faixa fica aberta enquanto um modificador estiver pressionado.";
+"reject.containsShift" = "Shift é reservado: ele inverte o sentido do atalho escolhido.";
+"reject.escape" = "Esc fecha o alternador e força o encerramento de um app travado. Escolha outra tecla.";
+"reject.reserved" = "Esse atalho encerra ou fecha um app. Escolha outro.";
+"reject.modifierKey" = "Essa tecla só modifica outra. Escolha a tecla que você vai tocar enquanto a segura.";
+"reject.taken" = "Esse já é o outro atalho. Escolha um diferente.";
+
+"appearance.profile" = "Perfil";
+"appearance.builtIn" = "Padrão";
+"appearance.name" = "Nome";
+"appearance.namePlaceholder" = "Nome do perfil";
+"appearance.duplicate" = "Duplicar";
+"appearance.delete" = "Apagar";
+"appearance.full" = "Os %lld perfis estão em uso. Apague um para criar outro.";
+"appearance.iconSize" = "Tamanho dos ícones";
+"appearance.ribbonPadding" = "Margem da faixa";
+"appearance.gap" = "Espaço entre os ícones";
+"appearance.cornerRadius" = "Raio dos cantos";
+"appearance.frameWidth" = "Moldura ao redor do ícone";
+"appearance.framePadding" = "Margem da moldura";
+"appearance.background" = "Fundo";
+"appearance.carousel" = "Carrossel";
+"appearance.carouselTurns" = "Girar a fileira sob a seleção";
+"appearance.slots" = "Posições";
+"appearance.selection" = "Seleção";
+"appearance.sample" = "Mostrar um exemplo…";
+
+"background.glass" = "Vidro";
+"background.transparent" = "Transparente";
+"background.solid" = "Cor de fundo da janela";
+"background.shade" = "Escurecimento";
+"background.opacity" = "Opacidade";
+
+"selection.native" = "Como o alternador do sistema";
+"selection.enlarged" = "A seleção cresce";
+"selection.spotlight" = "A seleção fica sozinha em destaque";
+"selection.framed" = "A seleção ganha moldura";
+
+"unit.points" = "pt";
+"unit.percent" = "%";
+"unit.slots" = "posições";
+"unit.milliseconds" = "%lld ms";
+
+"preview.count" = "Apps na área de trabalho";
+"preview.show" = "Mostrar";
+"preview.done" = "OK";
+"preview.entry" = "App %lld";
+
+"ribbon.empty" = "Nada aberto nesta área de trabalho";

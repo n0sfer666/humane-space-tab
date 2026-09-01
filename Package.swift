@@ -4,6 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "HumaneSpaceTab",
+    defaultLocalization: "en",
     platforms: [.macOS(.v15)],
     products: [
         .library(name: "SwitcherCore", targets: ["SwitcherCore"]),
@@ -15,7 +16,11 @@ let package = Package(
         .target(name: "SwitcherCore"),
         .target(name: "SystemPorts", dependencies: ["SwitcherCore"]),
         .target(name: "SystemAdapters", dependencies: ["SystemPorts"]),
-        .target(name: "SwitcherUI", dependencies: ["SwitcherCore", "SystemPorts"]),
+        .target(
+            name: "SwitcherUI",
+            dependencies: ["SwitcherCore", "SystemPorts"],
+            resources: [.process("Resources")]
+        ),
         .testTarget(name: "SwitcherCoreTests", dependencies: ["SwitcherCore"]),
         .testTarget(
             name: "SystemAdaptersTests",

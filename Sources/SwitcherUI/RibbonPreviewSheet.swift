@@ -8,7 +8,7 @@ import SwitcherCore
 final class RibbonPreviewSheet: NSViewController {
     private let center: AppearanceCenter
     private let counts = NSPopUpButton(frame: .zero, pullsDown: false)
-    private let start = NSButton(title: "Show", target: nil, action: nil)
+    private let start = NSButton(title: Localised.text(.previewShow), target: nil, action: nil)
     private let preview: RibbonPreviewView
     private var run: RibbonPreviewRun?
     private var ticker: Timer?
@@ -76,7 +76,7 @@ final class RibbonPreviewSheet: NSViewController {
     }
 
     private func done() -> NSButton {
-        let button = NSButton(title: "Done", target: self, action: #selector(pressedDone))
+        let button = NSButton(title: Localised.text(.previewDone), target: self, action: #selector(pressedDone))
         button.bezelStyle = .rounded
         button.keyEquivalent = "\u{1b}"
         return button

@@ -1,0 +1,87 @@
+"app.name" = "Humane Space Tab";
+
+"menu.grantAccessibility" = "Apri Accessibilità…";
+"menu.openInputMonitoring" = "Apri Monitoraggio ingresso…";
+"menu.settings" = "Impostazioni…";
+"menu.copyInventory" = "Copia l’elenco di app e finestre";
+"menu.quit" = "Esci da Humane Space Tab";
+
+"permission.blocked" = "L’Accessibilità è disattivata, quindi Cmd+Tab resta a macOS.";
+"permission.refused" = "macOS ha rifiutato l’intercettazione della tastiera. L’unico rimedio è chiudere e riaprire l’app.";
+"permission.deaf" = "macOS trattiene i tasti premuti. Rimuovi questa app da Monitoraggio ingresso.";
+"permission.observing" = "Il selettore vede Cmd+Tab ma non può prenderne il controllo.";
+
+"settings.title" = "Impostazioni di Humane Space Tab";
+"settings.tab.general" = "Generali";
+"settings.tab.appearance" = "Aspetto";
+
+"general.applications" = "App";
+"general.frontWindows" = "Finestre dell’app in primo piano";
+"general.screen" = "Mostra la striscia su";
+"general.revealDelay" = "Attesa prima di mostrarla";
+"general.openAtLogin" = "Apri al login";
+"general.privateLayer" = "Usa il livello privato delle scrivanie";
+"general.privateLayerNote" = "Il livello privato sa a quale scrivania appartiene una finestra ridotta a icona, ma non è documentato. Disattivato, l’app usa solo le finestre a schermo: è documentato, però non vede quelle ridotte a icona.";
+"general.windowSwitching" = "Passa tra finestre, non tra app";
+"general.languageSystem" = "Sistema";
+"general.language" = "Lingua";
+"general.loginItemPending" = "In attesa di approvazione in Impostazioni di Sistema › Generali › Elementi login.";
+"general.loginItemRefused" = "macOS ha rifiutato: %@";
+"screen.focused" = "Schermo con il fuoco della tastiera";
+"screen.pointer" = "Schermo con il puntatore";
+
+"shortcut.recording" = "Premi una combinazione…";
+"shortcut.cancelHint" = "Premi Esc per annullare.";
+"shortcut.permission" = "Per registrare una combinazione serve l’Accessibilità.";
+"shortcut.grant" = "Apri Accessibilità…";
+"shortcut.restore" = "Ripristina il valore di default";
+"shortcut.unnamedKey" = "Tasto %lld";
+"reject.noModifier" = "Aggiungi ⌘, ⌥ o ⌃: la striscia resta aperta finché tieni premuto un modificatore.";
+"reject.containsShift" = "Maiuscole è riservato: inverte il verso della combinazione scelta.";
+"reject.escape" = "Esc chiude il selettore e forza la chiusura di un’app bloccata. Scegli un altro tasto.";
+"reject.reserved" = "Quella combinazione chiude o fa uscire un’app. Scegline un’altra.";
+"reject.modifierKey" = "Quel tasto modifica soltanto un altro. Scegli il tasto da premere mentre lo tieni.";
+"reject.taken" = "Quella è già l’altra combinazione. Scegline una diversa.";
+
+"appearance.profile" = "Profilo";
+"appearance.builtIn" = "Default";
+"appearance.name" = "Nome";
+"appearance.namePlaceholder" = "Nome del profilo";
+"appearance.duplicate" = "Duplica";
+"appearance.delete" = "Elimina";
+"appearance.full" = "Tutti e %lld i profili sono in uso. Eliminane uno per crearne un altro.";
+"appearance.iconSize" = "Dimensione delle icone";
+"appearance.ribbonPadding" = "Margine della striscia";
+"appearance.gap" = "Spazio tra le icone";
+"appearance.cornerRadius" = "Raggio degli angoli";
+"appearance.frameWidth" = "Cornice attorno all’icona";
+"appearance.framePadding" = "Margine della cornice";
+"appearance.background" = "Sfondo";
+"appearance.carousel" = "Carosello";
+"appearance.carouselTurns" = "Fai scorrere la fila sotto la selezione";
+"appearance.slots" = "Posti";
+"appearance.selection" = "Selezione";
+"appearance.sample" = "Mostra un esempio…";
+
+"background.glass" = "Vetro";
+"background.transparent" = "Trasparente";
+"background.solid" = "Colore di sfondo della finestra";
+"background.shade" = "Oscuramento";
+"background.opacity" = "Opacità";
+
+"selection.native" = "Come il selettore di sistema";
+"selection.enlarged" = "La selezione si ingrandisce";
+"selection.spotlight" = "La selezione resta sola in evidenza";
+"selection.framed" = "La selezione viene incorniciata";
+
+"unit.points" = "pt";
+"unit.percent" = "%";
+"unit.slots" = "posti";
+"unit.milliseconds" = "%lld ms";
+
+"preview.count" = "App sulla scrivania";
+"preview.show" = "Mostra";
+"preview.done" = "Fine";
+"preview.entry" = "App %lld";
+
+"ribbon.empty" = "Su questa scrivania non c’è niente di aperto";
