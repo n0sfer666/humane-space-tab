@@ -15,21 +15,32 @@ public final class OverlayWindowSurface: OverlaySurface {
     }
 
     private let metrics: OverlayMetrics
-    private let panel: NSPanel
     private let content: OverlayContentView
+    private(set) var panel: NSPanel
     private var placement: Placement?
 
     public init(icons: any ApplicationIconSource, metrics: OverlayMetrics = OverlayMetrics()) {
         self.metrics = metrics
         content = OverlayContentView(icons: icons, metrics: metrics)
-        panel = Self.makePanel()
-        panel.contentView = OverlayBackdrop.make(cornerRadius: metrics.cornerRadius, content: content)
+        panel = Self.makePanel(around: content, cornerRadius: metrics.cornerRadius)
     }
 
     public func show(_ model: OverlayModel) {
         content.beginSession()
+        renew()
         guard place(model) else { return }
         panel.orderFrontRegardless()
+    }
+
+    /// The window server settles which Spaces a window belongs to when it registers it, and a
+    /// panel that has been up for hours can end up belonging to none of the Spaces in use: the
+    /// session opens, the gesture works, and there is nothing on screen to see it by. Every
+    /// session brings its own window, so membership is decided the moment the ribbon is needed.
+    private func renew() {
+        let previous = panel
+        panel = Self.makePanel(around: content, cornerRadius: metrics.cornerRadius)
+        previous.orderOut(nil)
+        previous.close()
     }
 
     public func update(_ model: OverlayModel) {
@@ -77,7 +88,7 @@ public final class OverlayWindowSurface: OverlaySurface {
         return layout
     }
 
-    private static func makePanel() -> NSPanel {
+    private static func makePanel(around content: NSView, cornerRadius: CGFloat) -> NSPanel {
         let panel = NSPanel(
             contentRect: CGRect(x: 0, y: 0, width: 100, height: 100),
             styleMask: [.nonactivatingPanel, .borderless],
@@ -93,6 +104,7 @@ public final class OverlayWindowSurface: OverlaySurface {
         panel.acceptsMouseMovedEvents = true
         panel.hidesOnDeactivate = false
         panel.isReleasedWhenClosed = false
+        panel.contentView = OverlayBackdrop.make(cornerRadius: cornerRadius, content: content)
         return panel
     }
 }
