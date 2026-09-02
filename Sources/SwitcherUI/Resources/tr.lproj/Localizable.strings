@@ -9,6 +9,8 @@
 "permission.blocked" = "Erişilebilirlik kapalı, bu yüzden Cmd+Tab hâlâ macOS’un.";
 "permission.refused" = "macOS klavye dinlemesini reddetti. Tek çözüm uygulamadan çıkıp yeniden açmak.";
 "permission.deaf" = "macOS tuş vuruşlarını tutuyor. Bu uygulamayı Girdi İzleme listesinden çıkar.";
+"permission.secured" = "“%@” tuş vuruşlarını tutuyor. Ekranı kilitle ve kilidini yeniden aç.";
+"permission.securedUnnamed" = "Bir şey tuş vuruşlarını tutuyor. Ekranı kilitle ve kilidini yeniden aç.";
 "permission.observing" = "Değiştirici Cmd+Tab’i görüyor ama devralamıyor.";
 
 "settings.title" = "Humane Space Tab Ayarları";

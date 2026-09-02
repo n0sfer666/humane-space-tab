@@ -6,11 +6,15 @@ public final class PermissionCenter {
     private let authority: any AccessibilityAuthority
     private let engine: any HotkeyEngine
     private let delivery: any KeyEventDelivery
+    private let secureInput: any SecureInputMonitor
     private let log: any LogSink
+    private let now: @MainActor () -> Double
     private let poll: @MainActor (@escaping @MainActor () -> Void) -> Void
     private var observers: [@MainActor (PermissionState) -> Void] = []
+    private var watch = SecureInputWatch()
     private var asked = false
     private var isSuspended = false
+    private var isPolling = false
 
     public private(set) var state: PermissionState = .blocked(canAsk: true)
 
@@ -18,13 +22,17 @@ public final class PermissionCenter {
         authority: any AccessibilityAuthority,
         engine: any HotkeyEngine,
         delivery: any KeyEventDelivery,
+        secureInput: any SecureInputMonitor,
         log: any LogSink,
+        now: @escaping @MainActor () -> Double,
         poll: @escaping @MainActor (@escaping @MainActor () -> Void) -> Void
     ) {
         self.authority = authority
         self.engine = engine
         self.delivery = delivery
+        self.secureInput = secureInput
         self.log = log
+        self.now = now
         self.poll = poll
     }
 
@@ -35,7 +43,9 @@ public final class PermissionCenter {
 
     public func start() {
         _ = engine.start()
+        sample()
         publish()
+        armPoll()
     }
 
     /// Called when the app becomes active: a permission revoked in System Settings shows up
@@ -87,21 +97,45 @@ public final class PermissionCenter {
         let next = PermissionState(
             isTrusted: authority.isTrusted,
             tap: engine.tap,
-            deliversKeys: delivery.deliversKeyEvents
+            deliversKeys: delivery.deliversKeyEvents,
+            secureInput: watch.settled
         )
         if next != state {
             state = next
             for observer in observers { observer(next) }
             log.record(LogEvent(permission: next))
         }
-        armPollIfBlocked()
     }
 
-    /// The timer exists only while the permission is missing: an observing tap is caused by
-    /// secure input, and rebuilding it every two seconds would cost open sessions for nothing.
-    private func armPollIfBlocked() {
-        guard !authority.isTrusted else { return }
-        poll { [weak self] in self?.refresh() }
+    private func sample() {
+        watch.observe(secureInput.holder, at: now())
+    }
+
+    /// The timer runs for as long as the app does, because the two things it watches are
+    /// both invisible from anywhere else: a permission granted in System Settings, and
+    /// secure input, which macOS starts and ends without telling anyone. It rebuilds
+    /// nothing — a deaf tap rebuilt every two seconds would cost open sessions for
+    /// nothing — so once there is a tap the tick only looks and reports.
+    private func armPoll() {
+        guard !isPolling else { return }
+        isPolling = true
+        poll { [weak self] in self?.tick() }
+    }
+
+    private func tick() {
+        isPolling = false
+        defer { armPoll() }
+        guard !isSuspended else { return }
+        sample()
+        if authority.isTrusted, hasTap {
+            publish()
+        } else {
+            refresh()
+        }
+    }
+
+    private var hasTap: Bool {
+        if case .blocked = state { false } else { true }
     }
 }
 

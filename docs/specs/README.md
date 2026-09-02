@@ -32,7 +32,8 @@ New specs start from [`TEMPLATE.md`](TEMPLATE.md).
 | S17 | [Appearance & profiles](S17-appearance-profiles.md) | The ribbon's looks, bounded and named: metrics, background, carousel, presets, profiles | agreed |
 | S18 | [The empty Space](S18-empty-space.md) | What the ribbon says on a Space with nothing open, instead of macOS's own switcher | agreed |
 | S19 | [Languages](S19-languages.md) | The interface in the language the system is set to, translated from a glossary rather than word by word | agreed |
-| S20+ | Beyond the ribbon | Mission Control, App Exposé, hide/minimise — one spec per gesture | planned |
+| S20 | [Secure input](S20-secure-input.md) | Noticing that macOS is holding every key press, naming the process behind it, and saying what ends it | agreed |
+| S21+ | Beyond the ribbon | Mission Control, App Exposé, hide/minimise — one spec per gesture | planned |
 
 S00–S06 are close to pure logic and are covered by automated tests. S07 onwards
 needs verification on a real machine; each such spec carries a manual runbook.

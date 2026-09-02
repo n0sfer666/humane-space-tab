@@ -35,6 +35,14 @@ struct MenuBarControllerTests {
         #expect(titles.first == "Settings…")
     }
 
+    @Test("a held session explains itself and offers neither the grant nor the pane")
+    func securedExplainsItself() {
+        let titles = titles(for: .secured(by: "Ghostty"))
+        #expect(titles.first?.contains("Ghostty") == true)
+        #expect(titles.contains("Grant Accessibility…") == false)
+        #expect(titles.contains("Open Input Monitoring…") == false)
+    }
+
     @Test("a missing permission offers the grant and not the pane")
     func blockedOffersTheGrant() {
         let titles = titles(for: .blocked(canAsk: true))

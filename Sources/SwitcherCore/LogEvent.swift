@@ -9,6 +9,7 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
     case accessibilityRequested
     case accessibilityBlocked
     case accessibilityDeaf
+    case accessibilitySecured
     case accessibilityObservingOnly
     case accessibilityIntercepting
     case inventoryCopiedToPasteboard
@@ -50,6 +51,7 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
         switch permission {
         case .blocked: self = .accessibilityBlocked
         case .deaf: self = .accessibilityDeaf
+        case .secured: self = .accessibilitySecured
         case .observing: self = .accessibilityObservingOnly
         case .intercepting: self = .accessibilityIntercepting
         }
@@ -75,7 +77,8 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
             .lifecycle
         case .menuBarItemInstalled, .quitRequestedFromMenu, .inventoryCopiedToPasteboard,
             .settingsOpenedFromMenu, .preferencesChanged, .loginItemChangeFailed,
-            .accessibilityRequested, .accessibilityBlocked, .accessibilityDeaf, .accessibilityObservingOnly,
+            .accessibilityRequested, .accessibilityBlocked, .accessibilityDeaf, .accessibilitySecured,
+            .accessibilityObservingOnly,
             .accessibilityIntercepting:
             .ui
         case .hotkeyTapStarted, .hotkeyTapStopped, .hotkeyTapUnavailable, .hotkeyTapReenabled,
@@ -102,6 +105,7 @@ public enum LogEvent: CaseIterable, Hashable, Sendable {
         case .accessibilityRequested: "accessibility requested"
         case .accessibilityBlocked: "accessibility is missing, the switcher is idle"
         case .accessibilityDeaf: "the tap receives no key presses, input monitoring is refusing them"
+        case .accessibilitySecured: "secure input is held, so the window server hands the tap no key presses"
         case .accessibilityObservingOnly: "the tap can observe but not intercept"
         case .accessibilityIntercepting: "the switcher is intercepting the shortcut"
         case .inventoryCopiedToPasteboard: "inventory summary copied to the pasteboard"

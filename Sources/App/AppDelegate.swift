@@ -76,12 +76,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             authority: AXAccessibilityAuthority(),
             engine: hotkeys,
             delivery: CGEventTapKeyDelivery(),
-            log: log
-        ) { work in
-            DispatchQueue.main.asyncAfter(deadline: .now() + Self.trustPollInterval) {
-                MainActor.assumeIsolated(work)
+            secureInput: CGSessionSecureInput(),
+            log: log,
+            now: { Date.timeIntervalSinceReferenceDate },
+            poll: { work in
+                DispatchQueue.main.asyncAfter(deadline: .now() + Self.pollInterval) {
+                    MainActor.assumeIsolated(work)
+                }
             }
-        }
+        )
         self.permissions = permissions
         menuBar = MenuBarController(
             log: log,
@@ -107,7 +110,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
 
-    private static let trustPollInterval: TimeInterval = 2
+    private static let pollInterval: TimeInterval = 2
 
     private func makeHotkeys() -> InterceptingHotkeyEngine {
         InterceptingHotkeyEngine(log: log) { [log, runtime, preferences] mode in

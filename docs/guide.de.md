@@ -150,6 +150,12 @@ sie in **Systemeinstellungen → Datenschutz & Sicherheit → Eingabeüberwachun
 den Eintrag mit **−** — die App braucht die Berechtigung nicht, nur das Fehlen eines
 Verbots — und klicke zurück in die App; der Tap wird ohne Neustart neu aufgebaut.
 
+**Das Menü nennt eine App, die die Tastendrücke zurückhält.** Solange ein Passwortfeld den
+Fokus hat, schaltet macOS die *sichere Eingabe* ein, und dann bekommt keine App die
+Tastendrücke — diese eingeschlossen. Normalerweise endet das mit dem Feld; hält es länger an,
+hat eine App es liegen lassen. Der Name ist der, dem macOS es zuschreibt; sperre den
+Bildschirm und hebe die Sperre wieder auf, dann ist es weg.
+
 **`⌘Tab` ist immer noch der System-Umschalter.** Die Berechtigung fehlt oder gehört zur
 vorherigen Version. Nimm **Bedienungshilfen öffnen…**, und falls die Liste schon einen
 Eintrag hat, entferne ihn mit **−** und erteile sie erneut.

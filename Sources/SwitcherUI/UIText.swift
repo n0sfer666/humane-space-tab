@@ -13,6 +13,8 @@ public enum UIText: String, CaseIterable, Sendable {
     case permissionBlocked = "permission.blocked"
     case permissionRefused = "permission.refused"
     case permissionDeaf = "permission.deaf"
+    case permissionSecured = "permission.secured"
+    case permissionSecuredUnnamed = "permission.securedUnnamed"
     case permissionObserving = "permission.observing"
 
     case settingsTitle = "settings.title"

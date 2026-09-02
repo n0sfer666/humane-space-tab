@@ -9,6 +9,8 @@
 "permission.blocked" = "La Accesibilidad está desactivada, así que Cmd+Tab sigue siendo de macOS.";
 "permission.refused" = "macOS rechazó la captura del teclado. Lo único que lo arregla es salir y volver a abrir la app.";
 "permission.deaf" = "macOS está reteniendo las pulsaciones. Quita esta app de Monitorización de entrada.";
+"permission.secured" = "«%@» está reteniendo las pulsaciones. Bloquea la pantalla y desbloquéala para liberarlas.";
+"permission.securedUnnamed" = "Algo está reteniendo las pulsaciones. Bloquea la pantalla y desbloquéala para liberarlas.";
 "permission.observing" = "El selector ve Cmd+Tab, pero no puede tomarlo.";
 
 "settings.title" = "Ajustes de Humane Space Tab";

@@ -9,6 +9,8 @@
 "permission.blocked" = "Die Bedienungshilfen sind aus, deshalb gehört Cmd+Tab weiterhin macOS.";
 "permission.refused" = "macOS hat den Tastatur-Tap abgelehnt. Nur Beenden und erneutes Öffnen der App hilft.";
 "permission.deaf" = "macOS hält Tastendrücke zurück. Entferne diese App aus der Eingabeüberwachung.";
+"permission.secured" = "„%@“ hält die Tastendrücke zurück. Sperre den Bildschirm und hebe die Sperre wieder auf.";
+"permission.securedUnnamed" = "Etwas hält die Tastendrücke zurück. Sperre den Bildschirm und hebe die Sperre wieder auf.";
 "permission.observing" = "Der Umschalter sieht Cmd+Tab, kann es aber nicht übernehmen.";
 
 "settings.title" = "Humane Space Tab – Einstellungen";

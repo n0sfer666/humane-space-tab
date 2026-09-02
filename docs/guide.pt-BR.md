@@ -145,6 +145,11 @@ uma segunda abertura mostra os ajustes, não uma segunda cópia.
 entrada com **−** — o app não precisa da permissão, só da ausência de uma recusa — e clique
 de volta no app; a captura é refeita sem reabrir nada.
 
+**O menu nomeia um app que está retendo as teclas.** Enquanto um campo de senha está em foco,
+o macOS liga a *entrada segura*, e nenhum app recebe as teclas — este inclusive. Normalmente
+acaba junto com o campo; se durar, algum app a deixou ligada. O nome é aquele a que o macOS
+atribui isso; bloqueie a tela e desbloqueie para encerrar.
+
 **O `⌘Tab` ainda é o do sistema.** A permissão falta ou pertence à versão anterior. Use
 **Abrir Acessibilidade…** e, se a lista já tiver uma entrada do app, remova-a com **−** e
 conceda de novo.

@@ -147,6 +147,11 @@ açılış, ikinci bir kopya değil, ayarları açar.
 **−** ile sil — uygulamanın izne değil, yasağın yokluğuna ihtiyacı var — ve yeniden
 uygulamaya tıkla; dinleyici yeniden başlatmadan kurulur.
 
+**Menü, tuş vuruşlarını tutan bir uygulamayı adlandırıyor.** Bir parola alanı odaktayken macOS
+*güvenli girişi* açar ve o sırada hiçbir uygulama tuş vuruşlarını almaz — bu uygulama da.
+Normalde alanla birlikte biter; sürüyorsa bir uygulama açık bırakmıştır. Ad, macOS’un bunu
+yazdığı uygulamanın adıdır; ekranı kilitleyip kilidini yeniden açtığınızda geçer.
+
 **`⌘Tab` hâlâ sistemin değiştiricisi.** İzin yok ya da bir önceki sürüme ait.
 **Erişilebilirlik’i aç…**’ı kullan; listede uygulamanın kaydı zaten varsa **−** ile sil ve
 izni yeniden ver.

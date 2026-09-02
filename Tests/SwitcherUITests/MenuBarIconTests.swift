@@ -19,6 +19,8 @@ struct MenuBarIconTests {
             .intercepting,
             .observing,
             .deaf,
+            .secured(by: "Ghostty"),
+            .secured(by: nil),
             .blocked(canAsk: true),
             .blocked(canAsk: false),
         ]
