@@ -22,7 +22,7 @@ jobs:
       - name: Toolchain
         run: swift --version
       - name: Run tests
-        run: swift test
+        run: swift test --no-parallel
       - name: Crash reports
         if: failure()
         run: |
