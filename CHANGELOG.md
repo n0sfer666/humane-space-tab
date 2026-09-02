@@ -6,6 +6,8 @@ the switcher's visible behaviour is still being decided, so a minor version may 
 
 ## [Unreleased]
 
+## [0.2.0] — 2026-09-02
+
 ### Added
 
 - **Secure input is explained instead of endured.** While macOS holds secure input — what a
@@ -65,5 +67,6 @@ Space, and nothing else.
   Monitoring. Window titles are read only while window switching is on, and only to be
   drawn.
 
-[Unreleased]: https://github.com/n0sfer666/humane-space-tab/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/n0sfer666/humane-space-tab/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/n0sfer666/humane-space-tab/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/n0sfer666/humane-space-tab/releases/tag/v0.1.0
