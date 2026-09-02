@@ -4,15 +4,12 @@ import Testing
 
 @testable import SystemAdapters
 
-/// The private function is only ever handed elements a trusted process was given. A process
-/// without the grant — a continuous integration runner, most of all — has none to hand it, and
-/// asking it anyway is undefined rather than merely fruitless, so the cases that call it do not
-/// run there.
-private let trusted = AXIsProcessTrusted()
-
 @MainActor
 @Suite("AX window id shim")
 struct AXWindowIDShimTests {
+    /// A process the accessibility API refuses answers nothing, and the whole point of this
+    /// suite is what the answer is — so the cases that need one say when they cannot run
+    /// instead of failing for the wrong reason.
     private static func ownWindows() -> [AXUIElement] {
         let application = AXUIElementCreateApplication(ProcessInfo.processInfo.processIdentifier)
         AXUIElementSetMessagingTimeout(application, 0.5)
@@ -30,7 +27,7 @@ struct AXWindowIDShimTests {
         _ = try #require(AXWindowIDShim())
     }
 
-    @Test("an element that names no window is refused instead of given a made-up id", .enabled(if: trusted))
+    @Test("an element that names no window is refused instead of given a made-up id")
     func anElementWithNoWindowIsRefused() throws {
         let shim = try #require(AXWindowIDShim())
         let application = AXUIElementCreateApplication(ProcessInfo.processInfo.processIdentifier)
@@ -38,7 +35,10 @@ struct AXWindowIDShimTests {
         #expect(shim.identifier(of: application) == nil)
     }
 
-    @Test("the id a window is given is the one the window server knows it by", .enabled(if: trusted))
+    /// The window is left open on purpose. Closing it takes a headless session's test process
+    /// down with a signal — a runner has a window server that hands out a window and cannot
+    /// take it back — and a process about to exit has nothing to gain by tidying it away.
+    @Test("the id a window is given is the one the window server knows it by")
     func theIdentifierIsTheWindowServersOwn() throws {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 120, height: 80),
@@ -47,7 +47,6 @@ struct AXWindowIDShimTests {
             defer: false
         )
         window.orderFront(nil)
-        defer { window.close() }
         let shim = try #require(AXWindowIDShim())
         let elements = Self.ownWindows()
         try withKnownIssue("the accessibility API answers this process nothing", isIntermittent: true) {
