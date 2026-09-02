@@ -30,8 +30,7 @@ cask "humane-space-tab" do
   version "$version"
   sha256 "$sum"
 
-  url "https://github.com/$repo/releases/download/v#{version}/HumaneSpaceTab-#{version}.dmg",
-      verified: "github.com/$repo/"
+  url "https://github.com/$repo/releases/download/v#{version}/HumaneSpaceTab-#{version}.dmg"
   name "Humane Space Tab"
   desc "App switcher that lists only the applications of the current Space"
   homepage "https://github.com/$repo"
