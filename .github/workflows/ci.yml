@@ -23,6 +23,15 @@ jobs:
         run: swift --version
       - name: Run tests
         run: swift test
+      - name: Crash reports
+        if: failure()
+        run: |
+          shopt -s nullglob
+          for report in ~/Library/Logs/DiagnosticReports/*.ips; do
+            echo "::group::$(basename "$report")"
+            head -120 "$report"
+            echo "::endgroup::"
+          done
 
   lint:
     name: Lint and format
