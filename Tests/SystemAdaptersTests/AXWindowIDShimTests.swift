@@ -48,7 +48,6 @@ struct AXWindowIDShimTests {
             defer: false
         )
         window.orderFront(nil)
-        defer { window.close() }
         let shim = try #require(AXWindowIDShim())
         let elements = Self.ownWindows()
         try withKnownIssue("the accessibility API answers this process nothing", isIntermittent: true) {
