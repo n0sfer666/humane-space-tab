@@ -4,11 +4,12 @@ import Testing
 
 @testable import SystemAdapters
 
-/// The private function is only ever handed elements a trusted process was given. A process
-/// without the grant — a continuous integration runner, most of all — has none to hand it, and
-/// asking it anyway is undefined rather than merely fruitless, so the cases that call it do not
-/// run there.
+/// The private function is only ever handed elements a trusted process was given, and the case
+/// that checks the id needs a window on screen to ask about. A process outside a windowing
+/// session — a continuous integration runner, most of all — has neither, and opening a window
+/// there takes the whole test process down with a signal rather than failing.
 private let trusted = AXIsProcessTrusted()
+private let onADesktop = CGSessionCopyCurrentDictionary() != nil
 
 @MainActor
 @Suite("AX window id shim")
@@ -38,7 +39,7 @@ struct AXWindowIDShimTests {
         #expect(shim.identifier(of: application) == nil)
     }
 
-    @Test("the id a window is given is the one the window server knows it by", .enabled(if: trusted))
+    @Test("the id a window is given is the one the window server knows it by", .enabled(if: trusted && onADesktop))
     func theIdentifierIsTheWindowServersOwn() throws {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 120, height: 80),
