@@ -1,6 +1,7 @@
 enum ForbiddenAPIRules {
     static let all: [ForbiddenSymbol] =
         networking + screenCapture + automation + interProcess + dynamicLoading + windowContent
+        + processInspection
 
     private static let networking: [ForbiddenSymbol] = [
         "URLSession", "URLRequest", "NSURLConnection", "Network", "NWConnection", "NWListener",
@@ -32,6 +33,14 @@ enum ForbiddenAPIRules {
         "NSXPCConnection", "NSXPCListener", "CFMessagePort", "DistributedNotificationCenter",
         "CFNotificationCenterGetDistributedCenter", "Process", "NSTask", "posix_spawn", "execve",
     ].map { ForbiddenSymbol($0, reason: "the app has no incoming channel and spawns no processes") }
+
+    private static let processInspection: [ForbiddenSymbol] = [
+        ForbiddenSymbol(
+            "proc_pidpath",
+            reason: "another process is named in the two places the design says, and nowhere else",
+            allowedFiles: ["LibprocProcessHierarchy.swift", "CGSessionSecureInput.swift"]
+        )
+    ]
 
     private static let dynamicLoading: [ForbiddenSymbol] = [
         "dlopen", "dlsym",

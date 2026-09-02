@@ -150,6 +150,12 @@ verbiedt ze in **Systeeminstellingen → Privacy en beveiliging → Invoerbewaki
 die regel met **−** — de app heeft de toestemming niet nodig, alleen het ontbreken van een
 verbod — en klik terug in de app; de tap wordt opnieuw opgebouwd zonder herstart.
 
+**Het menu noemt een app die toetsaanslagen tegenhoudt.** Zolang een wachtwoordveld de focus
+heeft, zet macOS *beveiligde invoer* aan, en dan krijgt geen enkele app toetsaanslagen — deze
+ook niet. Normaal eindigt het met het veld; duurt het langer, dan heeft een app het laten
+staan. De naam is die waaraan macOS het toeschrijft; vergrendel het scherm en ontgrendel het
+weer, dan is het weg.
+
 **`⌘Tab` is nog steeds die van het systeem.** De toestemming ontbreekt of hoort bij de
 vorige versie. Gebruik **Open Toegankelijkheid…**, en staat er al een regel voor de app in
 de lijst, verwijder die dan met **−** en geef de toestemming opnieuw.

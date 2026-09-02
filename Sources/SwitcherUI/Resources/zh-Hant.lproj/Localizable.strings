@@ -9,6 +9,8 @@
 "permission.blocked" = "「輔助使用」已關閉，因此 Cmd+Tab 仍歸 macOS 所有。";
 "permission.refused" = "macOS 拒絕了鍵盤攔截。只能結束後重新打開 App。";
 "permission.deaf" = "macOS 扣住了按鍵。請將此 App 從「輸入監控」中移除。";
+"permission.secured" = "「%@」正扣住按鍵。請鎖定螢幕後再解鎖。";
+"permission.securedUnnamed" = "有程式正扣住按鍵。請鎖定螢幕後再解鎖。";
 "permission.observing" = "切換器看得到 Cmd+Tab，卻無法接手。";
 
 "settings.title" = "Humane Space Tab 設定";

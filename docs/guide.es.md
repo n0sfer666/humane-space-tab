@@ -147,6 +147,12 @@ prohíbe en **Ajustes del Sistema → Privacidad y seguridad → Monitorización
 Quita esa entrada con **−** —la app no necesita el permiso, solo la ausencia de una
 negativa— y vuelve a hacer clic en la app; la captura se reconstruye sin reiniciarla.
 
+**El menú nombra una aplicación que está reteniendo las pulsaciones.** Mientras un campo de
+contraseña tiene el foco, macOS activa la *entrada segura*, y entonces ninguna aplicación
+recibe las pulsaciones, esta incluida. Normalmente termina con el campo; si dura, alguna
+aplicación la dejó activada. El nombre es a quien macOS se lo atribuye; bloquea la pantalla y
+desbloquéala para terminarlo.
+
 **`⌘Tab` sigue siendo el del sistema.** Falta el permiso o pertenece a la versión anterior.
 Usa **Abrir Accesibilidad…**, y si la lista ya tiene una entrada para la app, quítala con
 **−** y concédelo de nuevo.

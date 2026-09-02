@@ -27,7 +27,7 @@ struct PermissionCenterTests {
         #expect(fixture.center.state == .blocked(canAsk: true))
     }
 
-    @Test("a granted permission rebuilds the tap and stops the timer")
+    @Test("a granted permission rebuilds the tap and leaves the timer running")
     func pollAfterAGrant() {
         let fixture = PermissionCenterFixture()
         var published: [PermissionState] = []
@@ -39,17 +39,17 @@ struct PermissionCenterTests {
         #expect(fixture.engine.stops == 1)
         #expect(fixture.engine.starts == 2)
         #expect(published == [.blocked(canAsk: true), .intercepting])
-        #expect(fixture.ticks.isEmpty)
+        #expect(fixture.ticks.count == 1)
     }
 
-    @Test("starting with the permission in place arms no timer")
+    @Test("starting with the permission in place still arms the timer, for what it watches next")
     func startsTrusted() {
         let fixture = PermissionCenterFixture()
         fixture.authority.isTrusted = true
         fixture.engine.tapWhenTrusted = .intercept
         fixture.center.start()
         #expect(fixture.center.state == .intercepting)
-        #expect(fixture.ticks.isEmpty)
+        #expect(fixture.ticks.count == 1)
     }
 
     @Test("the first request shows the system prompt and the next one opens System Settings")

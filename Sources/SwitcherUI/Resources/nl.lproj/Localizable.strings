@@ -9,6 +9,8 @@
 "permission.blocked" = "Toegankelijkheid staat uit, dus Cmd+Tab blijft van macOS.";
 "permission.refused" = "macOS weigerde de toetsenbordtap. Alleen stoppen en opnieuw openen helpt.";
 "permission.deaf" = "macOS houdt toetsaanslagen tegen. Verwijder deze app uit Invoerbewaking.";
+"permission.secured" = "‘%@’ houdt toetsaanslagen tegen. Vergrendel het scherm en ontgrendel het weer.";
+"permission.securedUnnamed" = "Iets houdt toetsaanslagen tegen. Vergrendel het scherm en ontgrendel het weer.";
 "permission.observing" = "De wisselaar ziet Cmd+Tab wel, maar kan het niet overnemen.";
 
 "settings.title" = "Instellingen van Humane Space Tab";

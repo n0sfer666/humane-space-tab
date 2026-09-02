@@ -146,6 +146,12 @@ Spotlighta — drugie uruchomienie otwiera ustawienia, a nie drugą kopię.
 przyciskiem **−** — aplikacja nie potrzebuje uprawnienia, potrzebuje braku zakazu — i
 kliknij z powrotem w aplikację; podsłuch zdarzeń odbudowuje się bez restartu.
 
+**Menu nazywa aplikację, która wstrzymuje naciśnięcia klawiszy.** Dopóki pole hasła ma fokus,
+macOS włącza *bezpieczne wprowadzanie*, a wtedy żadna aplikacja nie dostaje naciśnięć
+klawiszy — ta również. Zwykle kończy się to razem z polem; jeśli trwa dłużej, jakaś aplikacja
+to zostawiła. Nazwa to ta, której macOS to przypisuje; zablokuj ekran i odblokuj go, aby to
+zakończyć.
+
 **`⌘Tab` nadal jest systemowy.** Uprawnienia nie ma albo należy do poprzedniej wersji.
 Kliknij **Otwórz Dostępność…**, a jeśli na liście jest już wpis aplikacji, usuń go
 przyciskiem **−** i przyznaj uprawnienie na nowo.

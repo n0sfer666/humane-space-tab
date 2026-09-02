@@ -150,6 +150,12 @@ Supprimez cette entrée avec **−** — l’app n’a pas besoin de l’autoris
 l’absence d’un refus — puis recliquez dans l’app ; la capture est reconstruite sans
 relancement.
 
+**Le menu nomme une application qui retient les frappes.** Tant qu’un champ de mot de passe a
+le focus, macOS active la *saisie sécurisée*, et aucune application ne reçoit alors les
+frappes — celle-ci comprise. Cela s’arrête normalement avec le champ ; si cela dure, une
+application l’a laissée active. Le nom est celui auquel macOS attribue la retenue ;
+verrouillez l’écran puis déverrouillez-le pour y mettre fin.
+
 **`⌘Tab` est toujours celui du système.** L’autorisation manque ou appartient à la version
 précédente. Prenez **Ouvrir Accessibilité…**, et si la liste contient déjà une entrée pour
 l’app, supprimez-la avec **−** et accordez-la de nouveau.

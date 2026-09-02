@@ -9,6 +9,8 @@
 "permission.blocked" = "손쉬운 사용이 꺼져 있어 Cmd+Tab은 아직 macOS의 것입니다.";
 "permission.refused" = "macOS가 키보드 가로채기를 거부했습니다. 앱을 종료했다가 다시 여는 방법뿐입니다.";
 "permission.deaf" = "macOS가 키 입력을 넘겨주지 않고 있습니다. 이 앱을 입력 모니터링에서 제거하십시오.";
+"permission.secured" = "“%@”이(가) 키 입력을 붙잡고 있습니다. 화면을 잠갔다가 다시 해제하십시오.";
+"permission.securedUnnamed" = "무언가가 키 입력을 붙잡고 있습니다. 화면을 잠갔다가 다시 해제하십시오.";
 "permission.observing" = "전환기가 Cmd+Tab을 보고는 있지만 가로채지는 못합니다.";
 
 "settings.title" = "Humane Space Tab 설정";

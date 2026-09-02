@@ -9,6 +9,8 @@
 "permission.blocked" = "Accessibility is off, so Cmd+Tab still belongs to macOS.";
 "permission.refused" = "macOS refused the keyboard tap. Quitting and reopening the app is the only cure.";
 "permission.deaf" = "macOS is withholding key presses. Remove this app from Input Monitoring.";
+"permission.secured" = "“%@” is holding key presses. Lock the screen and unlock it to let them through.";
+"permission.securedUnnamed" = "Something is holding key presses. Lock the screen and unlock it to let them through.";
 "permission.observing" = "The switcher can see Cmd+Tab but not take it over.";
 
 "settings.title" = "Humane Space Tab Settings";

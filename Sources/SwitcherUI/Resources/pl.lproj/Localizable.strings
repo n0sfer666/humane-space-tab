@@ -9,6 +9,8 @@
 "permission.blocked" = "Dostępność jest wyłączona, więc Cmd+Tab nadal należy do macOS.";
 "permission.refused" = "macOS odmówił przechwycenia klawiatury. Pomaga tylko zakończenie i ponowne otwarcie aplikacji.";
 "permission.deaf" = "macOS wstrzymuje naciśnięcia klawiszy. Usuń tę aplikację z Monitorowania wprowadzania.";
+"permission.secured" = "„%@” wstrzymuje naciśnięcia klawiszy. Zablokuj ekran i odblokuj go, aby je uwolnić.";
+"permission.securedUnnamed" = "Coś wstrzymuje naciśnięcia klawiszy. Zablokuj ekran i odblokuj go, aby je uwolnić.";
 "permission.observing" = "Przełącznik widzi Cmd+Tab, ale nie może go przejąć.";
 
 "settings.title" = "Ustawienia Humane Space Tab";

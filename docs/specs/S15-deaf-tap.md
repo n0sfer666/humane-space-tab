@@ -145,6 +145,6 @@ one service and should not grow a second one's pane.
 - **Another process could hold a tap in our name.** It cannot: the list is filtered on this
   process's own pid, and nothing else runs in it.
 - **The cure names one cause.** Secure input produces the same symptom through a different
-  mechanism, and the message would then point at the wrong list. S04's `observing` state
-  already covers the secure-input case that can be distinguished; this one cannot be, and a
-  message naming the common cause beats a message naming none.
+  mechanism, and this message would then point at the wrong list. It no longer has to:
+  [S20](S20-secure-input.md) reads the session flag directly, and the state it publishes ranks
+  below `deaf` precisely so that a tap missing the key bits keeps naming its own cure.

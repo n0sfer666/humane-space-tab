@@ -9,6 +9,8 @@
 "permission.blocked" = "L’Accessibilità è disattivata, quindi Cmd+Tab resta a macOS.";
 "permission.refused" = "macOS ha rifiutato l’intercettazione della tastiera. L’unico rimedio è chiudere e riaprire l’app.";
 "permission.deaf" = "macOS trattiene i tasti premuti. Rimuovi questa app da Monitoraggio ingresso.";
+"permission.secured" = "«%@» trattiene i tasti premuti. Blocca lo schermo e sbloccalo per liberarli.";
+"permission.securedUnnamed" = "Qualcosa trattiene i tasti premuti. Blocca lo schermo e sbloccalo per liberarli.";
 "permission.observing" = "Il selettore vede Cmd+Tab ma non può prenderne il controllo.";
 
 "settings.title" = "Impostazioni di Humane Space Tab";

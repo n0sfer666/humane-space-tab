@@ -148,6 +148,12 @@ in **System Settings → Privacy & Security → Input Monitoring**. Remove that 
 **−** — the app does not need the permission, only the absence of a refusal — and click
 back into the app; the tap is rebuilt without a relaunch.
 
+**The menu names an application that is holding key presses.** macOS turns on *secure input*
+while a password field has the focus, and while it is on no application receives key presses —
+this one included. It normally ends with the field; a hold that outlasts it is one some
+application left behind. The name is who macOS credits the hold to; locking the screen and
+unlocking it clears it.
+
 **`⌘Tab` is still the system switcher.** The Accessibility grant is missing or belongs to
 the previous build. Use **Grant Accessibility…**, and if the list already has an entry for
 the app, remove it with **−** and grant it again.

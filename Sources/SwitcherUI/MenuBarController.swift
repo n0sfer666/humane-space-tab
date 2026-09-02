@@ -56,8 +56,7 @@ public final class MenuBarController {
 
     private static func showPermission(_ state: PermissionState, in menu: NSMenu, target: MenuBarController) {
         for item in menu.items where item.tag == permissionTag { menu.removeItem(item) }
-        guard let key = PermissionMessage.key(for: state) else { return }
-        let detail = Localised.text(key)
+        guard let detail = PermissionMessage.text(for: state) else { return }
         let explanation = NSMenuItem(title: detail, action: nil, keyEquivalent: "")
         explanation.isEnabled = false
         explanation.tag = permissionTag

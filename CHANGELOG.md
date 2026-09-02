@@ -6,6 +6,16 @@ the switcher's visible behaviour is still being decided, so a minor version may 
 
 ## [Unreleased]
 
+### Added
+
+- **Secure input is explained instead of endured.** While macOS holds secure input — what a
+  password field turns on — the window server delivers no key press to any tap, so the
+  switcher did nothing while its icon said everything was fine. A hold that lasts longer
+  than three seconds now turns the icon to the warning and names, in the menu, the
+  application macOS credits the hold to, together with the cure: lock the screen and unlock
+  it. A password typed in the ordinary way changes nothing, and the end of a hold restores
+  the previous state by itself. See [S20](docs/specs/S20-secure-input.md).
+
 ## [0.1.0] — 2026-09-01
 
 The first packaged build: `Cmd+Tab` switches between the applications of the current

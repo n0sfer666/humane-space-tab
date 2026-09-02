@@ -71,6 +71,11 @@ Each of these is a property of the built binary, not a policy statement:
   APIs it needs to raise a window.
 - **No screen capture.** No `CGWindowListCreateImage`, `CGDisplayStream` or
   ScreenCaptureKit symbols anywhere in the source.
+- **No process inspection beyond a name.** Two files, and only two, ask libproc for
+  another process's executable path: the one that decides which application a window
+  belongs to (S03), and the one that turns the PID holding secure input into a word a
+  person can act on (S20). The path is turned into a name and dropped; nothing else about
+  another process is read, and the source guard fails the build anywhere else.
 - **No third-party runtime dependencies.** The bundle links only Apple frameworks.
   Build-time tools (XcodeGen, SwiftLint) never enter the bundle.
 - **No dynamic code loading**, except two private-API shims — the SkyLight one of S03
@@ -127,8 +132,9 @@ consequences, to be documented for users rather than hidden:
 - distribution is via source build and a project-owned Homebrew tap.
 
 The app must therefore *detect* that it has lost the Accessibility grant and explain
-why, rather than silently doing nothing. That behaviour is specified in S10, and the
-tap that stays alive while macOS withholds key presses from it in S15.
+why, rather than silently doing nothing. That behaviour is specified in S10, the tap
+that stays alive while macOS withholds key presses from it in S15, and the session-wide
+secure-input hold that withholds them from every tap at once in S20.
 
 ### Supply chain
 
@@ -162,12 +168,13 @@ tap that stays alive while macOS withholds key presses from it in S15.
 | 6 | Source guard over a file using `DistributedNotificationCenter` | fails |
 | 7 | `dlopen` in either allowlisted shim | passes |
 | 8 | `dlopen` in any other file | fails |
-| 9 | Source guard over the current clean tree | passes |
-| 10 | Settings storage asked to persist an application name | rejected at the type level |
-| 11 | Log call built from a key code | rejected at the type level |
-| 12 | Non-matching key event enters the tap | passed through unchanged, no state retained |
+| 9 | `proc_pidpath` outside the two files that name a process | fails |
+| 10 | Source guard over the current clean tree | passes |
+| 11 | Settings storage asked to persist an application name | rejected at the type level |
+| 12 | Log call built from a key code | rejected at the type level |
+| 13 | Non-matching key event enters the tap | passed through unchanged, no state retained |
 
-Cases 10 and 11 are compile-time guarantees: the settings and logging APIs are typed
+Cases 11 and 12 are compile-time guarantees: the settings and logging APIs are typed
 so that the value simply cannot be passed, rather than checked at runtime.
 
 ## Manual runbook

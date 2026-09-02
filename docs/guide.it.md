@@ -147,6 +147,11 @@ Spotlight — un secondo avvio apre le impostazioni, non una seconda copia.
 voce con **−** — all’app il permesso non serve, serve l’assenza di un divieto — e fai di
 nuovo clic nell’app; il tap viene ricostruito senza riavvii.
 
+**Il menu nomina un’app che trattiene i tasti premuti.** Finché un campo password ha il fuoco,
+macOS attiva l’*inserimento sicuro*, e nessuna app riceve i tasti premuti, questa compresa. Di
+norma finisce con il campo; se dura, qualche app lo ha lasciato attivo. Il nome è quello a cui
+macOS lo attribuisce; blocca lo schermo e sbloccalo per farlo cessare.
+
 **`⌘Tab` è ancora il selettore di sistema.** Il permesso manca o appartiene alla versione
 precedente. Usa **Apri Accessibilità…**, e se l’elenco ha già una voce per l’app,
 rimuovila con **−** e concedilo di nuovo.

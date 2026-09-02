@@ -9,6 +9,8 @@
 "permission.blocked" = "アクセシビリティがオフのため、Cmd+TabはまだmacOSのものです。";
 "permission.refused" = "macOSがキーボードの横取りを拒否しました。Appを終了して開き直すほかありません。";
 "permission.deaf" = "macOSがキー入力を渡していません。このAppを入力監視から外してください。";
+"permission.secured" = "「%@」がキー入力を抑えています。画面をロックして解除してください。";
+"permission.securedUnnamed" = "何かがキー入力を抑えています。画面をロックして解除してください。";
 "permission.observing" = "スイッチャーはCmd+Tabを見ていますが、横取りはできません。";
 
 "settings.title" = "Humane Space Tabの設定";
