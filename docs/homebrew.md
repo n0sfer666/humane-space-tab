@@ -49,6 +49,9 @@ in `Casks/`, and nothing else is required of the repository.
 After that every `v*` tag updates the cask: the release job writes the version and the new
 SHA-256 into `Casks/humane-space-tab.rb` and pushes. Without the secret the job says so and
 carries on — the release is published either way, and the cask can be updated by hand.
+Whitespace around a pasted token is stripped before it is used: with it in the URL `git clone`
+fails with `URL rejected: Malformed input to a URL function`, which reads like a broken tap
+rather than a broken paste.
 
 ### Checking a cask before it ships
 

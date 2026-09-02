@@ -132,11 +132,12 @@ jobs:
           TAP_REPO: ${{ vars.TAP_REPO || format('{0}/homebrew-tap', github.repository_owner) }}
           VERSION: ${{ needs.package.outputs.version }}
         run: |
-          if [[ -z "$TAP_TOKEN" ]]; then
+          token="${TAP_TOKEN//[[:space:]]/}"
+          if [[ -z "$token" ]]; then
             echo "::notice::no TAP_TOKEN secret, so the cask stays where it is — docs/homebrew.md says how to set one up"
             exit 0
           fi
-          git clone --depth 1 "https://x-access-token:$TAP_TOKEN@github.com/$TAP_REPO.git" tap
+          git clone --depth 1 "https://x-access-token:$token@github.com/$TAP_REPO.git" tap
           mkdir -p tap/Casks
           cp dist/humane-space-tab.rb tap/Casks/humane-space-tab.rb
           cd tap
