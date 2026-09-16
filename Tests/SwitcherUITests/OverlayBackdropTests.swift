@@ -28,6 +28,15 @@ struct OverlayBackdropTests {
         #expect(scrim.layer?.masksToBounds == true)
     }
 
+    @Test("a scrim of nothing leaves the glass frosted rather than emptying it")
+    @available(macOS 26.0, *)
+    func bareGlassIsStillFrosted() throws {
+        let glass = try #require(
+            OverlayBackdrop.make(cornerRadius: 26, background: .glass(scrim: 0), content: NSView())
+                as? NSGlassEffectView)
+        #expect(glass.style == .regular)
+    }
+
     @Test("the material is rounded to the panel's radius")
     func theMaterialIsRounded() {
         let backdrop = OverlayBackdrop.make(cornerRadius: 26, background: .standard, content: NSView())
