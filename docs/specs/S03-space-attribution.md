@@ -31,6 +31,19 @@ The nine-window gap is the whole argument for the private layer: with public API
 application whose only window on this Space is minimised is indistinguishable from an
 application sitting on another Space.
 
+### The private layer across a major upgrade
+
+Three private symbols and one dictionary shape are everything the layer rests on, and a
+major macOS release is where they break without a compiler noticing: `SkyLightShim` answers
+`nil` on an unknown shape and the switcher quietly falls back to the public layer, which
+looks like nothing at all until an application goes missing. So the shape is re-read on
+every major version and written down here.
+
+| Version | `SLSMainConnectionID` | `SLSCopyManagedDisplaySpaces` | `SLSCopySpacesForWindows` |
+|---|---|---|---|
+| macOS 15 | resolves | `Current Space` → dictionary with `ManagedSpaceID` | `[NSNumber]` per window |
+| macOS 27 (26A428) | resolves | unchanged — keys `Current Space`, `Display Identifier`, `Spaces` | unchanged; 15 of 15 on-screen windows attributed, none unreadable |
+
 ## Design
 
 ### Two layers, one port
@@ -203,6 +216,20 @@ when an application's *only* window on this Space is minimised or hidden.
    a menu-bar tool from a terminal: its windows must **not** be added to the terminal.
 5. `/usr/bin/log show …` → no window identifiers, no application names, no Space
    identifiers in the log.
+
+After a major macOS upgrade, run step 6 before anything else — it fails in one second and
+the rest of the runbook cannot tell you why.
+
+6. Build and run the private-layer probe against the live window server:
+
+   ```sh
+   swift docs/specs/probes/skylight-probe.swift
+   ```
+
+   Expected: every line starts `ok`, the last one reads `PASS`, and no window comes back
+   unreadable. A `FAIL` names which of the three symbols or which dictionary key moved;
+   that is the edit `SkyLightShim` needs, and until it is made the app is running on the
+   public layer.
 
 ## Risks and open questions
 

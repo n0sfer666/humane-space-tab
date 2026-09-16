@@ -77,7 +77,7 @@ Three styles, each with only what it can meaningfully carry:
 
 | Style | Adjustable | Notes |
 |---|---|---|
-| `glass` | scrim 0–40 % | the S07 material: Liquid Glass on macOS 26, HUD blur below. At a scrim of nothing macOS 26 draws the clearest glass it has, so the desktop reads through the ribbon — a look that can be spoiled, deliberately reachable |
+| `glass` | scrim 0–40 % | the S07 material: Liquid Glass on macOS 26 and later, HUD blur below. The scrim darkens the material and nothing else — it never switches the style, because the `clear` style S07 measured away leaves no glass to darken |
 | `transparent` | opacity 0–100 % | no material; the desktop shows through the panel |
 | `background` | opacity 0–100 % | a solid panel in the system's window background colour |
 

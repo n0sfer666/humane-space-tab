@@ -6,6 +6,20 @@ the switcher's visible behaviour is still being decided, so a minor version may 
 
 ## [Unreleased]
 
+### Fixed
+
+- **Glass with the shade taken off is still glass.** Dragging the S17 shade to nothing
+  dropped the panel into the `clear` style, which S07 had already measured away: over a
+  flat desktop it reads as an empty rectangle, so the setting meant for the clearest glass
+  handed back no glass at all. The style is now `regular` at every setting, and the shade
+  only darkens it.
+
+### Changed
+
+- **CI runs on a named macOS image.** The macOS jobs ran on `macos-latest`, which moved to
+  macOS 26 under the project's feet; they now name `macos-26`, so a runner upgrade is a
+  change to this file rather than a surprise in a build.
+
 ## [0.2.0] — 2026-09-02
 
 ### Added

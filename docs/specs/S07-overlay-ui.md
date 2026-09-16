@@ -166,10 +166,12 @@ The panel carries a 26 pt corner radius and, behind the row, a 15 % black scrim 
 least that keeps a white label readable when the desktop behind the glass is a white
 window. Anything heavier is what made an earlier ribbon visibly darker than the original.
 
-Its material is whichever one the system builds its own panels from. macOS 26 draws the
-switcher in Liquid Glass, so where `NSGlassEffectView` exists the ribbon is made of it, in
-the `regular` style: the `clear` style takes so much of what is behind it that over a flat
-desktop the panel reads as nothing at all — the effect measurably disappeared. Below
+Its material is whichever one the system builds its own panels from. macOS 26 and later
+draw the switcher in Liquid Glass, so where `NSGlassEffectView` exists the ribbon is made
+of it, in the `regular` style: the `clear` style takes so much of what is behind it that
+over a flat desktop the panel reads as nothing at all — the effect measurably disappeared.
+That holds at every setting, so the style is `regular` whatever S17 asks for; a scrim of
+nothing means the clearest the material itself goes, not a different material. Below
 macOS 26 the panel keeps the `.hudWindow` blur with a hairline white border, which is what
 those systems render a HUD with. The choice is the system's version and nothing else: a
 preference here would only offer the user a way to look less native than their own
@@ -218,7 +220,7 @@ saw the two `flagsChanged` events and no `Tab` at all.
 - [ ] Interception never swallows a modifier change, and never swallows a key-up whose key-down went through.
 - [ ] Layout and carousel arithmetic is pure and unit-tested: fits, shrinks, freezes, wraps.
 - [ ] The name of the selected application is centred on its icon wherever the icon sits in the ribbon, and moves inwards only when it would otherwise leave the panel.
-- [ ] On macOS 26 the panel is Liquid Glass in the `regular` style, visibly frosted over any desktop; below it, the HUD blur.
+- [ ] On macOS 26 and later the panel is Liquid Glass in the `regular` style at every scrim including nothing, visibly frosted over any desktop; below it, the HUD blur.
 - [ ] The selected icon is 20 % larger and at full strength, its neighbours dimmed, with no tile drawn behind anything.
 - [ ] A name longer than the panel is truncated in the middle, keeping both ends of the title.
 - [ ] A single step slides the ribbon; a jump does not.
@@ -300,8 +302,10 @@ saw the two `flagsChanged` events and no `Tab` at all.
    yesterday: `log show --predicate 'subsystem == "io.github.n0sfer666.humane-space-tab"'`
    still shows the session opening, and the ribbon is there to see it by.
 9. Put the ribbon over a busy window, over a flat white window and over a plain wallpaper →
-   expected: on macOS 26 the panel is visibly frosted glass in every case — never an
-   invisible rectangle; below 26 it is the HUD blur.
+   expected: on macOS 26 and later the panel is visibly frosted glass in every case — never
+   an invisible rectangle; below 26 it is the HUD blur.
+9a. Drag the S17 shade slider all the way down and repeat case 9 → expected: the panel gets
+   lighter and stays glass. An empty rectangle here is the `clear` style leaking back in.
 
 ## Risks and open questions
 
