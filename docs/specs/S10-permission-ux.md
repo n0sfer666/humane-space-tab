@@ -44,7 +44,8 @@ the app looks installed and does nothing to `Cmd+Tab`.
 
 The first `Grant Accessibility…` shows the system prompt through
 `AXIsProcessTrustedWithOptions`. macOS shows that prompt once per app, so every later request
-opens System Settings › Privacy & Security › Accessibility directly. Which of the two the app
+opens System Settings › Privacy & Security › Device Control and Data Access directly — the row
+macOS 15–26 calls Accessibility. Which of the two the app
 does is remembered for the session only — the prompt's own once-per-app rule is the system's
 to keep, not ours to mirror on disk.
 

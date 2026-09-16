@@ -17,11 +17,12 @@ alles, was sie tut, geschieht, während ein Tastenkürzel gedrückt gehalten wir
    Image aus den Releases öffnen und **Humane Space Tab.app** auf das
    Applications-Symbol ziehen — und starten.
 2. Eine geladene App wird beim ersten Mal abgewiesen — **Systemeinstellungen →
-   Datenschutz & Sicherheit** öffnen, ganz nach unten scrollen, **Trotzdem öffnen**
+   Datenschutz & Sicherheit** öffnen, ganz nach unten scrollen, **Dennoch öffnen**
    drücken und noch einmal starten.
 3. Beim Start fragt die App nach **Bedienungshilfen**. Erteile die Berechtigung in
-   **Systemeinstellungen → Datenschutz & Sicherheit → Bedienungshilfen**. Der Umschalter
-   arbeitet nach ein paar Sekunden; ein Neustart ist nicht nötig.
+   **Systemeinstellungen → Datenschutz & Sicherheit → Gerätesteuerung und Datenzugriff** —
+   unter macOS 15–26 heißt der Eintrag **Bedienungshilfen**. Der Umschalter arbeitet nach
+   ein paar Sekunden; ein Neustart ist nicht nötig.
 
 Das Symbol in der Menüleiste ist der einzige Beleg dafür, dass die App läuft: `⇄`, wenn
 sie arbeitet, ein Warndreieck, wenn sie es nicht kann. macOS bindet die Berechtigung an

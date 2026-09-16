@@ -27,7 +27,7 @@
 "general.windowSwitching" = "Przełączaj okna zamiast aplikacji";
 "general.languageSystem" = "Systemowy";
 "general.language" = "Język";
-"general.loginItemPending" = "Czeka na zatwierdzenie w Ustawieniach systemowych › Ogólne › Elementy logowania.";
+"general.loginItemPending" = "Czeka na zatwierdzenie w Ustawieniach systemowych › Ogólne › Logowanie.";
 "general.loginItemRefused" = "macOS odmówił: %@";
 "screen.focused" = "Ekranie z fokusem klawiatury";
 "screen.pointer" = "Ekranie ze wskaźnikiem";

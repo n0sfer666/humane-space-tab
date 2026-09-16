@@ -17,11 +17,12 @@ hij doet gebeurt terwijl je een toetscombinatie ingedrukt houdt.
    schijfkopiebestand uit Releases en sleep **Humane Space Tab.app** naar de snelkoppeling
    Applications — en start hem.
 2. Een gedownloade app wordt de eerste keer geweigerd: open **Systeeminstellingen →
-   Privacy en beveiliging**, scrol helemaal naar beneden, klik op **Toch openen** en start
+   Privacy en beveiliging**, scrol helemaal naar beneden, klik op **Open toch** en start
    hem opnieuw.
 3. Bij het starten vraagt de app om **Toegankelijkheid**. Geef die in
-   **Systeeminstellingen → Privacy en beveiliging → Toegankelijkheid**. De wisselaar werkt
-   binnen een paar seconden; opnieuw starten is niet nodig.
+   **Systeeminstellingen → Privacy en beveiliging → Apparaatbeheer en gegevenstoegang** —
+   op macOS 15–26 heet die regel **Toegankelijkheid**. De wisselaar werkt binnen een paar
+   seconden; opnieuw starten is niet nodig.
 
 Het symbool in de menubalk is het enige bewijs dat de app draait: `⇄` als hij werkt, een
 waarschuwingsdriehoek als hij het niet kan. macOS koppelt de toestemming aan de
@@ -133,7 +134,7 @@ zonder het bureaublad waarop je werkt te storen.
 | Onderdeel | Wanneer het er is |
 |---|---|
 | **Open Toegankelijkheid…** | zolang de toestemming ontbreekt — vraagt opnieuw |
-| **Open Invoerbewaking…** | wanneer macOS toetsaanslagen tegenhoudt (zie hieronder) |
+| **Open Invoer vastleggen…** | wanneer macOS toetsaanslagen tegenhoudt (zie hieronder) |
 | **Instellingen…** | altijd |
 | **Kopieer de lijst met apps en vensters** | altijd — zet de lijst met apps van het huidige bureaublad op het klembord; dat is wat je aan een foutmelding hangt |
 | **Stop Humane Space Tab** | altijd |
@@ -146,9 +147,10 @@ app kan die plaats opeisen. Maak een plek vrij, of open de app opnieuw vanuit de
 Spotlight — een tweede start opent de instellingen, geen tweede kopie.
 
 **Het symbool zegt dat macOS toetsaanslagen tegenhoudt.** Een oude regel voor de app
-verbiedt ze in **Systeeminstellingen → Privacy en beveiliging → Invoerbewaking**. Verwijder
-die regel met **−** — de app heeft de toestemming niet nodig, alleen het ontbreken van een
-verbod — en klik terug in de app; de tap wordt opnieuw opgebouwd zonder herstart.
+verbiedt ze in **Systeeminstellingen → Privacy en beveiliging → Invoer vastleggen**.
+Verwijder die regel met **−** — de app heeft de toestemming niet nodig, alleen het
+ontbreken van een verbod — en klik terug in de app; de tap wordt opnieuw opgebouwd zonder
+herstart.
 
 **Het menu noemt een app die toetsaanslagen tegenhoudt.** Zolang een wachtwoordveld de focus
 heeft, zet macOS *beveiligde invoer* aan, en dan krijgt geen enkele app toetsaanslagen — deze

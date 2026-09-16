@@ -19,8 +19,9 @@ sen bir kısayolu basılı tuttuğun sürece olur.
 2. İnternetten indirilen bir uygulama ilk seferde reddedilir: **Sistem Ayarları →
    Gizlilik ve Güvenlik**’i aç, en aşağı in, **Yine de Aç**’a bas ve yeniden başlat.
 3. Uygulama açılırken **Erişilebilirlik** ister. İzni **Sistem Ayarları → Gizlilik ve
-   Güvenlik → Erişilebilirlik**’ten ver. Değiştirici birkaç saniye içinde çalışmaya
-   başlar; yeniden başlatmaya gerek yok.
+   Güvenlik → Aygıt Denetimi ve Veri Erişimi**’nden ver — macOS 15–26’da bu satırın adı
+   **Erişilebilirlik**. Değiştirici birkaç saniye içinde çalışmaya başlar; yeniden
+   başlatmaya gerek yok.
 
 Menü çubuğundaki simge, uygulamanın çalıştığının tek kanıtıdır: çalışıyorsa `⇄`,
 çalışamıyorsa bir uyarı üçgeni. macOS izni kodun imzasına bağlar, bu yüzden her
@@ -130,7 +131,7 @@ yanıt verir: boşlukları genişletmek kenar boşluğuna büyüyecek daha az ye
 | Öğe | Ne zaman görünür |
 |---|---|
 | **Erişilebilirlik’i aç…** | izin eksik olduğu sürece — yeniden ister |
-| **Girdi İzleme’yi aç…** | macOS tuş vuruşlarını tuttuğunda (aşağıya bak) |
+| **Giriş İzleme’yi aç…** | macOS tuş vuruşlarını tuttuğunda (aşağıya bak) |
 | **Ayarlar…** | her zaman |
 | **Uygulama ve pencere listesini kopyala** | her zaman — geçerli masaüstünün uygulama listesini panoya kopyalar; hata bildirimine eklenecek şey budur |
 | **Humane Space Tab’den çık** | her zaman |
@@ -143,7 +144,7 @@ yolu yoktur. Bir yer aç ya da uygulamayı Finder veya Spotlight’tan yeniden a
 açılış, ikinci bir kopya değil, ayarları açar.
 
 **Simge, macOS’un tuş vuruşlarını tuttuğunu söylüyor.** Uygulamanın eski bir kaydı buna
-**Sistem Ayarları → Gizlilik ve Güvenlik → Girdi İzleme** içinde izin vermiyor. O kaydı
+**Sistem Ayarları → Gizlilik ve Güvenlik → Giriş İzleme** içinde izin vermiyor. O kaydı
 **−** ile sil — uygulamanın izne değil, yasağın yokluğuna ihtiyacı var — ve yeniden
 uygulamaya tıkla; dinleyici yeniden başlatmadan kurulur.
 

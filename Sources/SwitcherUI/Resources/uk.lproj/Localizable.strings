@@ -1,14 +1,14 @@
 "app.name" = "Humane Space Tab";
 
 "menu.grantAccessibility" = "Відкрити Універсальний доступ…";
-"menu.openInputMonitoring" = "Відкрити Моніторинг введення…";
+"menu.openInputMonitoring" = "Відкрити Контроль вводу…";
 "menu.settings" = "Параметри…";
 "menu.copyInventory" = "Скопіювати список програм і вікон";
 "menu.quit" = "Завершити Humane Space Tab";
 
 "permission.blocked" = "Універсальний доступ вимкнено, тож Cmd+Tab лишається за macOS.";
 "permission.refused" = "macOS відмовила в перехопленні клавіатури. Допомагає лише перезапуск програми.";
-"permission.deaf" = "macOS не передає натискання клавіш. Приберіть цю програму з Моніторингу введення.";
+"permission.deaf" = "macOS не передає натискання клавіш. Приберіть цю програму з Контролю вводу.";
 "permission.secured" = "«%@» утримує натискання клавіш. Заблокуйте екран і розблокуйте його, щоб їх повернути.";
 "permission.securedUnnamed" = "Натискання клавіш хтось утримує. Заблокуйте екран і розблокуйте його, щоб їх повернути.";
 "permission.observing" = "Перемикач бачить Cmd+Tab, але не може його перехопити.";
@@ -27,7 +27,7 @@
 "general.windowSwitching" = "Перемикати вікна, а не програми";
 "general.languageSystem" = "Системна";
 "general.language" = "Мова";
-"general.loginItemPending" = "Очікує підтвердження в Системних параметрах › Основні › Об’єкти входу.";
+"general.loginItemPending" = "Очікує підтвердження в Системних параметрах › Загальні › Автозапуск.";
 "general.loginItemRefused" = "macOS відмовила: %@";
 "screen.focused" = "Екрані з фокусом клавіатури";
 "screen.pointer" = "Екрані з вказівником";

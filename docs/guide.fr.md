@@ -20,7 +20,8 @@ fait se passe pendant qu’un raccourci est maintenu.
    Confidentialité et sécurité**, descendez tout en bas, appuyez sur **Ouvrir quand
    même**, puis relancez-la.
 3. L’app demande l’**Accessibilité** au démarrage. Accordez-la dans **Réglages Système →
-   Confidentialité et sécurité → Accessibilité**. Le sélecteur se met à fonctionner en
+   Confidentialité et sécurité → Contrôle de l’appareil et accès aux données** — la ligne
+   que macOS 15–26 appelle **Accessibilité**. Le sélecteur se met à fonctionner en
    quelques secondes ; aucun relancement n’est nécessaire.
 
 L’icône dans la barre des menus est la seule preuve que l’app tourne : `⇄` quand elle
@@ -132,7 +133,7 @@ secondes, sans déranger le bureau où vous êtes.
 | Élément | Quand il est là |
 |---|---|
 | **Ouvrir Accessibilité…** | tant que l’autorisation manque — la redemande |
-| **Ouvrir Surveillance de la saisie…** | quand macOS retient les frappes (voir plus bas) |
+| **Ouvrir Surveillance de l’entrée…** | quand macOS retient les frappes (voir plus bas) |
 | **Réglages…** | toujours |
 | **Copier la liste des apps et des fenêtres** | toujours — copie dans le presse-papiers la liste des apps du bureau courant ; c’est ce qu’il faut joindre à un rapport de bogue |
 | **Quitter Humane Space Tab** | toujours |
@@ -145,7 +146,7 @@ rien dans l’app ne peut réclamer la place. Libérez une place, ou rouvrez l�
 Finder ou Spotlight — un second lancement ouvre les réglages, pas une seconde copie.
 
 **L’icône dit que macOS retient les frappes.** Une vieille entrée de l’app la lui interdit
-dans **Réglages Système → Confidentialité et sécurité → Surveillance de la saisie**.
+dans **Réglages Système → Confidentialité et sécurité → Surveillance de l’entrée**.
 Supprimez cette entrée avec **−** — l’app n’a pas besoin de l’autorisation, seulement de
 l’absence d’un refus — puis recliquez dans l’app ; la capture est reconstruite sans
 relancement.

@@ -1,14 +1,14 @@
 "app.name" = "Humane Space Tab";
 
 "menu.grantAccessibility" = "Open Toegankelijkheid…";
-"menu.openInputMonitoring" = "Open Invoerbewaking…";
+"menu.openInputMonitoring" = "Open Invoer vastleggen…";
 "menu.settings" = "Instellingen…";
 "menu.copyInventory" = "Kopieer de lijst met apps en vensters";
 "menu.quit" = "Stop Humane Space Tab";
 
 "permission.blocked" = "Toegankelijkheid staat uit, dus Cmd+Tab blijft van macOS.";
 "permission.refused" = "macOS weigerde de toetsenbordtap. Alleen stoppen en opnieuw openen helpt.";
-"permission.deaf" = "macOS houdt toetsaanslagen tegen. Verwijder deze app uit Invoerbewaking.";
+"permission.deaf" = "macOS houdt toetsaanslagen tegen. Verwijder deze app uit Invoer vastleggen.";
 "permission.secured" = "‘%@’ houdt toetsaanslagen tegen. Vergrendel het scherm en ontgrendel het weer.";
 "permission.securedUnnamed" = "Iets houdt toetsaanslagen tegen. Vergrendel het scherm en ontgrendel het weer.";
 "permission.observing" = "De wisselaar ziet Cmd+Tab wel, maar kan het niet overnemen.";

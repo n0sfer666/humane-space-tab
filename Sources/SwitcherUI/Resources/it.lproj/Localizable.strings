@@ -1,14 +1,14 @@
 "app.name" = "Humane Space Tab";
 
 "menu.grantAccessibility" = "Apri Accessibilità…";
-"menu.openInputMonitoring" = "Apri Monitoraggio ingresso…";
+"menu.openInputMonitoring" = "Apri Monitoraggio input…";
 "menu.settings" = "Impostazioni…";
 "menu.copyInventory" = "Copia l’elenco di app e finestre";
 "menu.quit" = "Esci da Humane Space Tab";
 
 "permission.blocked" = "L’Accessibilità è disattivata, quindi Cmd+Tab resta a macOS.";
 "permission.refused" = "macOS ha rifiutato l’intercettazione della tastiera. L’unico rimedio è chiudere e riaprire l’app.";
-"permission.deaf" = "macOS trattiene i tasti premuti. Rimuovi questa app da Monitoraggio ingresso.";
+"permission.deaf" = "macOS trattiene i tasti premuti. Rimuovi questa app da Monitoraggio input.";
 "permission.secured" = "«%@» trattiene i tasti premuti. Blocca lo schermo e sbloccalo per liberarli.";
 "permission.securedUnnamed" = "Qualcosa trattiene i tasti premuti. Blocca lo schermo e sbloccalo per liberarli.";
 "permission.observing" = "Il selettore vede Cmd+Tab ma non può prenderne il controllo.";
