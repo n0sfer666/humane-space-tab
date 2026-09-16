@@ -7,14 +7,23 @@ network. Pre-release — releases stay below `1.0`.
 ## Commands
 
 ```sh
+make                                                                  # the target list and the version it would build
+make dev                                                              # Debug bundle run from .build, /Applications untouched
+make install                                                          # packages, installs into /Applications, relaunches
+make test | make lint | make build                                    # the three checks CI runs
+
 swift test                                                            # 536 Swift Testing tests in four targets, ~3s
 swiftlint lint --quiet --strict
 swift format lint --recursive --strict Sources Tests Package.swift     # `swift-format lint …` in CI
 swift build --build-tests
 xcodegen generate                                                     # regenerates the .xcodeproj, never committed
+scripts/dev.sh <version> [build]                                      # what `make dev` runs
 scripts/package.sh <version> [build]                                  # dist/…zip, …dmg, SHA-256
 scripts/install.sh <version> [build]                                  # packages, installs into /Applications, relaunches
 ```
+
+`make` reads the version from the latest `v*` tag and the build number from the commits
+since it; `make install VERSION=0.3.0 BUILD=7` overrides both.
 
 Tools: `brew install xcodegen swiftlint` plus Xcode 26 or later. Swift language mode 6,
 strict concurrency complete; this machine builds it with Xcode 27 / Swift 6.4 on macOS 27,

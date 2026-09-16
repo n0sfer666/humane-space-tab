@@ -8,14 +8,26 @@ a list of surprises.
 
 ```sh
 brew install xcodegen swiftlint     # Xcode 26 is the other requirement
-swift test                          # the logic modules
-xcodegen generate                   # regenerates HumaneSpaceTab.xcodeproj, never committed
-scripts/install.sh 0.1.0            # packages, installs into /Applications, relaunches
+make                                # the target list and the version it would build
+make test                           # the logic modules
+make dev                            # a Debug bundle, run from .build
+make install                        # packages, installs into /Applications, relaunches
 ```
 
-`scripts/install.sh` replaces the copy in `/Applications` with the one you just built.
-Every local build carries its own ad-hoc signature, so macOS asks for Accessibility again
-each time — that is the system, not the script.
+`make` takes the version from the latest `v*` tag and the build number from the commits
+since it, so neither has to be typed; `make install VERSION=0.3.0 BUILD=7` overrides them,
+and the targets are thin wrappers over the scripts below, which still take the version as
+an argument.
+
+`make dev` is the loop to stay in while a change is being written: a Debug build, no
+universal binary and none of the packaging checks, launched straight out of `.build`. The
+copy in `/Applications` is left where it is — but only one of the two can run at a time,
+so `make dev` quits whichever is running first, and `make install` puts the installed one
+back.
+
+`make install` replaces the copy in `/Applications` with the one you just built. Every
+local build carries its own ad-hoc signature, so macOS asks for Accessibility again each
+time — that is the system, not the script.
 
 ## How the code is laid out
 
@@ -48,8 +60,8 @@ allowed to see. Its commitments are not negotiable inside a feature PR.
 
 - **Tests first.** The suite is Swift Testing; 400-odd tests run in well under a second,
   so there is no reason to skip them.
-- **Green checks.** `swift test`, `swiftlint lint --strict`, and
-  `swift format lint --recursive --strict Sources Tests Package.swift`. CI runs all three.
+- **Green checks.** `make test`, `make lint`, `make build` — `swift test`, both linters and
+  a build of the test targets. CI runs the same three.
 - **No new permissions and no new dependencies.** The app asks for Accessibility and
   nothing else, and links system frameworks only. A test scans the sources for network,
   AppleEvents, plugin and subprocess API and fails on a match.
@@ -80,7 +92,7 @@ and it checks each slice of the universal binary separately, because `codesign` 
 `otool` report only the host slice by default. The disk image is mounted again after it is
 written, to make sure it carries both the app and the Applications shortcut.
 
-`scripts/install.sh 0.1.0` packages first, so a bundle that failed a check never reaches
+`scripts/install.sh 0.1.0`, which is what `make install` calls, packages first, so a bundle that failed a check never reaches
 `/Applications`; then it quits the running app, replaces the bundle, verifies the
 installed version and launches it. Expect the last lines to read
 `==> /Applications/Humane Space Tab.app is 0.1.0, running as pid …` followed by the
