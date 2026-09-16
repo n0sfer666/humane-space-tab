@@ -19,8 +19,9 @@ que hace ocurre mientras se mantiene pulsada una combinación de teclas.
 2. Una app descargada se rechaza la primera vez: abre **Ajustes del Sistema → Privacidad
    y seguridad**, baja hasta el final, pulsa **Abrir igualmente** y ábrela otra vez.
 3. Al arrancar, la app pide **Accesibilidad**. Concédela en **Ajustes del Sistema →
-   Privacidad y seguridad → Accesibilidad**. El selector empieza a funcionar en un par de
-   segundos; no hace falta reiniciarla.
+   Privacidad y seguridad → Control de dispositivos y acceso a datos**: la fila que macOS
+   15–26 llama **Accesibilidad**. El selector empieza a funcionar en un par de segundos;
+   no hace falta reiniciarla.
 
 El icono de la barra de menús es la única prueba de que la app está funcionando: `⇄`
 cuando funciona, un triángulo de aviso cuando no puede. macOS ata el permiso a la firma
@@ -130,7 +131,7 @@ segundos, sin molestar al escritorio en el que estás.
 | Ítem | Cuándo aparece |
 |---|---|
 | **Abrir Accesibilidad…** | mientras falta el permiso: lo vuelve a pedir |
-| **Abrir Monitorización de entrada…** | cuando macOS retiene las pulsaciones (más abajo) |
+| **Abrir Monitorización de los dispositivos de entrada…** | cuando macOS retiene las pulsaciones (más abajo) |
 | **Ajustes…** | siempre |
 | **Copiar la lista de apps y ventanas** | siempre: copia al portapapeles la lista de apps del escritorio actual, que es lo que conviene adjuntar a un informe de error |
 | **Salir de Humane Space Tab** | siempre |
@@ -143,9 +144,10 @@ reclamar ese sitio. Libera espacio, o vuelve a abrir la app desde el Finder o Sp
 segundo arranque abre los ajustes, no una segunda copia.
 
 **El icono dice que macOS retiene las pulsaciones.** Una entrada antigua de la app se lo
-prohíbe en **Ajustes del Sistema → Privacidad y seguridad → Monitorización de entrada**.
-Quita esa entrada con **−** —la app no necesita el permiso, solo la ausencia de una
-negativa— y vuelve a hacer clic en la app; la captura se reconstruye sin reiniciarla.
+prohíbe en **Ajustes del Sistema → Privacidad y seguridad → Monitorización de los
+dispositivos de entrada**. Quita esa entrada con **−** —la app no necesita el permiso, solo
+la ausencia de una negativa— y vuelve a hacer clic en la app; la captura se reconstruye sin
+reiniciarla.
 
 **El menú nombra una aplicación que está reteniendo las pulsaciones.** Mientras un campo de
 contraseña tiene el foco, macOS activa la *entrada segura*, y entonces ninguna aplicación

@@ -16,11 +16,12 @@ acontece enquanto um atalho está pressionado.
 1. Instale — `brew install --cask n0sfer666/tap/humane-space-tab`, ou abra a imagem de disco
    em Releases e arraste o **Humane Space Tab.app** para o atalho de Applications — e
    abra o app.
-2. Um app baixado é recusado na primeira vez: abra **Ajustes do Sistema → Privacidade e
-   Segurança**, role até o fim, clique em **Abrir Assim Mesmo** e abra de novo.
-3. Ao iniciar, o app pede **Acessibilidade**. Conceda em **Ajustes do Sistema →
-   Privacidade e Segurança → Acessibilidade**. O alternador começa a funcionar em alguns
-   segundos; não é preciso reabrir o app.
+2. Um app baixado é recusado na primeira vez: abra **Ajustes → Privacidade e Segurança**,
+   role até o fim, clique em **Abrir Mesmo Assim** e abra de novo.
+3. Ao iniciar, o app pede **Acessibilidade**. Conceda em **Ajustes → Privacidade e
+   Segurança → Controle do Dispositivo e Acesso a Dados** — a linha que o macOS 15–26
+   chama de **Acessibilidade**. O alternador começa a funcionar em alguns segundos; não é
+   preciso reabrir o app.
 
 O ícone na barra de menus é a única prova de que o app está rodando: `⇄` quando funciona,
 um triângulo de aviso quando não consegue. O macOS amarra a permissão à assinatura do
@@ -128,7 +129,7 @@ quatro segundos, sem atrapalhar a área de trabalho em que você está.
 | Item | Quando aparece |
 |---|---|
 | **Abrir Acessibilidade…** | enquanto falta a permissão — pede de novo |
-| **Abrir Monitoramento de Entrada…** | quando o macOS retém as teclas (veja abaixo) |
+| **Abrir Monitoração de Entrada…** | quando o macOS retém as teclas (veja abaixo) |
 | **Ajustes…** | sempre |
 | **Copiar a lista de apps e janelas** | sempre — copia para a área de transferência a lista de apps da área de trabalho atual, que é o que se anexa a um relato de erro |
 | **Encerrar o Humane Space Tab** | sempre |
@@ -141,7 +142,7 @@ tomar esse espaço. Libere um espaço, ou abra o app de novo pelo Finder ou pelo
 uma segunda abertura mostra os ajustes, não uma segunda cópia.
 
 **O ícone diz que o macOS está retendo as teclas.** Uma entrada antiga do app o proíbe em
-**Ajustes do Sistema → Privacidade e Segurança → Monitoramento de Entrada**. Remova essa
+**Ajustes → Privacidade e Segurança → Monitoração de Entrada**. Remova essa
 entrada com **−** — o app não precisa da permissão, só da ausência de uma recusa — e clique
 de volta no app; a captura é refeita sem reabrir nada.
 

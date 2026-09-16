@@ -19,8 +19,9 @@ does happens while you hold a shortcut.
 2. A downloaded build is refused the first time — open **System Settings → Privacy &
    Security**, scroll to the bottom and press **Open Anyway**, then launch it again.
 3. The app asks for **Accessibility** as it starts. Grant it in **System Settings →
-   Privacy & Security → Accessibility**. The switcher starts working within a couple of
-   seconds; no relaunch is needed.
+   Privacy & Security → Device Control and Data Access** — the row macOS 15–26 calls
+   **Accessibility**. The switcher starts working within a couple of seconds; no relaunch
+   is needed.
 
 The menu bar icon is the only proof the app is running: `⇄` when it works, a warning
 triangle when it cannot. macOS ties an Accessibility grant to the code signature, so the

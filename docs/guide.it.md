@@ -19,7 +19,8 @@ quello che fa avviene mentre tieni premuta una combinazione di tasti.
 2. Un’app scaricata viene rifiutata la prima volta: apri **Impostazioni di Sistema →
    Privacy e sicurezza**, scorri fino in fondo, premi **Apri comunque** e riaprila.
 3. All’avvio l’app chiede l’**Accessibilità**. Concedila in **Impostazioni di Sistema →
-   Privacy e sicurezza → Accessibilità**. Il selettore comincia a funzionare in un paio di
+   Privacy e sicurezza → Controllo del dispositivo e accesso ai dati**: su macOS 15–26 la
+   voce si chiama **Accessibilità**. Il selettore comincia a funzionare in un paio di
    secondi; non serve riaprire l’app.
 
 L’icona nella barra dei menu è l’unica prova che l’app è in funzione: `⇄` quando funziona,
@@ -130,7 +131,7 @@ disturbare la scrivania su cui sei.
 | Voce | Quando c’è |
 |---|---|
 | **Apri Accessibilità…** | finché manca il permesso — lo chiede di nuovo |
-| **Apri Monitoraggio ingresso…** | quando macOS trattiene i tasti (vedi sotto) |
+| **Apri Monitoraggio input…** | quando macOS trattiene i tasti (vedi sotto) |
 | **Impostazioni…** | sempre |
 | **Copia l’elenco di app e finestre** | sempre — copia negli appunti l’elenco delle app della scrivania corrente, ed è ciò che va allegato a una segnalazione |
 | **Esci da Humane Space Tab** | sempre |
@@ -143,7 +144,7 @@ può rivendicare quello spazio. Libera un posto, oppure riapri l’app dal Finde
 Spotlight — un secondo avvio apre le impostazioni, non una seconda copia.
 
 **L’icona dice che macOS trattiene i tasti.** Una vecchia voce dell’app glielo vieta in
-**Impostazioni di Sistema → Privacy e sicurezza → Monitoraggio ingresso**. Rimuovi quella
+**Impostazioni di Sistema → Privacy e sicurezza → Monitoraggio input**. Rimuovi quella
 voce con **−** — all’app il permesso non serve, serve l’assenza di un divieto — e fai di
 nuovo clic nell’app; il tap viene ricostruito senza riavvii.
 

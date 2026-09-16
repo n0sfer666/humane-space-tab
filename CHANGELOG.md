@@ -13,9 +13,20 @@ the switcher's visible behaviour is still being decided, so a minor version may 
   flat desktop it reads as an empty rectangle, so the setting meant for the clearest glass
   handed back no glass at all. The style is now `regular` at every setting, and the shade
   only darkens it.
+- **Seven System Settings names the app got wrong.** The menu item and the message that
+  point at *Input Monitoring* named a row that does not exist under that name in French,
+  Spanish, Brazilian Portuguese, Italian, Dutch, Turkish or Ukrainian, and the login-item
+  message misnamed *Login Items* in Polish, Turkish and Ukrainian and *General* in
+  Ukrainian. All of them now match what macOS 27 actually prints.
 
 ### Changed
 
+- **macOS 27 renamed the permission row, and the documentation follows it.** What macOS
+  15–26 called *Accessibility* in Privacy & Security is *Device Control and Data Access*
+  on macOS 27, in all fifteen languages. Every place the documentation walks a person
+  through System Settings by hand now names the new row with the old one beside it. The
+  grant itself is unchanged — the app still asks for the same thing, and its own menu
+  still says *Accessibility*.
 - **CI runs on a named macOS image.** The macOS jobs ran on `macos-latest`, which moved to
   macOS 26 under the project's feet; they now name `macos-26`, so a runner upgrade is a
   change to this file rather than a surprise in a build.

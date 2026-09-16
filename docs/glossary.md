@@ -42,23 +42,46 @@ word a person will recognise. The app's name keeps *Space*; the sentences do not
 These are quoted from macOS itself. Matching them is what lets a message say where to go
 and have the user find it.
 
-| Language | Accessibility | Input Monitoring | System Settings | General | Login Items |
+| Language | Device Control and Data Access | Input Monitoring | System Settings | General | Login Items |
 |---|---|---|---|---|---|
-| en | Accessibility | Input Monitoring | System Settings | General | Login Items |
-| ru | Универсальный доступ | Мониторинг ввода | Системные настройки | Основные | Объекты входа |
-| de | Bedienungshilfen | Eingabeüberwachung | Systemeinstellungen | Allgemein | Anmeldeobjekte |
-| fr | Accessibilité | Surveillance de la saisie | Réglages Système | Général | Ouverture |
-| es | Accesibilidad | Monitorización de entrada | Ajustes del Sistema | General | Ítems de inicio |
-| pt-BR | Acessibilidade | Monitoramento de Entrada | Ajustes do Sistema | Geral | Itens de Início |
-| it | Accessibilità | Monitoraggio ingresso | Impostazioni di Sistema | Generali | Elementi login |
-| nl | Toegankelijkheid | Invoerbewaking | Systeeminstellingen | Algemeen | Inloggen |
-| pl | Dostępność | Monitorowanie wprowadzania | Ustawienia systemowe | Ogólne | Elementy logowania |
-| tr | Erişilebilirlik | Girdi İzleme | Sistem Ayarları | Genel | Giriş Öğeleri |
-| uk | Універсальний доступ | Моніторинг введення | Системні параметри | Основні | Об’єкти входу |
-| ja | アクセシビリティ | 入力監視 | システム設定 | 一般 | ログイン項目 |
-| ko | 손쉬운 사용 | 입력 모니터링 | 시스템 설정 | 일반 | 로그인 항목 |
-| zh-Hans | 辅助功能 | 输入监控 | 系统设置 | 通用 | 登录项 |
-| zh-Hant | 輔助使用 | 輸入監控 | 系統設定 | 一般 | 登入項目 |
+| en | Device Control and Data Access | Input Monitoring | System Settings | General | Login Items |
+| ru | Управление устройством и доступ к данным | Мониторинг ввода | Системные настройки | Основные | Объекты входа |
+| de | Gerätesteuerung und Datenzugriff | Eingabeüberwachung | Systemeinstellungen | Allgemein | Anmeldeobjekte |
+| fr | Contrôle de l’appareil et accès aux données | Surveillance de l’entrée | Réglages Système | Général | Ouverture |
+| es | Control de dispositivos y acceso a datos | Monitorización de los dispositivos de entrada | Ajustes del Sistema | General | Ítems de inicio |
+| pt-BR | Controle do Dispositivo e Acesso a Dados | Monitoração de Entrada | Ajustes | Geral | Itens de Início |
+| it | Controllo del dispositivo e accesso ai dati | Monitoraggio input | Impostazioni di Sistema | Generali | Elementi login |
+| nl | Apparaatbeheer en gegevenstoegang | Invoer vastleggen | Systeeminstellingen | Algemeen | Inloggen |
+| pl | Sterowanie urządzeniami i dostęp do danych | Monitorowanie wprowadzania | Ustawienia systemowe | Ogólne | Logowanie |
+| tr | Aygıt Denetimi ve Veri Erişimi | Giriş İzleme | Sistem Ayarları | Genel | Oturum Açma Öğeleri |
+| uk | Керування пристроями й доступ до даних | Контроль вводу | Системні параметри | Загальні | Автозапуск |
+| ja | デバイスの制御とデータへのアクセス | 入力監視 | システム設定 | 一般 | ログイン項目 |
+| ko | 기기 제어 및 데이터 접근 | 입력 모니터링 | 시스템 설정 | 일반 | 로그인 항목 |
+| zh-Hans | 设备控制和数据访问 | 输入监控 | 系统设置 | 通用 | 登录项 |
+| zh-Hant | 裝置控制和資料取用 | 輸入監控 | 系統設定 | 一般 | 登入項目 |
+
+macOS 27 renamed the row this app sends people to. Through macOS 26 it was called
+*Accessibility*; the grant behind it, the TCC service and the deep link that opens it are
+unchanged — only the label is. The app runs on macOS 15 and up, so both names are live and
+both are written down.
+
+| Language | Accessibility, macOS 15–26 |
+|---|---|
+| en | Accessibility |
+| ru | Универсальный доступ |
+| de | Bedienungshilfen |
+| fr | Accessibilité |
+| es | Accesibilidad |
+| pt-BR | Acessibilidade |
+| it | Accessibilità |
+| nl | Toegankelijkheid |
+| pl | Dostępność |
+| tr | Erişilebilirlik |
+| uk | Універсальний доступ |
+| ja | アクセシビリティ |
+| ko | 손쉬운 사용 |
+| zh-Hans | 辅助功能 |
+| zh-Hant | 輔助使用 |
 
 The first launch needs two more of its names — the pane that holds the refusal, and the
 button that lifts it.
@@ -66,22 +89,24 @@ button that lifts it.
 | Language | Privacy & Security | Open Anyway |
 |---|---|---|
 | en | Privacy & Security | Open Anyway |
-| ru | Конфиденциальность и безопасность | Всё равно открыть |
-| de | Datenschutz & Sicherheit | Trotzdem öffnen |
+| ru | Конфиденциальность и безопасность | Все равно открыть |
+| de | Datenschutz & Sicherheit | Dennoch öffnen |
 | fr | Confidentialité et sécurité | Ouvrir quand même |
 | es | Privacidad y seguridad | Abrir igualmente |
-| pt-BR | Privacidade e Segurança | Abrir Assim Mesmo |
+| pt-BR | Privacidade e Segurança | Abrir Mesmo Assim |
 | it | Privacy e sicurezza | Apri comunque |
-| nl | Privacy en beveiliging | Toch openen |
-| pl | Prywatność i ochrona | Otwórz mimo to |
+| nl | Privacy en beveiliging | Open toch |
+| pl | Prywatność i ochrona | Otwórz mimo to |
 | tr | Gizlilik ve Güvenlik | Yine de Aç |
-| uk | Конфіденційність і безпека | Все одно відкрити |
+| uk | Приватність і безпека | Все одно відкрити |
 | ja | プライバシーとセキュリティ | このまま開く |
 | ko | 개인정보 보호 및 보안 | 그래도 열기 |
-| zh-Hans | 隐私与安全性 | 仍要打开 |
-| zh-Hant | 隱私權與安全性 | 仍要打開 |
+| zh-Hans | 隐私与安全 | 仍要打开 |
+| zh-Hant | 隱私權與安全性 | 強制打開 |
 
-The wording is macOS 15–26. If a later version renames a pane, this table is the record of
+The wording is quoted from macOS 27 (build 26A428), read out of the system's own
+`.loctable` resources rather than off a screenshot, and the macOS 15–26 column is what the
+earlier reading matched. If a later version renames a pane, this table is the record of
 what was matched, so the change is an edit rather than a rediscovery.
 
 ## What is never translated

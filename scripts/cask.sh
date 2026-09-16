@@ -56,8 +56,9 @@ cask "humane-space-tab" do
     bottom and press "Open Anyway", then launch it again.
 
     The switcher needs Accessibility. The app asks on launch, and its menu bar icon says
-    so until the grant is there. macOS ties that grant to the code signature, so it has
-    to be given again after every upgrade.
+    so until the grant is there; by hand it is System Settings › Privacy & Security ›
+    Device Control and Data Access, the row macOS 15–26 calls Accessibility. macOS ties
+    that grant to the code signature, so it has to be given again after every upgrade.
   EOS
 end
 CASK

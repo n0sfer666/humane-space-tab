@@ -33,7 +33,9 @@ Either way macOS asks for two things, once:
   Anyway**, and launch the app again. Do not strip the quarantine attribute by hand — that
   habit disarms the check that protects you from everything else you download.
 - **Grant Accessibility.** The app asks as it launches, and its menu bar icon shows a
-  warning until the grant is there — **Grant Accessibility…** in that menu asks again.
+  warning until the grant is there — **Grant Accessibility…** in that menu asks again. By
+  hand it is **System Settings → Privacy & Security → Device Control and Data Access**,
+  the row macOS 15–26 calls **Accessibility**.
   Either way the switcher starts working within a couple of seconds, without a relaunch.
   macOS ties the grant to the code signature, so it has to be given again after every
   update.

@@ -1,14 +1,14 @@
 "app.name" = "Humane Space Tab";
 
 "menu.grantAccessibility" = "Ouvrir Accessibilité…";
-"menu.openInputMonitoring" = "Ouvrir Surveillance de la saisie…";
+"menu.openInputMonitoring" = "Ouvrir Surveillance de l’entrée…";
 "menu.settings" = "Réglages…";
 "menu.copyInventory" = "Copier la liste des apps et des fenêtres";
 "menu.quit" = "Quitter Humane Space Tab";
 
 "permission.blocked" = "L’Accessibilité est désactivée, donc Cmd+Tab reste à macOS.";
 "permission.refused" = "macOS a refusé la capture du clavier. Seul un redémarrage de l’app y remédie.";
-"permission.deaf" = "macOS retient les frappes. Retirez cette app de Surveillance de la saisie.";
+"permission.deaf" = "macOS retient les frappes. Retirez cette app de Surveillance de l’entrée.";
 "permission.secured" = "« %@ » retient les frappes. Verrouillez l’écran puis déverrouillez-le pour les libérer.";
 "permission.securedUnnamed" = "Quelque chose retient les frappes. Verrouillez l’écran puis déverrouillez-le pour les libérer.";
 "permission.observing" = "Le sélecteur voit Cmd+Tab mais ne peut pas le reprendre.";

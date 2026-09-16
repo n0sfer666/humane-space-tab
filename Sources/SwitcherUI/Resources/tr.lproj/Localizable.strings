@@ -1,14 +1,14 @@
 "app.name" = "Humane Space Tab";
 
 "menu.grantAccessibility" = "Erişilebilirlik’i aç…";
-"menu.openInputMonitoring" = "Girdi İzleme’yi aç…";
+"menu.openInputMonitoring" = "Giriş İzleme’yi aç…";
 "menu.settings" = "Ayarlar…";
 "menu.copyInventory" = "Uygulama ve pencere listesini kopyala";
 "menu.quit" = "Humane Space Tab’den çık";
 
 "permission.blocked" = "Erişilebilirlik kapalı, bu yüzden Cmd+Tab hâlâ macOS’un.";
 "permission.refused" = "macOS klavye dinlemesini reddetti. Tek çözüm uygulamadan çıkıp yeniden açmak.";
-"permission.deaf" = "macOS tuş vuruşlarını tutuyor. Bu uygulamayı Girdi İzleme listesinden çıkar.";
+"permission.deaf" = "macOS tuş vuruşlarını tutuyor. Bu uygulamayı Giriş İzleme listesinden çıkar.";
 "permission.secured" = "“%@” tuş vuruşlarını tutuyor. Ekranı kilitle ve kilidini yeniden aç.";
 "permission.securedUnnamed" = "Bir şey tuş vuruşlarını tutuyor. Ekranı kilitle ve kilidini yeniden aç.";
 "permission.observing" = "Değiştirici Cmd+Tab’i görüyor ama devralamıyor.";
@@ -27,7 +27,7 @@
 "general.windowSwitching" = "Uygulamalar yerine pencereler arasında geç";
 "general.languageSystem" = "Sistem";
 "general.language" = "Dil";
-"general.loginItemPending" = "Sistem Ayarları › Genel › Giriş Öğeleri’nde onay bekliyor.";
+"general.loginItemPending" = "Sistem Ayarları › Genel › Oturum Açma Öğeleri’nde onay bekliyor.";
 "general.loginItemRefused" = "macOS reddetti: %@";
 "screen.focused" = "Klavye odağının olduğu ekran";
 "screen.pointer" = "İmlecin olduğu ekran";

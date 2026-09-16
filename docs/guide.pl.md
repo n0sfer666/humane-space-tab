@@ -19,7 +19,8 @@ co robi, dzieje się, dopóki trzymasz skrót klawiszowy.
    Prywatność i ochrona**, przewiń na sam dół, kliknij **Otwórz mimo to** i uruchom
    jeszcze raz.
 3. Przy starcie aplikacja prosi o **Dostępność**. Przyznaj ją w **Ustawienia systemowe →
-   Prywatność i ochrona → Dostępność**. Przełącznik zaczyna działać po paru sekundach;
+   Prywatność i ochrona → Sterowanie urządzeniami i dostęp do danych** — na macOS 15–26
+   pozycja nazywa się **Dostępność**. Przełącznik zaczyna działać po paru sekundach;
    ponowne uruchomienie nie jest potrzebne.
 
 Ikona na pasku menu to jedyny dowód, że aplikacja działa: `⇄`, kiedy działa, i trójkąt
